@@ -5,6 +5,7 @@
 ; Happy coding! ♥️
 
 ; Jacking in...
+; nREPL Connection was closed
 ; Hooking up nREPL sessions...
 ; Connected session: clj
 ; TIPS: 
@@ -18,6 +19,6 @@ clj::bel-learn-lib.core=>
 
 ; Jack-in done.
 clj::bel-learn-lib.core=> 
-clj-learn-lib.core/test-the-lib seems to work! Hello, World!
-"result is comming back... lib works!"
-clj::bel-learn-lib.core=> 
+; Evaluating file: 01_equalities.clj
+nil
+clj::koans.01-equalities=> 
