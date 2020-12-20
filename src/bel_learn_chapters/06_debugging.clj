@@ -1,6 +1,8 @@
 (ns bel-learn-chapters.06-debugging
-  [:require [erdos.assert :as pa]  ;power-assert
-            [taoensso.timbre :refer [error warn info debug trace]]]) ;logging
+  [:require
+   [clojure.string :as str]
+   [erdos.assert :as pa]  ;power-assert
+   [taoensso.timbre :refer [spy error warn info debug trace]]]) ;logging
 
 (defn debug-this [arg1 arg2]
   (let [from (min arg1 arg2) ; breakpoint may have conditions
@@ -36,7 +38,7 @@
 (->> [:1 :2 :3 :4]
      shuffle
      (map #(str % "--"))
-     clojure.string/join)
+     str/join)
 ;;---------------------------------------
 
 (def c (atom 0))
@@ -67,3 +69,32 @@
 (taoensso.timbre/debug "error")
 (info (Exception. "Oh no - this is a shituation") "data 1" 1234)
 (error (Exception. "Oh no - this is a shituation") "data 1" 1234)
+(defn my-calc [a b c] (* a b c))
+(spy (my-calc 1 2 3)) 
+
+
+
+(->> [:1 :2 :3 :4] ; spy does work
+     shuffle
+     spy
+     (map #(str % "--"))
+     doall ; does not work?
+     spy
+     str/join
+     spy)
+    
+
+;; but this... too
+(defn  prv
+  ([val] (prv "" val))
+  ([marker val](println marker " : " val " " (type val) ) val))
+
+ 
+(->> [:1 :2 :3 :4]
+     prv 
+     shuffle
+     (prv "after shuffle")
+     (map #(str % "--"))
+     prv
+     str/join
+     prv)
