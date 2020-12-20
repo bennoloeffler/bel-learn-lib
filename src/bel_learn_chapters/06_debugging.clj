@@ -1,6 +1,7 @@
 (ns bel-learn-chapters.06-debugging
   [:require [erdos.assert :as pa]  ;power-assert
-            [taoensso.timbre :refer :all]]) ;logging
+            [taoensso.timbre :refer [error warn info debug trace]]]) ;logging
+
 (defn debug-this [arg1 arg2]
   (let [from (min arg1 arg2) ; breakpoint may have conditions
         to (max arg1 arg2)
