@@ -1,6 +1,6 @@
 (ns bel-learn-chapters.06-debugging
-  [:require [erdos.assert :as pa]]) ;power-assert
-
+  [:require [erdos.assert :as pa]  ;power-assert
+            [taoensso.timbre :refer :all]]) ;logging
 (defn debug-this [arg1 arg2]
   (let [from (min arg1 arg2) ; breakpoint may have conditions
         to (max arg1 arg2)
@@ -59,3 +59,10 @@
                  (map #(str % "--"))
                  (doall) ;see lazy ones
                  (clojure.string/join)))
+
+
+;; https://github.com/ptaoussanis/timbre
+(taoensso.timbre/info "This will print")
+(taoensso.timbre/debug "error")
+(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
+(error (Exception. "Oh no - this is a shituation") "data 1" 1234)
