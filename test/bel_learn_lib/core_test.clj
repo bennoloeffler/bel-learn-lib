@@ -2,6 +2,28 @@
   (:require [clojure.test :refer :all]
             [bel-learn-lib.core :refer :all]))
 
-(deftest a-test
-  (testing "BEL FIXME, I fail."
-    (is (= 0 1))))
+(deftest partition-by-nums-test
+  (testing "empty"
+    (is (= [] (partition-by-nums [] [])))
+    (is (= [] (partition-by-nums [1 2] [])))
+    (is (= [] (partition-by-nums [] [1 2]))))
+  (testing "fit"
+    (is (= [[1 2 3] [4 5]] (partition-by-nums [3 2] [1 2 3 4 5])))
+    (is (= [[7]] (partition-by-nums [1] [7]))))
+  (testing "coll bigger"
+    (is (= [[1 2 3] [4 5]] (partition-by-nums [3 2] [1 2 3 4 5 6 7]))))
+  (testing "coll smaller"
+    (is (= [[1 2 3] [4]] (partition-by-nums [3 2] [1 2 3 4]))))
+  (testing "with zeros"
+    (is (= [[1 2 3] [] [] [4 5]] (partition-by-nums [3 0 0 2] [1 2 3 4 5])))))
+
+(deftest get-digits-test
+  (testing "nil"
+    (is (= [] (get-digits nil))))
+  (testing "zero"
+    (is (= [0] (get-digits nil)))
+    (is (= [[1 2 3] [4 5]] (partition-by-nums [3 2] [1 2 3 4 5])))))
+
+
+
+(run-all-tests)
