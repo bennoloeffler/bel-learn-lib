@@ -9,6 +9,14 @@
     - Quick-Doc: CTRL-Q
     - Source-Coce: CTRL-Shift-I
     - Format Code: Ctrl+Alt+L
+    - open... project.clj to quick import
+    - load file to REPL ALT-SHIFT-L
+    - sync REPL with changed files ALT-SHIFT-M
+    - send current form to REPL ALT-SHIFT-P
+    - bark and slurp ( - -J to left, - -K to right)
+    - SHIFT-ALT = forward
+    - CTRL-ALT = backward
+
 - [closure for vscode: Calva](https://calva.io/)
     - Open your project root directory in VS Code: `code .`
     - Jack-In ctrl+alt+c ctrl+alt+j Issue the command Start a Project REPL and Connect.
@@ -32,7 +40,7 @@
 - [HOFs 2](writing-elegant-clojure-code-using-higher-order-functions/)
 - [geiles Tutorial](http://clojurebridge-berlin.org/community-docs/docs/clojure/higher-order-function/)
 - [ns:](https://www.braveclojure.com/organization/)
-
+- https://github.com/razum2um/awesome-clojure
 
 # functions and examples
 

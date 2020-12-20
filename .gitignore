@@ -12,3 +12,4 @@ pom.xml.asc
 .hgignore
 .hg/
 /.calva/output-window
+.calva/output-window/output.calva-repl

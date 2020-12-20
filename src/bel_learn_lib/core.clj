@@ -12,10 +12,22 @@
 ; THATS IT
 
 (defn test-the-lib
-  "I just let a libs function to be called"
+  "test function to be called"
   []
   (println "clj-learn-lib.core/test-the-lib seems to work! Hello, World!")
   "result is comming back... lib works!")
+
+(defn partition-by-nums [nums coll]
+  (loop [coll coll nums nums rslt []]
+    (if (or (empty? coll) (empty? nums))
+      rslt
+      (recur
+        (drop (first nums) coll)
+        (rest nums)
+        (conj rslt (take (first nums) coll))))))
+
+(defn get-digits [num]
+  (map #(Character/digit % 10) (seq (str num))))
 
 (comment
   (+ 3 4)

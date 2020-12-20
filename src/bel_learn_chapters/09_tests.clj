@@ -1,0 +1,83 @@
+(ns bel-learn-chapters.09-tests
+  (:require [clojure.test :refer :all]
+            [bel-learn-lib.core :refer :all]
+            [mate-clj.core :refer :all]
+            [erdos.assert :refer :all])) ; overwrite assert
+
+
+;;
+;; typically the project-layout
+;; is:
+; 
+;├───doc
+;├───resources
+;├───src
+;│   └───bel_learn_lib
+;├───target
+;│   └───...
+;└───test
+;    └───bel_learn_lib
+
+
+(deftest partition-by-nums-test
+  (testing "empty"
+    (is (= [] (partition-by-nums [] [])))
+    (is (= [] (partition-by-nums [1 2] [])))
+    (is (= [] (partition-by-nums [] [1 2]))))
+  (testing "fit"
+    (is (= [[1 2 3] [4 5]] (partition-by-nums [3 2] [1 2 3 4 5])))
+    (is (= [[7]] (partition-by-nums [1] [7]))))
+  (testing "coll bigger"
+    (is (= [[1 2 3] [4 5]] (partition-by-nums [3 2] [1 2 3 4 5 6 7]))))
+  (testing "coll smaller"
+    (is (= [[1 2 3] [4]] (partition-by-nums [3 2] [1 2 3 4]))))
+  (testing "with zeros"
+    (is (= [[1 2 3] [] [] [4 5]] (partition-by-nums [3 0 0 2] [1 2 3 4 5])))))
+
+(defn ex-test [a b]
+  (throw (RuntimeException. "wrong value")))
+
+(defn div-test [a b]
+  (/ a b))
+
+
+;; set breakpoint to exception? CTRL-SHIFT-8
+(deftest test-exception
+  (testing "general"
+    (is (thrown? Throwable
+                 (div-test 5 0))))
+  (testing "type"
+    (is (thrown? ArithmeticException
+                          (div-test 5 0))))
+  (testing "msg"
+    (is (thrown-with-msg? ArithmeticException
+                          #"Divide by zero"
+                          (div-test 5 0)))
+    (is (thrown-with-msg? Throwable #"wrong.*"
+                          (ex-test 7 0)))))
+
+(test-exception)
+
+(defn number [num]
+  "zero")
+;; context-menu -> add repl command (edit repl command)
+;; put that in the same file and bind it to CTRL-WIN-ALT T
+; :require [clojure.test :refer [is run-tests run-all-tests]]
+(defn call-current-tests []
+  (println "BELs current tests started")
+  (is (= "zero" (number 0))) ;quick-test
+  (is (= "one hundred" (number 100))) ; quick-test
+  (clojure.test/run-tests 'bel-learn-chapters.09-tests))
+
+(run-all-tests #"bel.*test|clj-app.*test.*")
+
+(defn greeting
+  ([] (str "Hello, World!"))
+  ([x] (str "Hello, " x "!"))
+  ([x y] (str x ", " y "!")))
+
+;; For quick-testing
+(assert (= "Hello, World!" (greeting)))
+(assert (= "Hello, Clojure!" (greeting "Power-Assert"))) ;; power-assert!
+(assert (= "Good morning, Clojure!" (greeting "Good morning" "Clojure")))
+
