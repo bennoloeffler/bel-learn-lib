@@ -2,7 +2,8 @@
   [:require
    [clojure.string :as str]
    [erdos.assert :as pa]  ;power-assert
-   [taoensso.timbre :refer [spy error warn info debug trace]]]) ;logging
+   [taoensso.timbre :refer [spy error warn info debug]] ;logging
+   [clojure.tools.trace :as trace :refer [dotrace trace-forms]]]) ;tracing
 
 (defn debug-this [arg1 arg2]
   (let [from (min arg1 arg2) ; breakpoint may have conditions
@@ -15,11 +16,16 @@
 
 (comment (debug-this 155 25))
 
-(defn do-div [x y]
+(defn ^:dynamic do-div [x y]
   (/ x y)) ; setting an exception breakpoint helps
 
-(defn calc [x y]
+(defn ^:dynamic calc [x y]
   (do-div x y))
+
+; https://stackoverflow.com/questions/41946753/how-can-i-trace-code-execution-in-clojure
+; https://github.com/clojure/tools.trace
+(dotrace [calc do-div] (calc 5 6))
+(trace-forms (+ 1 3) (* 5 6) (/ 1 0)) ;; To identify which form is failing
 
 (comment (calc 10 0))
 
@@ -29,6 +35,13 @@
       res
       (recur (dec i) (* (doto res prn) value)))))
 
+(defn pow [value pow]
+  (loop [i pow res 1]
+    (if (zero? i)
+      res
+      (recur (dec i) (* res value)))))
+(pow 2 8)
+(trace/trace [pow] (pow 2 8))
 
 ;;----------------------------------------
 (require '[mate-clj.core :as mate])
@@ -54,8 +67,9 @@
      (map clojure.string/join)
      (#(do (println (swap! c inc) ": " %) %)))
 
-(pa/assert (= 1 (count ( range 1 9))))
-(pa/examine (= 1 (count ( range 1 9))))
+;(pa/assert (= 1 (count ( range 1 9))))
+;(pa/examine (= 1 (count ( range 1 9))))
+(pa/assert (= 8 (count ( range 1 9))))
 
 (pa/examine (->> [:1 :2 :3 :4]
                  (shuffle)
@@ -78,23 +92,24 @@
      shuffle
      spy
      (map #(str % "--"))
-     doall ; does not work?
+     vec ; doall does not work?
      spy
      str/join
      spy)
-    
 
-;; but this... too
-(defn  prv
-  ([val] (prv "" val))
-  ([marker val](println marker " : " val " " (type val) ) val))
+(defmacro dbg [body]
+  `(let [body# ~body]
+     (println "dbg:" '~body "=>" body#)
+     body#))
 
- 
+(dbg (+ 1 2))
+
 (->> [:1 :2 :3 :4]
-     prv 
+     dbg
      shuffle
-     (prv "after shuffle")
+     dbg
      (map #(str % "--"))
-     prv
+     dbg
      str/join
-     prv)
+     dbg)
+

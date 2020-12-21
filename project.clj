@@ -9,6 +9,7 @@
                  [quil "3.1.0"] ;; drawing to the screen
                  [com.formdev/flatlaf "0.37"] ;; swing support for big displays
                  [erdos.assert "0.1.0"] ;; power assert and examine
+                 [org.clojure/tools.trace "0.7.10"] ;; tracing
                  [seesaw "1.5.0"]] ;; swing for clojure
                 ;[mate-clj "1.0.0"]]; included sourcecode - but does not work
   :main ^:skip-aot bel-learn-lib.core
