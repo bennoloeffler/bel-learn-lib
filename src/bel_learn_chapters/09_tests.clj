@@ -8,7 +8,7 @@
 ;;
 ;; typically the project-layout
 ;; is:
-; 
+;
 ;├───doc
 ;├───resources
 ;├───src
@@ -78,6 +78,5 @@
 
 ;; For quick-testing
 (assert (= "Hello, World!" (greeting)))
-(assert (= "Hello, Clojure!" (greeting "Power-Assert"))) ;; power-assert!
+(assert (= "Hello, Power-Assert!" (greeting "Power-Assert"))) ;; power-assert!
 (assert (= "Good morning, Clojure!" (greeting "Good morning" "Clojure")))
-

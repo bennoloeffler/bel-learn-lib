@@ -19,3 +19,5 @@
 (type x)
 (take 50 x)
 (take 50 (vector 1 2 3 4 (inc 8)))
+
+nil

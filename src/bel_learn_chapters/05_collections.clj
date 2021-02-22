@@ -29,13 +29,13 @@
 ;; peek and pop work in terms of "natural insertion order" and only work with things that behave like a stack - (so not lazy-seqs, strings, etc.)
 ;; lists push and pop from the front, vectors push and pop from the end, queues push to one end, pop from the other
 ;; https://admay.github.io/queues-in-clojure/
-;; 
+;;
 ;; https://clojuredocs.org/clojure.core/conj
 ;;conj works on collections
 (conj '(:b :c) :a) ; add before
 (conj [:b :c] :a) ; add after
 
-(cons :a '(:b :c)) ; add 
+(cons :a '(:b :c)) ; add
 (cons :a [:b :c]) ;returns collection
 
 (defn half [n](/ n 2))

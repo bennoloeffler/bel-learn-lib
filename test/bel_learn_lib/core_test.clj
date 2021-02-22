@@ -21,9 +21,8 @@
   (testing "nil"
     (is (= [] (get-digits nil))))
   (testing "zero"
-    (is (= [0] (get-digits nil)))
-    (is (= [[1 2 3] [4 5]] (partition-by-nums [3 2] [1 2 3 4 5])))))
+    (is (= [0] (get-digits 0)))
+    (is (= [1 0] (get-digits 10)))))
 
 
-
-(run-all-tests)
+;(run-all-tests)

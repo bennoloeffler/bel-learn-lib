@@ -4,7 +4,7 @@
 ; https://github.com/ClojureBridge/curriculum
 ; https://exercism.io/tracks/clojure
 ;;
-;; If you know java or groovy, then this is for you... 
+;; If you know java or groovy, then this is for you...
 ;;
 
 ;; see: http://kimh.github.io/clojure-by-example
@@ -44,10 +44,13 @@
 ;; and the rest as arguments = "hello, clojure"
 ;; TRY IT.
 ;; place the curser somewhere into the list and
-;; press ALT-Enter. 
+;; press ALT-Enter.
 ;;
 ;; println ("hello, world") ; NO, but
-(println "hello, clojure")
+
+(comment)
+
+;(println "hello, clojure"
 
 ;; you are in a namespace - there is a global variable *ns*
 *ns*
@@ -55,19 +58,19 @@
 ;; starting a repl, the namespace us 'user'
 
 ;;
-;; the concept of a list  
+;; the concept of a list
 ;;
 
 ;; lists are in paranthesis.
 ;; the first expression is interpreted as function (from the clojure reader in REPL)
 ;; the rest is interpreted as arguments to that function
-(+ 1 2 3 4 5)
+(+ 1 2 3 4) 5
 
 ;; but with ' (clojurists call it 'quoted') the list is not evaluated, but taken as data
 '(+ 1 2 3 4 5)
 '("word" true 5 3.14)
-(println (+ 1 2)) ; prints 3
-(println '(+ 1 2)) ; prints (+ 1 2)
+;(println (+ 1 2)) ; prints 3
+;(println '(+ 1 2)) ; prints (+ 1 2)
 
 ;;
 ;; Equality
@@ -110,13 +113,13 @@ cats ; => 5 (evaluation to final value)
 ;;
 
 ;; a real value (Symbol --> Variable --> Value)
-(type 'cats) ; Symbol 
+(type 'cats) ; Symbol
 ;; => clojure.lang.Symbol
 
-(resolve 'cats) ; Variable cats in namespace bel-learn-chapters.01-up-and-running  
+(resolve 'cats) ; Variable cats in namespace bel-learn-chapters.01-up-and-running
 ;; => #'bel-learn-chapters.01-up-and-running/cats
 
-(eval 'cats) ; Value 
+(eval 'cats) ; Value
 ;; => 5
 
 ;; a functions value (Symbol --> Variable --> Value)
@@ -135,7 +138,7 @@ cats ; => 5 (evaluation to final value)
 (type "meow") ; java string
 
 ;;
-;; truth: nil and false are falsy. 
+;; truth: nil and false are falsy.
 ;; EVERYTHING else is truthy
 ;;
 (boolean nil) ;; => false
@@ -145,7 +148,7 @@ cats ; => 5 (evaluation to final value)
 
 ;;
 ;; simple calculations
-;; 
+;;
 
 (+ 1 2) ;; => 3
 (* 3 2.0) ;; => 6.0
@@ -159,12 +162,12 @@ cats ; => 5 (evaluation to final value)
 (- 1000 1 2 3 4) ;; => 990
 
 ;;
-;; with CTRL-Enter you may evaluate the 
+;; with CTRL-Enter you may evaluate the
 ;; expression nearest to the cursor. Try it...
 ;;
-(+ (- 5 1) (* 8 (+ 1 1))) ; => 20   nested calls 
-(/ 3 4) ; => 3/4   what?  
-(type (/ 3 4)) ; Ratio - a new data type...  
+(+ (- 5 1) (* 8 (+ 1 1))) ; => 20   nested calls
+(/ 3 4) ; => 3/4   what?
+(type (/ 3 4)) ; Ratio - a new data type...
 (type 3/4) ; can be written like that
 
 (+ 2) ; with one argument
@@ -175,7 +178,7 @@ cats ; => 5 (evaluation to final value)
 ;; there are no statements! only expressions.
 ;; even a (println "something") is an expression.
 ;; it returns nothing = nil
-(println "print something but return nothing")
+;(println "print something but return nothing")
 
 ;;
 ;; first smell of a function
@@ -184,5 +187,5 @@ cats ; => 5 (evaluation to final value)
 (defn c*2 [n] (* n 2)) ;; exactly the same. very uncommon symbol - may contain...
 (mult2 10)
 (c*2 10)
-
-"this last expression will be the result of run file (CTRL-ALT-C Enter in Calva) and printed in the REPL"
+nil
+;"this last expression will be the result of run file (CTRL-ALT-C Enter in Calva) and printed in the REPL"

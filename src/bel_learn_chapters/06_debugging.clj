@@ -25,7 +25,7 @@
 ; https://stackoverflow.com/questions/41946753/how-can-i-trace-code-execution-in-clojure
 ; https://github.com/clojure/tools.trace
 (dotrace [calc do-div] (calc 5 6))
-(trace-forms (+ 1 3) (* 5 6) (/ 1 0)) ;; To identify which form is failing
+#_(trace-forms (+ 1 3) (* 5 6) (/ 1 0)) ;; To identify which form is failing
 
 (comment (calc 10 0))
 
@@ -47,11 +47,11 @@
 (require '[mate-clj.core :as mate])
 ;; https://github.com/AppsFlyer/mate-clj
 ;; DOES NOT WORK! SHIT!
-;(mate/d->> [:1 :2 :3 :4]
-(->> [:1 :2 :3 :4]
-     shuffle
-     (map #(str % "--"))
-     str/join)
+(mate/d->> [:1 :2 :3 :4]
+;(->> [:1 :2 :3 :4]
+    shuffle
+    ;(map #(str % "--")))
+    str/join)
 ;;---------------------------------------
 
 (def c (atom 0))
@@ -84,7 +84,7 @@
 (info (Exception. "Oh no - this is a shituation") "data 1" 1234)
 (error (Exception. "Oh no - this is a shituation") "data 1" 1234)
 (defn my-calc [a b c] (* a b c))
-(spy (my-calc 1 2 3)) 
+(spy (my-calc 1 2 3))
 
 
 
@@ -112,4 +112,3 @@
      dbg
      str/join
      dbg)
-

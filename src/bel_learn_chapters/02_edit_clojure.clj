@@ -1,15 +1,16 @@
 (ns bel-learn-chapters.02-edit-clojure)
 
 
-;;
 ;; PAREDIT in VSCODE(calva) und IDEA(cursive)
 ;;
-;; to master inline evaluation of expressions the brackets, 
+;; to master inline evaluation of expressions the brackets,
 ;; paranthesis and curls, you may have a look at this...
 
 ;; place the cursor to the 1 and press CTRL-Enter.
 ;; So: click inside an expression and CTRL-Enter evaluates that.
+
 (+ (/ 1 2) (dec 3))
+
 ;; CTRL-ALT-P in idea
 
 ;; place the cursor to the 6, press CTRL-W until (+ 6 7 8 9) is marked.
@@ -47,10 +48,15 @@
 (let [x 3 y 1]
   (->> (map inc [x y 7 1])
        sort
+       (#(do (prn %) %))
        (partition 2))) ;just comment with trialing semicolon
 
-; ENTF and SPACE move the whole block in parinfer mode)
 
+; ENTF and SPACE move the whole block in parinfer mode)
+(defn a [b]
+  (if (b)
+    (inc b)
+    (println b)))
 ;;
 ;; Comments
 ;;

@@ -21,6 +21,18 @@
     - Open your project root directory in VS Code: `code .`
     - Jack-In ctrl+alt+c ctrl+alt+j Issue the command Start a Project REPL and Connect.
 - clj-kondo: typechecker & linter for clojure
+- SETTINGS:
+    - remove key binding "tab" for clj format
+    - switch off "Use Tab Stops"
+    - install parinfer
+    - disable format
+    - use paredit nomal mode (not strict)
+    - switch on: Diff editor Code Lens
+    - Clojure.Format: Disable
+
+- [Atom](https://gist.github.com/jasongilman/d1f70507bed021b48625)
+    -  
+
 ### Inspiration
 - [Robert C. Martin on clojure](https://blog.cleancoder.com/uncle-bob/2019/08/22/WhyClojure.html)  
 
@@ -41,24 +53,3 @@
 - [geiles Tutorial](http://clojurebridge-berlin.org/community-docs/docs/clojure/higher-order-function/)
 - [ns:](https://www.braveclojure.com/organization/)
 - https://github.com/razum2um/awesome-clojure
-
-# functions and examples
-
-## comp 
-## partial
-## juxt
-## complement
-## comp
-## apply
-## into 
-## flatten 
-## merge-with
-## mapcat 
-## mapv 
-## map 
-## filter 
-## reducehat
-## recur
-## trampoline
-## memoize 
-

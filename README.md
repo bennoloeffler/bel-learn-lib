@@ -1,6 +1,6 @@
 # bel-learn-lib
 
-FIXME: Benno's lib with all learned elements in clojure
+Benno's lib with all learned elements in clojure
 
 ## Installation
 
