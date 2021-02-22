@@ -72,5 +72,5 @@
                          "vanilla"         [1   :teaspoon]
                          "eggs"            2
                          "chocolate chips" [12  :ounce]}})
-
-((choc :ingredients) "butter")
+(comment
+  ((choc :ingredients) "butter"))

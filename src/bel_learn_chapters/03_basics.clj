@@ -104,7 +104,8 @@
    :y    y
    :more more-args})
 
-(vargs 1 2 3 4 5 6)
-(vargs 1 2)
+(comment
+  (vargs 1 2 3 4 5 6)
+  (vargs 1 2))
 
 ;(clojure.repl/source +)

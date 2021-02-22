@@ -24,91 +24,100 @@
 
 ; https://stackoverflow.com/questions/41946753/how-can-i-trace-code-execution-in-clojure
 ; https://github.com/clojure/tools.trace
-(dotrace [calc do-div] (calc 5 6))
-#_(trace-forms (+ 1 3) (* 5 6) (/ 1 0)) ;; To identify which form is failing
+(comment
+  (dotrace [calc do-div] (calc 5 6))
+  (trace-forms (+ 1 3) (* 5 6) (/ 1 0))) ;; To identify which form is failing
 
 (comment (calc 10 0))
 
-(let [pow 3 value 3]
-  (loop [i pow res 1]
-    (if (zero? i)
-      res
-      (recur (dec i) (* (doto res prn) value)))))
+(comment
+  (let [pow 3 value 3]
+    (loop [i pow res 1]
+      (if (zero? i)
+        res
+        (recur (dec i) (* (doto res prn) value))))))
 
 (defn pow [value pow]
   (loop [i pow res 1]
     (if (zero? i)
       res
       (recur (dec i) (* res value)))))
-(pow 2 8)
-(trace/trace [pow] (pow 2 8))
+
+(comment
+  (pow 2 8)
+  (trace/trace [pow] (pow 2 8)))
 
 ;;----------------------------------------
 (require '[mate-clj.core :as mate])
 ;; https://github.com/AppsFlyer/mate-clj
 ;; DOES NOT WORK! SHIT!
-(mate/d->> [:1 :2 :3 :4]
-;(->> [:1 :2 :3 :4]
-    shuffle
-    ;(map #(str % "--")))
-    str/join)
+(comment
+  (mate/d->> [:1 :2 :3 :4]
+  ;(->> [:1 :2 :3 :4]
+      shuffle
+      ;(map #(str % "--")))
+      str/join))
 ;;---------------------------------------
 
 (def c (atom 0))
-(->> [:1 :2 :3 :4]
-     shuffle
-     (#(do (println (swap! c inc) ": " %) %))
-     (map str)
-     (#(do (println (swap! c inc) ": " %) %))
-     (map second)
-     (#(do (println (swap! c inc) ": " %) %))
-     (partition 2)
-     (#(do (println (swap! c inc) ": " %) %))
-     (map clojure.string/join)
-     (#(do (println (swap! c inc) ": " %) %)))
+(comment
+  (->> [:1 :2 :3 :4]
+       shuffle
+       (#(do (println (swap! c inc) ": " %) %))
+       (map str)
+       (#(do (println (swap! c inc) ": " %) %))
+       (map second)
+       (#(do (println (swap! c inc) ": " %) %))
+       (partition 2)
+       (#(do (println (swap! c inc) ": " %) %))
+       (map clojure.string/join)
+       (#(do (println (swap! c inc) ": " %) %))))
 
 ;(pa/assert (= 1 (count ( range 1 9))))
 ;(pa/examine (= 1 (count ( range 1 9))))
 (pa/assert (= 8 (count ( range 1 9))))
 
-(pa/examine (->> [:1 :2 :3 :4]
-                 (shuffle)
-                 (map #(str % "--"))
-                 (doall) ;see lazy ones
-                 (clojure.string/join)))
+(comment
+  (pa/examine (->> [:1 :2 :3 :4]
+                   (shuffle)
+                   (map #(str % "--"))
+                   (doall) ;see lazy ones
+                   (clojure.string/join))))
 
 
 ;; https://github.com/ptaoussanis/timbre
-(taoensso.timbre/info "This will print")
-(taoensso.timbre/debug "error")
-(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
-(error (Exception. "Oh no - this is a shituation") "data 1" 1234)
+(comment
+  (taoensso.timbre/info "This will print")
+  (taoensso.timbre/debug "error"))
+;(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
+;(error (Exception. "Oh no - this is a shituation") "data 1" 1234)
 (defn my-calc [a b c] (* a b c))
-(spy (my-calc 1 2 3))
+(comment (spy (my-calc 1 2 3)))
 
 
-
-(->> [:1 :2 :3 :4] ; spy does work
-     shuffle
-     spy
-     (map #(str % "--"))
-     vec ; doall does not work?
-     spy
-     str/join
-     spy)
+(comment
+  (->> [:1 :2 :3 :4] ; spy does work
+       shuffle
+       spy
+       (map #(str % "--"))
+       vec ; doall does not work?
+       spy
+       str/join
+       spy))
 
 (defmacro dbg [body]
   `(let [body# ~body]
      (println "dbg:" '~body "=>" body#)
      body#))
 
-(dbg (+ 1 2))
+(comment
+  (dbg (+ 1 2))
 
-(->> [:1 :2 :3 :4]
-     dbg
-     shuffle
-     dbg
-     (map #(str % "--"))
-     dbg
-     str/join
-     dbg)
+  (->> [:1 :2 :3 :4]
+       dbg
+       shuffle
+       dbg
+       (map #(str % "--"))
+       dbg
+       str/join
+       dbg))

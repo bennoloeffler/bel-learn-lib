@@ -55,8 +55,8 @@
                           (div-test 5 0)))
     (is (thrown-with-msg? Throwable #"wrong.*"
                           (ex-test 7 0)))))
-
-(test-exception)
+(comment
+  (test-exception))
 
 (defn number [num]
   "zero")
@@ -69,7 +69,8 @@
   (is (= "one hundred" (number 100))) ; quick-test
   (clojure.test/run-tests 'bel-learn-chapters.09-tests))
 
-(run-all-tests #"bel.*test|clj-app.*test.*")
+(comment
+  (run-all-tests #"bel.*test|clj-app.*test.*"))
 
 (defn greeting
   ([] (str "Hello, World!"))

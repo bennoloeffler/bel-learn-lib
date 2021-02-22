@@ -2,8 +2,10 @@
 
 (def my-items ["shirt" "coat" "hat"])
 
-(doseq [i my-items]
-  (println i))
+(comment
 
-(dotimes [i 10]
-  (println "counting:" i))
+  (doseq [i my-items]
+    (println i))
+
+  (dotimes [i 10
+            (println "counting:" i)]))

@@ -9,7 +9,8 @@
 ;; place the cursor to the 1 and press CTRL-Enter.
 ;; So: click inside an expression and CTRL-Enter evaluates that.
 
-(+ (/ 1 2) (dec 3))
+(comment
+  (+ (/ 1 2) (dec 3)))
 
 ;; CTRL-ALT-P in idea
 
@@ -17,7 +18,8 @@
 ;; then press ALT-Enter.
 ;; you should see this: => 30
 ;; you may be able to evaluate an marked sub-expressions inline
-(+ (* 40 50) (+ 6 7 8 9))
+(comment
+  (+ (* 40 50) (+ 6 7 8 9)))
 ;; CTRL-ALT-P in idea
 
 ;; place the curser behind the 6
@@ -45,11 +47,12 @@
 ;;
 ;; Parinfer is a totally different approach...
 ;;
-(let [x 3 y 1]
-  (->> (map inc [x y 7 1])
-       sort
-       (#(do (prn %) %))
-       (partition 2))) ;just comment with trialing semicolon
+(comment
+  (let [x 3 y 1]
+    (->> (map inc [x y 7 1])
+         sort
+         (#(do (prn %) %))
+         (partition 2)))) ;just comment with trialing semicolon
 
 
 ; ENTF and SPACE move the whole block in parinfer mode)
@@ -64,6 +67,6 @@
 ; comment
 ;; comment
 #_(ignore the next expression) (str "but not the next")
-(+ 100 #_(+ 200 300) (+ 1))
 (comment
-  (+ 5 11))
+ (+ 100 #_(+ 200 300) (+ 1))
+ (+ 5 11))
