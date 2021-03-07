@@ -18,7 +18,8 @@
                  [proto-repl-charts "0.3.1"] ; charts in atom
                  [proto-repl "0.3.1" :exclusions [org.clojure/core.async]] ; to use datahike
                  [org.clojure/tools.namespace "1.1.0"] ; needed for protorepl
-                 [clojure.java-time "0.3.2"]
+                 [clojure.java-time "0.3.2"] ; https://github.com/dm3/clojure.java-time
+                 [tongue "0.2.10"]; i18n multi-lang ; 
                  [io.replikativ/datahike "0.3.3"]]
  ; https://github.com/dm3/clojure.java-time/blob/master/README.md
                 ;[mate-clj "1.0.0"]]; included sourcecode - but does not work
