@@ -1,10 +1,10 @@
 (ns bel-learn-chapters.31-swing
-  ;(:gen-class)
+  (:gen-class)
   (:require [seesaw.core :refer :all]
             [clojure.repl :refer :all])
   (:import [javax.swing JFrame JLabel JButton]
            ;[java.awt.event WindowListener]
-           (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf)))
+           (com.formdev.flatlaf FlatLightLaf FlatDarkLaf)))
 
 
 
@@ -30,8 +30,10 @@
 ;; https://github.com/eugenkiss/7guis-Clojure-Seesaw/blob/master/src/sevenguis/cells.clj
 (comment
 
-  ;(native!)
+  (native!)
   (FlatLightLaf/install)
+  (FlatDarkLaf/install)
+
   (def f (frame :title "Get to know Seesaw"))
   (-> f pack! show!)
   ;(config f :title)
@@ -82,7 +84,7 @@
                   (text!   (doc-str s))
                   (scroll! :to :top)))))
 
-
+  (dispose! f)
   #_(def rbs (for [i [:source :doc]]
               (radio :id i :class :type :text (name i))))
 

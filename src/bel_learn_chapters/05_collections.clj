@@ -2,8 +2,8 @@
 
 (def v ["e1" "e2" "e3"]) ; vector of strings
 (def l '(:a :b :c)) ; list of keywords
-(def m {:name "Benno" :age 51}) ; map of two key-value-pairs
-(def s #{1 2 3 4}) ; set has no double entries...
+(def m {:name "Benno" :age 51 :born 1969}) ; map of two key-value-pairs
+(def s #{2 1 4 3}) ; set has no double entries...
 
 (v 1); get the second element of the vector v
 (first l); get the first element of list l

@@ -11,7 +11,6 @@
 ; https://docs.datomic.com/on-prem/overview/introduction.html
 ; https://github.com/kristianmandrup/datascript-tutorial/blob/master/SUMMARY.md
 ; http://www.learndatalogtoday.org/
-(first (second [:y [:f :s]]))
 
 (def cfg {:name "bels-db"
           :store {:backend :file :path "/tmp/example"}

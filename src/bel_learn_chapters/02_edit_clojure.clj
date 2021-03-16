@@ -8,9 +8,8 @@
 
 ;; place the cursor to the 1 and press CTRL-Enter.
 ;; So: click inside an expression and CTRL-Enter evaluates that.
-
 (comment
-  (+ (/ 1 2) (dec 3)))
+  (+ (/ 4 2) (dec 9)))
 
 ;; CTRL-ALT-P in idea
 
@@ -35,7 +34,7 @@
 (+ (/ 7 8) (dec 9))
 ;; SHIFT-ALT-J in idea
 
-;; bark and slurp (J to left, K to right)
+;; barf and slurp (J to left, K to right)
 ;; SHIFT-ALT = forward
 ;; CTRL-ALT = backward
 
