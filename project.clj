@@ -5,7 +5,7 @@
             :url "http://www.wtfpl.net/"}
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/tools.reader "1.2.2"]
-                 [com.taoensso/timbre "5.1.0"] ; logging, see: https://github.com/ptaoussanis/timbre
+                 [com.taoensso/timbre "5.1.0"] ; x logging, see: https://github.com/ptaoussanis/timbre
                  [lein-koan "0.1.2"] ;; training exercises "medittions"
                  [quil "3.1.0"] ;; drawing to the screen
                  [com.formdev/flatlaf "0.37"] ;; swing support for big displays

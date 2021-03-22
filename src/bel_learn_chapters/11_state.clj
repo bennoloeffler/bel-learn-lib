@@ -122,10 +122,10 @@
         (repeat-mouse 10000 inc-mouse)
         (repeat-mouse 10000 dec-mouse)
         (future
-         (doseq [_ (range 1000)]
+         (doseq [_ (range 10000)]
            (x-track (:x (:mouse-pos @state)))))))
 @state
-(println @x-history)
+(println (count @x-history))
 
 
 
