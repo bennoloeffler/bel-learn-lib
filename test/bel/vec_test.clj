@@ -1,7 +1,8 @@
 (ns bel.vec-test
   (:require [clojure.test :refer :all])
   (:require [bel.vec :refer :all])
-  (:import (bel.vec V)))
+  (:import (bel.vec V))
+  (:gen-class))
 
 (deftest make-vec-test
   (testing "x y creation"
@@ -16,8 +17,9 @@
 
 (deftest make-rand-vec-test
   (testing "x y random creation"
-    (dotimes [n 1000]
+    (dotimes [n 10]
       (let [td (v n n)]
+        ;(Thread/sleep 1)
         ;(println n)
         (is (<= 0 (:x td) n))
         (is (<= 0 (:y td) n)))))

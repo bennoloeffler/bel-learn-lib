@@ -1,6 +1,7 @@
 (ns bel-learn-chapters.60-datahike
   (:require [datahike.api :as d]
-            [clojure.inspector :as insp])
+            [clojure.inspector :as insp]
+            [taoensso.timbre :as log])
   (:import ;[javax.swing JFrame JLabel JButton]
            ;[java.awt.event WindowListener]
            (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf))
@@ -8,6 +9,8 @@
 
 
 (comment
+
+  (log/merge-config! {:min-level :debug}) ; :level debug does nothing!
 
   ;; use the filesystem as storage medium
   (def cfg {:name "bels-db"
@@ -44,8 +47,6 @@
          [?e :age ?a]]
      @conn)
   ;; => #{[3 "Alice" 20] [4 "Bob" 30] [5 "Charlie" 40]}
-
-
 
   (defn show [q-result]
     (FlatDarkLaf/install)

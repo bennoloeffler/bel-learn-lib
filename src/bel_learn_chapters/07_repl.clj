@@ -17,19 +17,21 @@
 (use '[clojure.repl]
      '[clojure.pprint]
      '[clojure.reflect]
-     '[clojure.inspector]) ; for repl
-
+     '[clojure.inspector] ; for repl
+     '[clojure.tools.namespace.repl]) ; for refresh
 ;;
 ;; use in REPL
 ;;
 (comment
   (apropos 'index)
+  (apropos "index")
   (find-doc "indexed")
   (doc clojure.set/index)
   (dir clojure.repl)
   (doc map)
   (source some?))
-
+  ;(refresh-all)
+  ;(refresh)
 (comment
   (require '[clojure.java.javadoc :as jdoc])
   (jdoc/javadoc Math)

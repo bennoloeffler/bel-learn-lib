@@ -4,6 +4,7 @@
             [mate-clj.core :refer :all]
             [erdos.assert :refer :all])) ; overwrite assert
 
+; https://github.com/clojure-expectations/clojure-test
 
 ;;
 ;; typically the project-layout

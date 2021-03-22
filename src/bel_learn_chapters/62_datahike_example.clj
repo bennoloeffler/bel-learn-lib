@@ -67,13 +67,13 @@
 
 ;; let's see both emails
 (d/q find-name-email @conn)
-(+ 1 2 (+ 3 4))
+
 ;; try to add something completely not defined in the schema
-(d/transact conn [{:something "different"}])
+;(d/transact conn [{:something "different"}])
 ;; => error occurs
 
 ;; try to add wrong contributor values
-(d/transact conn [{:contributor/email :alice}])
+;(d/transact conn [{:contributor/email :alice}])
 
 ;; add another contributor
 (d/transact conn [{:contributor/name "bob" :contributor/email "bob@ac.me"}])
@@ -120,26 +120,27 @@
 ;; Schema On Read
 
 ;; let's create another database that can hold any arbitrary data
+(comment
+  (def cfg {:store {:backend :mem :id "schemaless"} :schema-flexibility :read})
 
-(def cfg {:store {:backend :mem :id "schemaless"} :schema-flexibility :read})
+  (d/create-database cfg)
 
-(d/create-database cfg)
+  (def conn (d/connect cfg))
 
-(def conn (d/connect cfg))
 
-;; now we can go wild and transact anything
-(d/transact conn [{:any "thing"}])
+  ;; now we can go wild and transact anything
+  (d/transact conn [{:any "thing"}])
 
-;; use simple query on this data
-(d/q '[:find ?v :where [_ :any ?v]] @conn)
+  ;; use simple query on this data
+  (d/q '[:find ?v :where [_ :any ?v]] @conn)
 
-;; be aware: although there is no schema, you should tell the database if some
-;; attributes can have specific cardinality or indices.
-;; You may add that as schema transactions like before
-(d/transact conn [{:db/ident :any :db/cardinality :db.cardinality/many}])
+  ;; be aware: although there is no schema, you should tell the database if some
+  ;; attributes can have specific cardinality or indices.
+  ;; You may add that as schema transactions like before
+  (d/transact conn [{:db/ident :any :db/cardinality :db.cardinality/many}])
 
-;; let's add more data to the first any entity
-(def any-eid (d/q '[:find ?e . :where [?e :any "thing"]] @conn))
-(d/transact conn [{:db/id any-eid :any "thing else"}])
+  ;; let's add more data to the first any entity
+  (def any-eid (d/q '[:find ?e . :where [?e :any "thing"]] @conn))
+  (d/transact conn [{:db/id any-eid :any "thing else"}])
 
-(d/q '[:find ?v :where [_ :any ?v]] @conn)
+  (d/q '[:find ?v :where [_ :any ?v]] @conn))
