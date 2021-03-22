@@ -17,6 +17,7 @@
     <orderEntry type="library" name="Leiningen: adzerk/boot-test:1.1.2" level="project" />
     <orderEntry type="library" name="Leiningen: args4j:2.0.26" level="project" />
     <orderEntry type="library" name="Leiningen: aysylu/loom:0.5.4" level="project" />
+    <orderEntry type="library" name="Leiningen: binaryage/devtools:1.0.0" level="project" />
     <orderEntry type="library" name="Leiningen: bouncycastle/bcmail-jdk14:138" level="project" />
     <orderEntry type="library" name="Leiningen: bouncycastle/bcprov-jdk14:138" level="project" />
     <orderEntry type="library" name="Leiningen: clj-antlr:0.2.3" level="project" />
@@ -65,6 +66,7 @@
     <orderEntry type="library" name="Leiningen: fresh:1.0.2" level="project" />
     <orderEntry type="library" name="Leiningen: fress:0.3.1" level="project" />
     <orderEntry type="library" name="Leiningen: grimradical/clj-semver:0.3.0" level="project" />
+    <orderEntry type="library" name="Leiningen: hashp:0.1.1" level="project" />
     <orderEntry type="library" name="Leiningen: hiccup:1.0.5" level="project" />
     <orderEntry type="library" name="Leiningen: instaparse:1.4.1" level="project" />
     <orderEntry type="library" name="Leiningen: io.aviso/pretty:0.1.37" level="project" />
@@ -84,6 +86,7 @@
     <orderEntry type="library" name="Leiningen: lein-koan:0.1.2" level="project" />
     <orderEntry type="library" name="Leiningen: lein-ring:0.12.5" level="project" />
     <orderEntry type="library" name="Leiningen: leinjacker:0.4.2" level="project" />
+    <orderEntry type="library" name="Leiningen: mate-clj:1.0.0" level="project" />
     <orderEntry type="library" name="Leiningen: mvxcvi/arrangement:1.2.0" level="project" />
     <orderEntry type="library" name="Leiningen: mvxcvi/puget:1.2.1" level="project" />
     <orderEntry type="library" name="Leiningen: mvxcvi/whidbey:2.1.0" level="project" />
@@ -110,7 +113,7 @@
     <orderEntry type="library" name="Leiningen: org.clojure/core.cache:0.7.2" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.contracts:0.0.1" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.memoize:0.7.1" level="project" />
-    <orderEntry type="library" name="Leiningen: org.clojure/core.rrb-vector:0.0.14" level="project" />
+    <orderEntry type="library" name="Leiningen: org.clojure/core.rrb-vector:0.1.1" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.specs.alpha:0.2.44" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/core.unify:0.5.7" level="project" />
     <orderEntry type="library" name="Leiningen: org.clojure/data.codec:0.1.1" level="project" />
@@ -149,6 +152,7 @@
     <orderEntry type="library" name="Leiningen: org.swinglabs.swingx/swingx-painters:1.6.3" level="project" />
     <orderEntry type="library" name="Leiningen: org.swinglabs.swingx/swingx-plaf:1.6.3" level="project" />
     <orderEntry type="library" name="Leiningen: persistent-sorted-set:0.1.2" level="project" />
+    <orderEntry type="library" name="Leiningen: philoskim/debux:0.6.5" level="project" />
     <orderEntry type="library" name="Leiningen: proto-repl-charts:0.3.1" level="project" />
     <orderEntry type="library" name="Leiningen: proto-repl:0.3.1" level="project" />
     <orderEntry type="library" name="Leiningen: quil/gluegen-rt-fat:2.3.2" level="project" />

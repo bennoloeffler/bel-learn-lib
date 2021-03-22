@@ -1,6 +1,6 @@
 (ns bel.cpipe.ui-test
   (:require [clojure.test :refer :all])
-  (:require [bel.cpipe.ui :refer [set-frame-content!]]))
+  (:require [bel.cpipe.ui :refer :all]))
 
 (deftest set-frame-content!-test
   (testing "9"

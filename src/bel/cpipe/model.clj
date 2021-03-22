@@ -1,6 +1,8 @@
 (ns bel.cpipe.model
   (:require [datahike.api :as d]
-            [taoensso.timbre :as log]))
+            [taoensso.timbre :as log]
+            [java-time :as jt])
+  (:gen-class))
 
 (defn task-schema [] [{:db/ident :task/start
                        :db/valueType :db.type/instant
@@ -32,29 +34,42 @@
                           :db/cardinality :db.cardinality/many}])
 
 
-(log/merge-config! {:min-level :info})
-
-(defn create-connect-db [cfg]
-  (if-not (d/database-exists? cfg)
-    (d/create-database cfg))
-  (d/connect cfg))
-
 (defn dev-cfg [] {:name "cpipe-db"
                   :store {:backend :file :path "/tmp/cpipe"}
                   :schema-flexibility :read})
 
-(def conn {})
 
-(defn init-db [cfg]
-  (d/delete-database cfg)
-  (def conn (create-connect-db cfg))
-  ;(println conn)
+(defn make-schema [conn]
   (d/transact conn (task-schema))
-  (d/transact conn (project-schema)))
+  (d/transact conn (project-schema))
+  conn)
+
+
+
+
+(defn init-db [cfg delete-db]
+  (log/merge-config! {:min-level :info})
+  (when (= delete-db :delete-db)
+    (d/delete-database cfg))
+  (when-not (d/database-exists? cfg)
+    (d/create-database cfg))
+  ; do schema in every case!
+  (-> (d/connect cfg) make-schema))
+
+
+(defn create-project [conn name delivery-date]
+ (d/transact conn [{:project/name name :project/delivery-date delivery-date}]))
+
+
+(defn add-task [conn p-name start end capa-need description]
+ (d/transact conn [{:db/id -1 :task/start start :task/end end :task/capa-need capa-need :task/description description}
+                   {:db/id [:project/name p-name] :project/tasks -1}]))
+
 
 (comment
-  (init-db (dev-cfg))
-  (d/transact conn [{:task/start (java.util.Date.)
-                     :task/end (java.util.Date.)
-                     :task/capa-need 4.4
-                     :task/description "the task"}]))
+  (d/delete-database (dev-cfg))
+  (let [conn (init-db (dev-cfg))]
+    (d/transact conn [{:task/start (jt/local-date)
+                       :task/end (jt/plus (jt/local-date) (jt/days 7))
+                       :task/capa-need 4.4
+                       :task/description "the task"}])))

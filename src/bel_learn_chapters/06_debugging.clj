@@ -11,11 +11,19 @@
 
 (set! *print-length* 100)
 
+;;---------------------------------------
+;; dbg und #p
+;;---------------------------------------
+
 (comment
   ;debux
   (dbg (->> (all-ns) (shuffle) (take 20) (map ns-name) sort (partition 4)))
   ;hashp
   (/ 10 #p (/ (- 12 10) (+ 10 1))))
+
+;;---------------------------------------
+;; breakpoint cursive idea / exception breakpoint / enable when other hit...
+;;---------------------------------------
 
 
 (defn debug-this [arg1 arg2]
@@ -28,6 +36,10 @@
          (reduce #(- %1 %2) start)))) ; reduce by minus, starting at 1000
 
 (comment (debug-this 155 25))
+
+;;---------------------------------------
+;; TRACE and MIX #p and trace
+;;---------------------------------------
 
 (defn ^:dynamic do-div [x y]
    (/ x #p y)) ; setting an exception breakpoint helps
@@ -52,6 +64,10 @@
         (recur (dec i) (* #p res value))))))
         ;(recur (dec i) (* (doto res prn) value))
 
+;;---------------------------------------
+;; TRACE
+;;---------------------------------------
+
 (defn pow [value pow]
   (loop [i pow res 1]
     (if (zero? i)
@@ -66,15 +82,89 @@
   (mult-pow 20N))
 
 ;;----------------------------------------
+;; MATE-CLJ
+;;---------------------------------------
+
 (require '[mate-clj.core :as mate])
 ;; https://github.com/AppsFlyer/mate-clj
 ;; DOES NOT WORK! SHIT!
 (comment
   (mate/d->> [:1 :2 :3 :4]
-  ;(->> [:1 :2 :3 :4]
       shuffle
-      ;(map #(str % "--")))
-      str/join))
+      (map #(str % "--"))
+      str/join)
+  ; but this does
+  (dbg (->> [:1 :2 :3 :4]
+           shuffle
+           (map #(str % "--"))
+           str/join)))
+
+;;---------------------------------------
+;; POWER ASSERTS
+;;---------------------------------------
+
+;(pa/assert (= 1 (count ( range 1 9))))
+;(pa/examine (= 7 (count ( range 1 9))))
+(pa/assert (= 8 (count ( range 1 9))))
+
+(comment
+  (pa/examine (->> [:1 :2 :3 :4]
+                   (shuffle)
+                   (map #(str % "--"))
+                   (doall) ;see lazy ones
+                   (clojure.string/join))))
+
+;;---------------------------------------
+;; TIMBRE LOGGING
+;; https://github.com/ptaoussanis/timbre
+;;---------------------------------------
+
+(comment
+  (taoensso.timbre/info "This will print")
+  (taoensso.timbre/debug "error"))
+  ;(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
+  ;(error (Exception. "Oh no - this is a shituation") "data 1" 1234))
+
+(defn my-calc [a b c] (* a b c))
+(comment (spy (my-calc 1 2 3)))
+
+(comment
+  (->> [:1 :2 :3 :4] ; spy does work
+       shuffle
+       spy
+       (map #(str % "--"))
+       vec ; doall does not work?
+       spy
+       str/join
+       spy))
+
+
+;;---------------------------------------
+;; OWN MACRO
+;;---------------------------------------
+
+
+(defmacro dbg-bel [body]
+  `(let [body# ~body]
+     (println '~body "  =>  " body#)
+     body#))
+
+
+(comment
+  (dbg-bel (+ 1 2))
+
+  (->> [:1 :2 :3 :4]
+       dbg-bel
+       shuffle
+       dbg-bel
+       (map #(str % "--"))
+       dbg-bel
+       str/join
+       dbg-bel))
+
+
+;;---------------------------------------
+;; even simpler
 ;;---------------------------------------
 
 (def c (atom 0))
@@ -90,53 +180,3 @@
        (#(do (println (swap! c inc) ": " %) %))
        (map clojure.string/join)
        (#(do (println (swap! c inc) ": " %) %))))
-
-(pa/assert (= 1 (count ( range 1 9))))
-(pa/examine (= 7 (count ( range 1 9))))
-(pa/assert (= 8 (count ( range 1 9))))
-
-(comment
-  (pa/examine (->> [:1 :2 :3 :4]
-                   (shuffle)
-                   (map #(str % "--"))
-                   (doall) ;see lazy ones
-                   (clojure.string/join))))
-
-
-;; https://github.com/ptaoussanis/timbre
-(comment
-  (taoensso.timbre/info "This will print")
-  (taoensso.timbre/debug "error"))
-  ;(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
-  ;(error (Exception. "Oh no - this is a shituation") "data 1" 1234))
-
-(defn my-calc [a b c] (* a b c))
-(comment (spy (my-calc 1 2 3)))
-
-
-(comment
-  (->> [:1 :2 :3 :4] ; spy does work
-       shuffle
-       spy
-       (map #(str % "--"))
-       vec ; doall does not work?
-       spy
-       str/join
-       spy))
-
-(defmacro dbg [body]
-  `(let [body# ~body]
-     (println "dbg:" '~body "=>" body#)
-     body#))
-
-(comment
-  (dbg (+ 1 2))
-
-  (->> [:1 :2 :3 :4]
-       dbg
-       shuffle
-       dbg
-       (map #(str % "--"))
-       dbg
-       str/join
-       dbg))

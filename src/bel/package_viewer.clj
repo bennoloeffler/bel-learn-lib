@@ -1,10 +1,8 @@
 (ns bel.package-viewer
   (:gen-class)
   (:require [seesaw.core :refer :all]
-            [clojure.repl :refer :all]
-            [java-time :as dt])
-  (:import
-           (com.formdev.flatlaf FlatLightLaf FlatDarkLaf)))
+            [clojure.repl :refer :all])
+  (:import  (com.formdev.flatlaf FlatLightLaf FlatDarkLaf)))
 
 
 (def current-package "clojure.repl")
@@ -64,9 +62,11 @@
         printer (text :text "no status message yet..." :editable? false)
         p (border-panel :west (scrollable ns-list) :north (flow-panel :align :left :hgap 20 :items [label-filter filter-ns button-ex]) :center split :south printer)]
     (config! frame :content p)
+
     (listen button-ex :action-performed
-      (fn [e]
+      (fn [_]
         (/ 1 0)))
+
     (listen ns-symbols :selection
        (fn [e]
          (when-let [s (selection e)]
@@ -76,16 +76,19 @@
            (-> source-area
                (text!   (source-str s))
                (scroll! :to :top))
-           (text! printer "something selected"))))
-    (listen filter-ns [:key-typed :key-released]
-     (fn [_]
-       (text! printer (str "try filter to:   " (text filter-ns)))
-       (def current-filter (text filter-ns))
-       (set-model* ns-list (default-list-model-from-filter))))
+           (text! printer (str "selected symbol:  " s)))))
+
+    (listen filter-ns :key-released
+     (fn [e]
+      (let [_ (def current-filter (text filter-ns))
+            m (default-list-model-from-filter)]
+       (text! printer (str "found:  " (.getSize m) "   ( " (text e) " )"))
+       (set-model* ns-list m))))
+
     (listen ns-list :selection
      (fn [e]
          (when-let [s (selection e)]
-           (text! printer (str "try switching to:   " s))
+           (text! printer (str "try switching to name-space:  " s))
            (def current-package (str  s))
            (set-model* ns-symbols (default-list-model-from-ns)))))))
 

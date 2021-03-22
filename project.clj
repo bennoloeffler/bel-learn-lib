@@ -22,9 +22,8 @@
                  [clojure.java-time "0.3.2"] ; https://github.com/dm3/clojure.java-time
                  [tongue "0.2.10"]; i18n multi-lang ; 
                  [io.replikativ/datahike "0.3.3"]
-                 [venantius/ultra "0.6.0"]]
- ; https://github.com/dm3/clojure.java-time/blob/master/README.md
-                ;[mate-clj "1.0.0"]]; included sourcecode - but does not work
+                 [venantius/ultra "0.6.0"]
+                 [mate-clj "1.0.0"]]; included sourcecode - but does not work
   :main ^:skip-aot bel-learn-lib.core
   :target-path "target/%s"
   :plugins [[lein-ring "0.12.5"]]

@@ -67,5 +67,9 @@
   (->> (all-ns) (filter #(re-find (re-pattern "datomic") (str %))))
   (map #(ns-name %) (all-ns))
   (dbg (->> (all-ns) (shuffle) (take 20) (map ns-name) sort (partition 4)))
-  (/ 10 #p (/ (- 12 10) (+ 10 1))))
+  (/ 10 #p (/ (- 12 10) (+ 10 1)))
 
+  (defn s []
+    (constantly (do (println "again...") (+ 20 100))))
+
+  ((s) 1 2 3))

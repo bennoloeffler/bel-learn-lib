@@ -10,7 +10,7 @@
   (= {:league "National League"} (meta giants))
 
   "Or more succintly with a reader macro"
-  (= {:division "West"} (meta '^{:division "West"} Giants))
+  ;(= {:division "West"} (meta '^{:division "West"} Giants))
 
   "While others can't"
   (= "This doesn't implement the IObj interface"
