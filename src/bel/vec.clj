@@ -150,8 +150,8 @@
 
 
 
-
 (comment
+
   (in-area? 0 0 1 1 (v 0.0000000 0.9))
   (in-area? 0 0 1 1 (v -0.0000000 1.00001))
   ;(in-area? 2 0 1 1 (v -0.0000000 1.00001))
@@ -174,6 +174,7 @@
   (def ou (rand-direction u))
   (distance p3 p2)
   (def l (len u))
+  (println l)
   (println (in-area? 0 0 10 10 (V. -1 0)))
   (println u)
   (println (len? p1)))

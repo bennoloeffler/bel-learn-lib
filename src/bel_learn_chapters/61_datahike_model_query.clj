@@ -1,10 +1,11 @@
 (ns bel-learn-chapters.61-datahike-model-query
   (:require [datahike.api :as d]
             [clojure.inspector :as insp])
-  (:import ;[javax.swing JFrame JLabel JButton]
-           ;[java.awt.event WindowListener]
-           (java.util Date)
-           (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf))
+  (:import
+    ;[javax.swing JFrame JLabel JButton]
+    ;[java.awt.event WindowListener]
+    (java.util Date)
+    (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf))
   (:gen-class))
 
 ; https://cljdoc.org/d/io.replikativ/datahike/0.3.3/doc/readme
@@ -12,8 +13,8 @@
 ; https://github.com/kristianmandrup/datascript-tutorial/blob/master/SUMMARY.md
 ; http://www.learndatalogtoday.org/
 
-(def cfg {:name "bels-db"
-          :store {:backend :file :path "/tmp/example"}
+(def cfg {:name               "bels-db"
+          :store              {:backend :file :path "/tmp/example"}
           :schema-flexibility :read})
 
 (defn create-connect-db []
@@ -38,103 +39,101 @@
   ; person (name, sur-name, born, email, uses-cars, weight)
   ; car (manufacturer, model, built, license-plate)
 
-  (d/transact conn [{:db/ident :person/name
-                     :db/valueType :db.type/string
+  (d/transact conn [{:db/ident       :person/name
+                     :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one}
 
-                    {:db/ident :person/sur-name
-                     :db/valueType :db.type/string
+                    {:db/ident       :person/sur-name
+                     :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one}
 
-                    {:db/ident :person/born
-                     :db/valueType :db.type/long
+                    {:db/ident       :person/born
+                     :db/valueType   :db.type/long
                      :db/cardinality :db.cardinality/one}
 
-                    {:db/ident :person/email
-                     :db/valueType :db.type/string
+                    {:db/ident       :person/email
+                     :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one
-                     :db/unique :db.unique/value}
+                     :db/unique      :db.unique/value}
 
-                    {:db/ident :person/uses-cars
-                     :db/valueType :db.type/ref
+                    {:db/ident       :person/uses-cars
+                     :db/valueType   :db.type/ref
                      :db/cardinality :db.cardinality/many}
 
-                    {:db/ident :person/weight
-                     :db/valueType :db.type/double
+                    {:db/ident       :person/weight
+                     :db/valueType   :db.type/double
                      :db/cardinality :db.cardinality/one}
 
 
-                    {:db/ident :car/manufacturer
-                     :db/valueType :db.type/string
+                    {:db/ident       :car/manufacturer
+                     :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one}
 
-                    {:db/ident :car/model
-                     :db/valueType :db.type/string
+                    {:db/ident       :car/model
+                     :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one}
 
-                    {:db/ident :car/built
-                     :db/valueType :db.type/long
+                    {:db/ident       :car/built
+                     :db/valueType   :db.type/long
                      :db/cardinality :db.cardinality/one}
 
-                    {:db/ident :car/license-plate
-                     :db/valueType :db.type/string
+                    {:db/ident       :car/license-plate
+                     :db/valueType   :db.type/string
                      :db/cardinality :db.cardinality/one
-                     :db/unique :db.unique/value}]))
-
+                     :db/unique      :db.unique/value}]))
 
 (defn create-sample []
-  (d/transact conn [{:car/manufacturer "BMW",
-                     :car/model  "325",
-                     :car/built 2001
+  (d/transact conn [{:car/manufacturer  "BMW",
+                     :car/model         "325",
+                     :car/built         2001
                      :car/license-plate "S-GH-5443"}
 
-                    {:car/manufacturer "BMW",
-                     :car/model  "530d",
-                     :car/built 2019
+                    {:car/manufacturer  "BMW",
+                     :car/model         "530d",
+                     :car/built         2019
                      :car/license-plate "H-VS-898"}
 
-                    {:db/id -1,
-                     :car/manufacturer "Subaru",
-                     :car/model  "Justy",
-                     :car/built 1991,
+                    {:db/id             -1,
+                     :car/manufacturer  "Subaru",
+                     :car/model         "Justy",
+                     :car/built         1991,
                      :car/license-plate "TBB-SK-123"}
 
-                    {:person/name  "Alice",
-                     :person/sur-name "Cooper",
-                     :person/born 1947
-                     :person/email "alice.cooper@animal.com"
+                    {:person/name      "Alice",
+                     :person/sur-name  "Cooper",
+                     :person/born      1947
+                     :person/email     "alice.cooper@animal.com"
                      :person/uses-cars [{:db/id [:car/license-plate "S-GH-5443"]}]}
 
-                    {:person/name  "John",
-                     :person/sur-name "Lennon",
-                     :person/born 1941
-                     :person/email "jo.le@heaven.de"
+                    {:person/name      "John",
+                     :person/sur-name  "Lennon",
+                     :person/born      1941
+                     :person/email     "jo.le@heaven.de"
                      :person/uses-cars [{:db/id [:car/license-plate "H-VS-898"]}
                                         {:db/id [:car/license-plate "S-GH-5443"]}
                                         -1]}
 
-                    {:person/name  "Angela",
-                     :person/sur-name "Merkel",
-                     :person/born 1960
-                     :person/email "angela.merkel@leader.de"
+                    {:person/name      "Angela",
+                     :person/sur-name  "Merkel",
+                     :person/born      1960
+                     :person/email     "angela.merkel@leader.de"
                      :person/uses-cars -1}]))
 
 
 
 (comment
-
   (delete-recreate-db)
   (create-schema)
   (create-sample)
 
-    ;; search the cars
+  ;; search the cars
   (d/q '[:find ?e ?ma ?mo ?p ?b
          :where
          [?e :car/manufacturer ?ma]
          [?e :car/model ?mo]
          [?e :car/built ?b]
          [?e :car/license-plate ?p]]
-     @conn)
+       @conn)
 
   ;; search all persons with their cars
   (d/q '[:find ?e ?n ?sn ?model
@@ -143,7 +142,7 @@
          [?e :person/sur-name ?sn]
          [?e :person/uses-cars ?c]
          [?c :car/model ?model]]
-     @conn)
+       @conn)
 
   ;; search persons that use a specific car
   (d/q '[:find ?n ?sn
@@ -153,24 +152,24 @@
          [?e :person/sur-name ?sn]
          [?e :person/uses-cars ?c]
          [?c :car/license-plate ?license-plate]]
-     @conn "S-GH-5443")
+       @conn "S-GH-5443")
 
   ; get entity-ID (:db/id) of car by license-plate (:db/unique :db.unique/value)
   (d/q '[:find ?e
          :in $ ?license-plate
          :where [?e :car/license-plate ?license-plate]]
-      @conn
-      "S-GH-5443")
+       @conn
+       "S-GH-5443")
 
   ;; search persons that use a specific car (backwards = _)
   (:person/_uses-cars (d/entity @conn [:car/license-plate "S-GH-5443"]))
 
   ; add the current weight
-  (d/transact conn [{:db/id [:person/email "angela.merkel@leader.de"]
+  (d/transact conn [{:db/id         [:person/email "angela.merkel@leader.de"]
                      :person/weight 62}])
 
   (defn transact-person-weight [email weight]
-    (d/transact conn [{:db/id [:person/email email]
+    (d/transact conn [{:db/id         [:person/email email]
                        :person/weight weight}]))
 
   (transact-person-weight "angela.merkel@leader.de" 61)
@@ -182,13 +181,13 @@
          [?e :person/name ?n]
          [?e :person/sur-name ?sn]
          [?e :person/weight ?w]]
-     @conn)
+       @conn)
 
   ; remove a car from a person as user
   (d/transact conn [[:db/retract [:person/email "angela.merkel@leader.de"] :person/uses-cars [:car/license-plate "TBB-SK-123"]]])
 
   ; change the unique id
-  (d/transact conn [{:db/id [:person/email "angela.merkel@leader.de"]
+  (d/transact conn [{:db/id        [:person/email "angela.merkel@leader.de"]
                      :person/email "angela.merkel@firstlady.de"}])
 
   ; pull all attributes from entity
@@ -220,11 +219,11 @@
   (->> (d/q '[:find ?w ?timestamp
               :where
               [?e :person/name "Angela"]
-              [?e :person/weight ?w ?tx true] ; otherwise, true and false...
+              [?e :person/weight ?w ?tx true]               ; otherwise, true and false...
               [?tx :db/txInstant ?timestamp]]
-             (d/history @conn))
-    (sort #(- (.getTime (get %1 1))
-              (.getTime (get %2 1)))))
+            (d/history @conn))
+       (sort #(- (.getTime (get %1 1))
+                 (.getTime (get %2 1)))))
 
   ; query the history of the data - including add (true) and distract (false) markers
   (->> (d/q '[:find ?w ?timestamp ?tf
@@ -232,6 +231,6 @@
               [?e :person/name "Angela"]
               [?e :person/weight ?w ?tx ?tf]
               [?tx :db/txInstant ?timestamp]]
-             (d/history @conn))
-    (sort #(- (.getTime (get %1 1))
-              (.getTime (get %2 1))))))
+            (d/history @conn))
+       (sort #(- (.getTime (get %1 1))
+                 (.getTime (get %2 1))))))
