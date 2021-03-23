@@ -8,7 +8,7 @@
 
 (def current-package "clojure.repl")
 (def current-filter "repl")
-(def current-symbol-filter "nothing")
+(def current-symbol-filter "")
 
 (defn doc-str
   "the doc string of the symbol s in the current-package"
@@ -66,9 +66,9 @@
 (defn set-frame-content!
   "fill the frame with components - create the ui"
   [frame]
-  (let [label-ns-filter (label :text "ns-Filter:  ")
+  (let [label-ns-filter (label :text "namespace-Filter:  ")
         text-ns-filter (text :text current-filter :tip "regex to filter namespaces")
-        button-ex (button :text "exception" :tip "throw an exception and see how it is displayed")
+        ;button-ex (button :text "exception" :tip "throw an exception and see how it is displayed")
         label-symbol-filter (label :text "symbol-Filter:  ")
         text-symbol-filter (text :text current-symbol-filter :tip "regex to filter all symbols in all namespaces")
         ns-list (listbox :model (default-list-model-from-filter) :tip "select one namespace to see contained symbols")
@@ -79,12 +79,12 @@
         split (left-right-split (scrollable ns-symbols) (scrollable help-source-split) :divider-location 1/3)
         printer (text :text "no status message yet..." :editable? false)
         p (border-panel :west (scrollable ns-list)
-           :north (flow-panel :align :left :hgap 20 :items [label-ns-filter text-ns-filter button-ex label-symbol-filter text-symbol-filter]) :center split :south printer)]
+           :north (flow-panel :align :left :hgap 40 :items [label-ns-filter text-ns-filter #_button-ex label-symbol-filter text-symbol-filter]) :center split :south printer)]
     (config! frame :content p)
 
-    (listen button-ex :action-performed
-      (fn [_]
-        (/ 1 0)))
+    #_(listen button-ex :action-performed
+        (fn [_]
+          (/ 1 0)))
 
     (listen ns-symbols :selection
       (fn [e]
