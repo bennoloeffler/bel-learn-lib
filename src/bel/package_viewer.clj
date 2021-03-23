@@ -2,12 +2,13 @@
   (:gen-class)
   (:require [seesaw.core :refer :all]
             [clojure.repl :refer :all])
-  (:import  (com.formdev.flatlaf FlatLightLaf FlatDarkLaf)))
+  (:import (com.formdev.flatlaf FlatDarkLaf)
+           (javax.swing DefaultListModel)))
 
 
 (def current-package "clojure.repl")
 (def current-filter "repl")
-
+(def current-symbol-filter "nothing")
 
 (defn doc-str
   "the doc string of the symbol s in the current-package"
@@ -16,19 +17,34 @@
 
 (defn source-str
   "the source string of the symbol s in the current-package"
-  [s] (-> (symbol current-package (name s)) source-fn))
-
+  [s] (try
+        (-> (symbol current-package (name s)) source-fn)
+        (catch Exception e (str "ERROR: " (.getMessage e)))))
 
 (defn all-ns-symbols
   "all symbols in the current-package"
   [] (-> (symbol current-package) ns-publics keys sort))
 
 
-(defn create-list-model [s]
+(defn create-list-model
   "creates a list model from s"
-  (let [m (javax.swing.DefaultListModel.)]
+  [s]
+  (let [m (DefaultListModel.)]
     (doseq [elem s] (.addElement m elem))
     m))
+
+
+(defn default-list-model-from-symbol-filter
+  "creates a list model from all symbols in all packages"
+  []
+  (let [s (->> (all-ns)
+               (reduce #(into %1 (ns-publics %2)) [])
+               (reduce #(conj %1 (val %2)) [])
+               (map str)
+               (filter #(re-find (re-pattern current-symbol-filter) %))
+               sort
+               (map symbol))]
+    (create-list-model s)))
 
 
 (defn default-list-model-from-ns
@@ -50,9 +66,11 @@
 (defn set-frame-content!
   "fill the frame with components - create the ui"
   [frame]
-  (let [label-filter (label :text "Filter:  ")
-        filter-ns (text :text current-filter :tip "regex to filter namespaces")
+  (let [label-ns-filter (label :text "ns-Filter:  ")
+        text-ns-filter (text :text current-filter :tip "regex to filter namespaces")
         button-ex (button :text "exception" :tip "throw an exception and see how it is displayed")
+        label-symbol-filter (label :text "symbol-Filter:  ")
+        text-symbol-filter (text :text current-symbol-filter :tip "regex to filter all symbols in all namespaces")
         ns-list (listbox :model (default-list-model-from-filter) :tip "select one namespace to see contained symbols")
         ns-symbols (listbox :model (all-ns-symbols) :tip "select one symbol to see doc and source")
         help-area (text :multi-line? true :font "MONOSPACED-PLAIN-40" :text "" :editable? false)
@@ -60,7 +78,8 @@
         help-source-split (top-bottom-split (scrollable help-area) (scrollable source-area) :divider-location 1/2)
         split (left-right-split (scrollable ns-symbols) (scrollable help-source-split) :divider-location 1/3)
         printer (text :text "no status message yet..." :editable? false)
-        p (border-panel :west (scrollable ns-list) :north (flow-panel :align :left :hgap 20 :items [label-filter filter-ns button-ex]) :center split :south printer)]
+        p (border-panel :west (scrollable ns-list)
+           :north (flow-panel :align :left :hgap 20 :items [label-ns-filter text-ns-filter button-ex label-symbol-filter text-symbol-filter]) :center split :south printer)]
     (config! frame :content p)
 
     (listen button-ex :action-performed
@@ -68,29 +87,47 @@
         (/ 1 0)))
 
     (listen ns-symbols :selection
-       (fn [e]
-         (when-let [s (selection e)]
-           (-> help-area
-               (text!   (doc-str s))
-               (scroll! :to :top))
+      (fn [e]
+        (let [s (selection e)
+              contains (.contains (str s) "/")
+              s (if contains
+                  (do
+                    (def current-package (clojure.string/join (drop 2 (namespace s))))
+                    (name s))
+                  s)]
+          (when s
+            (-> help-area
+                (text!   (doc-str s))
+                (scroll! :to :top))
            (-> source-area
                (text!   (source-str s))
                (scroll! :to :top))
-           (text! printer (str "selected symbol:  " s)))))
+           (text! printer (str "SYMBOL:  " s "     in NAMESPACE  " current-package))))))
 
-    (listen filter-ns :key-released
-     (fn [e]
-      (let [_ (def current-filter (text filter-ns))
-            m (default-list-model-from-filter)]
-       (text! printer (str "found:  " (.getSize m) "   ( " (text e) " )"))
-       (set-model* ns-list m))))
+    (listen text-ns-filter :key-released
+      (fn [e]
+        (try
+          (let [_ (def current-filter (text text-ns-filter))
+                m (default-list-model-from-filter)]
+            (text! printer (str "found:  " (.getSize m) "   ( " (text e) " )"))
+            (set-model* ns-list m))
+          (catch Exception e (text! printer (str "REGEX ERROR: " (.getMessage e)))))))
+
+    (listen text-symbol-filter :key-released
+      (fn [e]
+        (try
+          (let [_ (def current-symbol-filter (text text-symbol-filter))
+                m (default-list-model-from-symbol-filter)]
+            (text! printer (str "found:  " (.getSize m) "   ( " (text e) " )"))
+            (set-model* ns-symbols m))
+          (catch Exception e (text! printer (str "REGEX ERROR: " (.getMessage e)))))))
 
     (listen ns-list :selection
-     (fn [e]
-         (when-let [s (selection e)]
-           (text! printer (str "try switching to name-space:  " s))
-           (def current-package (str  s))
-           (set-model* ns-symbols (default-list-model-from-ns)))))))
+      (fn [e]
+        (when-let [s (selection e)]
+          (text! printer (str "try switching to name-space:  " s))
+          (def current-package (str  s))
+          (set-model* ns-symbols (default-list-model-from-ns)))))))
 
 
 (defn create-frame []
@@ -99,18 +136,22 @@
 
 
 (defn show-frame [f]
-  (set-frame-content! f)
-  (-> f  show!))
-  ;(toggle-full-screen! f))
+  (invoke-later
+    (set-frame-content! f)
+    (-> f  show!)))
+    ;(toggle-full-screen! f))
 
 
 (defn dispose-frame [f]
   (dispose! f))
 
 
-(defn -main [& args]
- (-> (create-frame) show-frame))
+(defn -main [& _]
+  (let [f (create-frame)]
+    (-> f show-frame)
+    f))
 
 
 (comment
-  (-main))
+  (def local-frame (-main))
+  (dispose-frame local-frame))
