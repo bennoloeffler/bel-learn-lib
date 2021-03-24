@@ -92,7 +92,7 @@
               contains (.contains (str s) "/")
               s (if contains
                   (do
-                    (def current-package (clojure.string/join (drop 2 (namespace s))))
+                    (def current-package (subs 1 (namespace s)))
                     (name s))
                   s)]
           (when s
