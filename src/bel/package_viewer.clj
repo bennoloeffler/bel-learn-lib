@@ -92,7 +92,7 @@
               contains (.contains (str s) "/")
               s (if contains
                   (do
-                    (def current-package (subs 1 (namespace s)))
+                    (def current-package (subs (str (namespace s)) 2))
                     (name s))
                   s)]
           (when s
