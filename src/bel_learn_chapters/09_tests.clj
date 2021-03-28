@@ -2,8 +2,9 @@
   (:require [clojure.test :refer :all]
             [bel-learn-lib.core :refer :all]
             [mate-clj.core :refer :all]
-            [erdos.assert :refer :all])) ; overwrite assert
-
+            [erdos.assert :refer :all] ; overwrite assert
+            [expectations.clojure.test :refer [defexpect expect expecting more more-> more-of]]))
+; http://www.futurile.net/2020/07/14/clojure-testing-with-clojure-test-and-expectations/
 ; https://github.com/clojure-expectations/clojure-test
 
 ;;
@@ -82,3 +83,6 @@
 (assert (= "Hello, World!" (greeting)))
 (assert (= "Hello, Power-Assert!" (greeting "Power-Assert"))) ;; power-assert!
 (assert (= "Good morning, Clojure!" (greeting "Good morning" "Clojure")))
+
+(defexpect string-user-name-test
+  (expect "John Smith" (str "John" "Williams")))

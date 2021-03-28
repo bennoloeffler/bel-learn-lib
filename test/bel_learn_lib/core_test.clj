@@ -24,5 +24,9 @@
     (is (= [0] (get-digits 0)))
     (is (= [1 0] (get-digits 10)))))
 
+(deftest run-readable-test
+  (testing "is it human readable"
+    (is (= ["val" 51 {:keyx {:deep-key "dv"}}] ["val" 51 {:key {:deep-key "dvX"}}]))))
+
 
 ;(run-all-tests)
