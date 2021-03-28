@@ -120,6 +120,7 @@
 ;;---------------------------------------
 
 (comment
+  (taoensso.timbre/merge-config! {:min-level :info}) ; :level debug does nothing!
   (taoensso.timbre/info "This will print")
   (taoensso.timbre/debug "error"))
   ;(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
