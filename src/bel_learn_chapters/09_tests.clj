@@ -7,6 +7,10 @@
 ; http://www.futurile.net/2020/07/14/clojure-testing-with-clojure-test-and-expectations/
 ; https://github.com/clojure-expectations/clojure-test
 
+(deftest run-readable-test
+  (testing "is it human readable"
+    (is (= ["val" 51 {:key {:deep-key "dv"}}] ["val" 51 {:key {:deep-key "dv"}}]))))
+
 ;;
 ;; typically the project-layout
 ;; is:
@@ -64,7 +68,7 @@
   "zero")
 ;; context-menu -> add repl command (edit repl command)
 ;; put that in the same file and bind it to CTRL-WIN-ALT T
-; :require [clojure.test :refer [is run-tests run-all-tests]]
+;; :require [clojure.test :refer [is run-tests run-all-tests]]
 (defn call-current-tests []
   (println "BELs current tests started")
   (is (= "zero" (number 0))) ;quick-test
@@ -85,4 +89,4 @@
 (assert (= "Good morning, Clojure!" (greeting "Good morning" "Clojure")))
 
 (defexpect string-user-name-test
-  (expect "John Smith" (str "John" "Williams")))
+  (expect "John Smith" (str "John " "Smith")))
