@@ -4,6 +4,7 @@
             [java-time :as jt])
   (:gen-class))
 
+
 (defn task-schema [] [{:db/ident :task/start
                        :db/valueType :db.type/instant
                        :db/cardinality :db.cardinality/one}
@@ -19,6 +20,7 @@
                       {:db/ident :task/description
                        :db/valueType :db.type/string
                        :db/cardinality :db.cardinality/one}])
+
 
 (defn project-schema [] [{:db/ident :project/name
                           :db/valueType :db.type/string
@@ -45,8 +47,6 @@
   conn)
 
 
-
-
 (defn init-db [cfg delete-db]
   (log/merge-config! {:min-level :info})
   (when (= delete-db :delete-db)
@@ -57,11 +57,11 @@
   (-> (d/connect cfg) make-schema))
 
 
-(defn create-project [conn name delivery-date]
+(defn create-project! [conn name delivery-date]
  (d/transact conn [{:project/name name :project/delivery-date delivery-date}]))
 
 
-(defn add-task [conn p-name start end capa-need description]
+(defn add-task! [conn p-name start end capa-need description]
  (d/transact conn [{:db/id -1 :task/start start :task/end end :task/capa-need capa-need :task/description description}
                    {:db/id [:project/name p-name] :project/tasks -1}]))
 
