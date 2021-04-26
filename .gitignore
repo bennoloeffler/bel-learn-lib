@@ -13,6 +13,7 @@ pom.xml.asc
 .hg/
 /.calva/output-window
 .calva/output-window/output.calva-repl
+/.calva/
 /.clj-kondo/
 /.idea/
 /.lsp/

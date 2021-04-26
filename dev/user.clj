@@ -66,7 +66,7 @@
   (run-bels-tests)
   (->> (all-ns) (filter #(re-find (re-pattern "datomic") (str %))))
   (map #(ns-name %) (all-ns))
-  (dbg (->> (all-ns) (shuffle) (take 20) (map ns-name) sort (partition 4)))
+  (dbg (->> (all-ns) (shuffle) (take 3) (map ns-name) sort (partition 4)))
   (/ 10 #p (/ (- 12 10) (+ 10 1)))
 
   (defn s []
