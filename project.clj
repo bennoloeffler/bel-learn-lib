@@ -30,7 +30,8 @@
                  [expectations/clojure-test "1.2.1"]   ;library for testing
                  [org.clojure/tools.namespace "1.0.0"] ;reload
                  [philoskim/debux "0.6.5"]            ;dbg debugger
-                 [hashp "0.1.1"]]                    ;debugging #p
+                 [hashp "0.1.1"]                    ;debugging #p
+                 [org.clojure/data.json "2.2.1"]]
   :main ^:skip-aot bel-learn-lib.core
   :target-path "target/%s"
   :plugins [[lein-ring "0.12.5"]]
