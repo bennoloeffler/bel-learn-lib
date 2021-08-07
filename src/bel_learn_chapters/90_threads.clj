@@ -135,15 +135,15 @@
 (comment
   (go-loop [seconds 20
             to-wait (inc (rand-int 5))]
-           (if (> seconds 0)
-             (do
-               (println "waiting for "
-                        to-wait
-                        " remaining now: " seconds ", then: "
-                        (- seconds to-wait))
-               (<! (timeout (* 1000 to-wait)))
-               (recur (- seconds to-wait) (inc (rand-int 5))))
-             (println "END"))))
+    (if (> seconds 0)
+      (do
+        (println "waiting for "
+                 to-wait
+                 " remaining now: " seconds ", then: "
+                 (- seconds to-wait))
+        (<! (timeout (* 1000 to-wait)))
+        (recur (- seconds to-wait) (inc (rand-int 5))))
+      (println "END"))))
 
 
 (comment
@@ -168,3 +168,8 @@
                        (if v
                          (recur)
                          (println "END")))))))
+
+
+(defn abc []
+  (let [one (- 45 56)
+        two (range (rand-int (+ 45 100)))]))
