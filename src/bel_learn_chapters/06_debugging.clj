@@ -1,6 +1,8 @@
 (ns bel-learn-chapters.06-debugging
   [:require
    [clojure.string :as str]
+   [clojure.pprint :refer (pprint)]
+   [puget.printer :refer (cprint)]
    [erdos.assert :as pa]  ;power-assert
    [taoensso.timbre :refer [spy error warn info debug]] ;logging
    [clojure.tools.trace :as trace :refer [dotrace trace-forms]] ;tracing
@@ -147,7 +149,9 @@
 
 (defmacro dbg-bel [body]
   `(let [body# ~body]
-     (println '~body "  =>  " body#)
+     (println "-------- dbg-bel --------------")
+     (cprint ['~body :--> body#])
+     (println)
      body#))
 
 
@@ -162,6 +166,8 @@
        dbg-bel
        str/join
        dbg-bel))
+
+(comment (dbg-bel (my-calc 1 2 3)))
 
 
 ;;---------------------------------------
