@@ -6,15 +6,19 @@
 ;; to master inline evaluation of expressions the brackets,
 ;; paranthesis and curls, you may have a look at this...
 
+;; CURSIVE
+;; ALT-SHIFT-R to switch to this namespace
+;; ALT-SHIFT-L to load namespace
+;; so click to the 1 and ALT-SHIFT-P
+;; ALT-SHIFT-P execute current form (or selected)
+
+;; CALVA
 ;; place the cursor to the 1 and press CTRL-Enter.
 ;; So: click inside an expression and CTRL-Enter evaluates that.
 (comment
-  (+ (/ 4 2) (dec 9)))
-
-;; CTRL-ALT-P in idea
-
+  (+ 1 (/ 4 2) (dec 9)))
 ;; place the cursor to the 6, press CTRL-W until (+ 6 7 8 9) is marked.
-;; then press ALT-Enter.
+;; then press CTRL-Enter.
 ;; you should see this: => 30
 ;; you may be able to evaluate an marked sub-expressions inline
 (comment
@@ -59,6 +63,7 @@
   (if (b)
     (inc b)
     (println b)))
+
 ;;
 ;; Comments
 ;;
