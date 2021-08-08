@@ -64,7 +64,7 @@
 
 (defn read-rand-quote []
   (let [rand-q-api-url "https://zenquotes.io/api/random"
-        quote-json (slurp rand-q-api-url)
+        quote-json     (slurp rand-q-api-url)
         [{q :q a :a}] (json/read-str
                         quote-json
                         :key-fn keyword)]
@@ -109,13 +109,13 @@
 
 (comment
   (let [my-promise (promise)
-        all (doall (for [n (range 3)]
-                     (future
-                       (let [q (read-rand-quote)]
-                         (deliver
-                           my-promise
-                           q)
-                         q))))]
+        all        (doall (for [n (range 3)]
+                            (future
+                              (let [q (read-rand-quote)]
+                                (deliver
+                                  my-promise
+                                  q)
+                                q))))]
     (println "first finisher:")
     (cprint (deref my-promise 4000 "timeout"))
     (println)
@@ -171,6 +171,6 @@
 
 
 (defn abc []
-  (let [one (- 45 56)
-        two (range (rand-int (+ 33 44)))
+  (let [one   (- 45 56)
+        two   (range (rand-int (+ 33 44)))
         fuenf (+ 6 7)]))
