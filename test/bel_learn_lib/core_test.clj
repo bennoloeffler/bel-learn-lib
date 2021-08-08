@@ -24,9 +24,10 @@
     (is (= [0] (get-digits 0)))
     (is (= [1 0] (get-digits 10)))))
 
+;; make a difference in data and see test runner output...
 (deftest run-readable-test
   (testing "is it human readable"
-    (is (= ["val" 51 {:keyx {:deep-key "dv"}}] ["val" 51 {:key {:deep-key "dvX"}}]))))
+    (is (= ["val" 51 {:key {:deep-key "dv"}}] ["val" 51 {:key {:deep-key "dv"}}]))))
 
 
 ;(run-all-tests)
