@@ -172,5 +172,5 @@
 
 (defn abc []
   (let [one (- 45 56)
-        two (range (rand-int (+ 45 100)))
+        two (range (rand-int (+ 33 44)))
         fuenf (+ 6 7)]))

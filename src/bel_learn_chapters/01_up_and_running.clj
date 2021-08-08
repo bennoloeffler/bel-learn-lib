@@ -64,7 +64,7 @@
 ;; lists are in paranthesis.
 ;; the first expression is interpreted as function (from the clojure reader in REPL)
 ;; the rest is interpreted as arguments to that function
-(+ 1 2 3 4) 5
+(+ 1 2 3 4 5)
 
 ;; but with ' (clojurists call it 'quoted') the list is not evaluated, but taken as data
 '(+ 1 2 3 4 5)

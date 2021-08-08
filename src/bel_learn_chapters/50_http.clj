@@ -32,8 +32,8 @@
   {:status 200
      :headers {"Content-Type" "text/plain"}
      :body "Hello s BELs World"}
-  #_(response (:remote-addr request))
-  (static-file-handler request))
+  (response (:remote-addr request))
+  #_(static-file-handler request))
 
 
 (defn -main

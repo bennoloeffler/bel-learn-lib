@@ -31,6 +31,7 @@
                  [org.clojure/tools.namespace "1.0.0"] ;reload
                  [philoskim/debux "0.6.5"]            ;dbg debugger
                  [hashp "0.1.1"]                    ;debugging #p
+                 [tupelo "21.07.08"]
                  [org.clojure/data.json "2.2.1"]]
   :main ^:skip-aot bel-learn-lib.core
   :target-path "target/%s"

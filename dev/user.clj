@@ -9,7 +9,8 @@
             [debux.core :refer :all]
             [hashp.core :refer :all]
             [bel.cpipe.system :as system]
-            [bels-test-runner]))
+            [bels-test-runner])
+  (:use tupelo.core))
 
 
 (def system nil)

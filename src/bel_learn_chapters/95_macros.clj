@@ -1,6 +1,20 @@
 (ns bel-learn-chapters.95-macros
-  (:require [puget.printer :refer (cprint)]))
+  (:require [puget.printer :refer (cprint)])
+  (:use tupelo.core))
 
+
+;; https://stackoverflow.com/questions/53014679/recursive-macro-clojure
+;; https://www.braveclojure.com/writing-macros/
+;; https://learnxinyminutes.com/docs/clojure-macros/
+;; https://purelyfunctional.tv/mini-guide/when-to-use-a-macro-in-clojure/
+;; http://clojure-doc.org/articles/language/macros.html
+;; joy of clojure, chapter 8
+
+(defn try-spy
+  [arg]
+  (spyx (+ arg 4)))
+
+(comment (try-spy 6))
 
 ;;
 ;; ---------- quote and eval ----------
@@ -28,7 +42,7 @@
 
 (defmacro only-quote
   []
-  '(println "abc")) ;prevents from beeing executed immediately
+  '(println "abc"))                                         ;prevents from beeing executed immediately
 
 (comment
   (only-quote)
@@ -41,7 +55,7 @@
 (defmacro quote-in-macro
   "docstring"
   [num]
-  `(println (+ 50 ~num))) ;; otherwise its symbol num
+  `(println (+ 50 ~num)))                                   ;; otherwise its symbol num
 
 (comment
   (quote-in-macro 5)
@@ -78,3 +92,32 @@
 (comment
   (splice-macro (1 2 3 4))
   (macroexpand '(splice-macro (1 2 3 4))))
+
+;;
+;; ---------- recursion ----------
+;;
+
+
+(defmacro rev-list
+  ;"reverses the sequence of elements in (recursive) lists"
+  [& list]
+  (assert (seqable? list))
+  (let [r-list# (reverse list)]
+        ;>> (spy r-list#)]
+    (map (fn [e#]
+           (if (and (seqable? e#) (> (count e#) 1))
+             `(rev-list ~@e#)
+             e#))
+         r-list#)))
+
+
+(seq? '(1))
+
+(comment
+  (def m '(rev-list (1 9 +) 16 (2 (2 1 +) +) 4 +))
+  (macroexpand-1 m)
+  (macroexpand m)
+  (clojure.tools.analyzer.jvm/macroexpand-all m)
+  (rev-list (1 9 +) 16 (2 3 +) 4 +)
+  (clojure.core/reverse '(5 4 +)))
+
