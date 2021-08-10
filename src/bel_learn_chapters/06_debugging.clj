@@ -1,27 +1,40 @@
 (ns bel-learn-chapters.06-debugging
   [:require
-   [clojure.string :as str]
-   [clojure.pprint :refer (pprint)]
-   [puget.printer :refer (cprint)]
-   [erdos.assert :as pa]  ;power-assert
-   [taoensso.timbre :refer [spy error warn info debug]] ;logging
-   [clojure.tools.trace :as trace :refer [dotrace trace-forms]] ;tracing
-   [debux.core :refer :all] ; dbg
-   [hashp.core :refer :all]]) ;#p
+    [clojure.string :as str]
+    [clojure.pprint :refer (pprint)]
+    [puget.printer :refer (cprint)]
+    [erdos.assert :as pa] ;power-assert
+    [taoensso.timbre :refer [spy error warn info debug]] ;logging
+    [clojure.tools.trace :as trace :refer [dotrace trace-forms]] ;tracing
+    [debux.core :refer :all] ; dbg
+    [hashp.core :refer :all]]) ;#p
 
 ; http://www.futurile.net/2020/05/16/clojure-observability-and-debugging-tools/
 
-(set! *print-length* 100)
+(set! *print-length* 20)
 
 ;;---------------------------------------
 ;; dbg und #p
 ;;---------------------------------------
 
 (comment
-  ;debux
-  (dbg (->> (all-ns) (shuffle) (take 20) (map ns-name) sort (partition 4)))
+
   ;hashp
-  (/ 10 #p (/ (- 12 10) (+ 10 1))))
+  (/ 10 #p (/ (- 12 10) (+ 10 1)))
+
+  ;debux
+  (dbg (->> (all-ns)
+            (shuffle)
+            (take 20)
+            (map ns-name)
+            sort
+            (partition 4)))
+
+  ;erdos
+  (pa/examine (->> (range 10)
+                   (map inc)
+                   doall ; because lazy result from map
+                   (reduce +))))
 
 ;;---------------------------------------
 ;; breakpoint cursive idea / exception breakpoint / enable when other hit...
@@ -29,8 +42,8 @@
 
 
 (defn debug-this [arg1 arg2]
-  (let [from (min arg1 arg2) ; breakpoint may have conditions
-        to (max arg1 arg2)
+  (let [from  (min arg1 arg2) ; breakpoint may have conditions
+        to    (max arg1 arg2)
         start (+ arg1 arg2)]
     (->> (range from to 3) ; get range
          (map #(* % 3)) ; multiply each by 3
@@ -44,7 +57,7 @@
 ;;---------------------------------------
 
 (defn ^:dynamic do-div [x y]
-   (/ x #p y)) ; setting an exception breakpoint helps
+  (/ x #p y)) ; setting an exception breakpoint helps
 
 (defn ^:dynamic calc [x y]
   (let [xx (inc x) yy (dec y)]
@@ -64,7 +77,7 @@
       (if (zero? i)
         res
         (recur (dec i) (* #p res value))))))
-        ;(recur (dec i) (* (doto res prn) value))
+;(recur (dec i) (* (doto res prn) value))
 
 ;;---------------------------------------
 ;; TRACE
@@ -77,7 +90,7 @@
       (recur (dec i) (* res value)))))
 
 (defn mult-pow [to]
-  ( ->> (range 1N (inc to)) (map #(pow % %))))
+  (->> (range 1N (inc to)) (map #(pow % %))))
 
 (comment ; tracing
   (trace/trace-vars bel-learn-chapters.06-debugging/pow)
@@ -92,14 +105,14 @@
 ;; DOES NOT WORK! SHIT!
 (comment
   (mate/d->> [:1 :2 :3 :4]
-      shuffle
-      (map #(str % "--"))
-      str/join)
+             shuffle
+             (map #(str % "--"))
+             str/join)
   ; but this does
   (dbg (->> [:1 :2 :3 :4]
-           shuffle
-           (map #(str % "--"))
-           str/join)))
+            shuffle
+            (map #(str % "--"))
+            str/join)))
 
 ;;---------------------------------------
 ;; POWER ASSERTS
@@ -107,7 +120,7 @@
 
 ;(pa/assert (= 1 (count ( range 1 9))))
 ;(pa/examine (= 7 (count ( range 1 9))))
-(pa/assert (= 8 (count ( range 1 9))))
+(pa/assert (= 8 (count (range 1 9))))
 
 (comment
   (pa/examine (->> [:1 :2 :3 :4]
@@ -125,8 +138,8 @@
   (taoensso.timbre/merge-config! {:min-level :info}) ; :level debug does nothing!
   (taoensso.timbre/info "This will print")
   (taoensso.timbre/debug "error"))
-  ;(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
-  ;(error (Exception. "Oh no - this is a shituation") "data 1" 1234))
+;(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
+;(error (Exception. "Oh no - this is a shituation") "data 1" 1234))
 
 (defn my-calc [a b c] (* a b c))
 (comment (spy (my-calc 1 2 3)))

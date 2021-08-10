@@ -9,7 +9,7 @@
                  [lein-koan "0.1.2"] ;; training exercises "medittions"
                  [quil "3.1.0"] ;; drawing to the screen
                  [com.formdev/flatlaf "0.37"] ;; swing support for big displays
-                 [erdos.assert "0.1.0"] ;; power assert and examine
+                 [io.github.erdos/erdos.assert "0.2.3"] ;; power assert and examine
                  [org.clojure/tools.trace "0.7.10"] ;; tracing
                  [seesaw "1.5.0"] ;; swing for clojure
                  [ring/ring-core "1.8.2"]
@@ -41,4 +41,7 @@
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/tools.namespace "1.1.0"]
-                                  [org.clojure/java.classpath "1.0.0"]]}})
+                                  [org.clojure/java.classpath "1.0.0"]]
+                   :plugins [[com.jakemccrary/lein-test-refresh "0.24.1"]
+                             [venantius/ultra "0.6.0"]]}})
+

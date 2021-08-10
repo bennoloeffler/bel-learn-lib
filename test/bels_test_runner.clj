@@ -5,9 +5,9 @@
 
 
 
-;; CTRL-WIN-ALT T
+;; ALT-WIN Pause T
 (defn call-current-tests []
- (println "namespace bels-test-runner --> call-current-tests (STRG-WIN-ALT T)")
+ (println "namespace bels-test-runner --> call-current-tests (ALT-WIN -let-go- T)")
  (run-all-tests #"bel.*")) ; bel.*test|clj-app.*test.*;
 
 (comment

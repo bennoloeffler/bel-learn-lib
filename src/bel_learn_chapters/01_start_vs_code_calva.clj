@@ -25,17 +25,6 @@
 ;; Press CTRL-ALT-C Enter (read a source file into the REPL)
 ;; Press ALT-Enter (evaluate function at cursor)
 
-;; *** INTELLI-J & Cursive shortcuts ***
-;; open... project.clj (set JDK, project.clj as Leinigen, src and test root)
-;; Load file to REPL ALT-SHIFT-L
-;; Sync REPL ALT-SHIFT-M
-;; Send current form to REPL ALT-SHIFT-P
-;; shortcuts: https://cheatography.com/pupeno/cheat-sheets/cursive-on-windows-mac-style/
-;;
-
-;; https://sekao.net/nightlight/
-;; cmd: lein nightlight (http://localhost:4000)
-
 
 ;; a function call is done like this
 ;; (function-name arg1 arg2 ...)
@@ -43,14 +32,11 @@
 ;; as a function call = println
 ;; and the rest as arguments = "hello, clojure"
 ;; TRY IT.
-;; place the curser somewhere into the list and
+;; place the curser somewhere into the list below and
 ;; press ALT-Enter.
-;;
-;; println ("hello, world") ; NO, but
 
-(comment)
-
-;(println "hello, clojure"
+(comment
+  (println "hello, clojure"))
 
 ;; you are in a namespace - there is a global variable *ns*
 *ns*

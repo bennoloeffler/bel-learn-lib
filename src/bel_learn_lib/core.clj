@@ -33,3 +33,7 @@
   (+ 3 4)
   (bel-learn-lib.core/test-the-lib))
 
+(comment
+  (->> (range 10)
+       (map inc)
+       (reduce +)))
