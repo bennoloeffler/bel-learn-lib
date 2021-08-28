@@ -9,14 +9,15 @@
   []
   (println "CREATING the system...")
   {:created (jt/local-date-time)
-   :del-db :delete-db
-   :cfg (model/dev-cfg)})
+   :del-db :delete-db})
+   ;:cfg (model/dev-cfg)})
 
 (defn start
  "do all the side effects to start the system"
  [system]
  (println "STARTING the system...")
- (assoc system :conn (model/init-db (:cfg system) (:del-db system))))
+ (system))
+ ;(assoc system :conn (model/init-db (:cfg system) (:del-db system))))
 
 (defn stop
  "do all the side effects to stop the system"

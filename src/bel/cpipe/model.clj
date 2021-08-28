@@ -29,7 +29,7 @@
   [str]
   (Long/valueOf str))
 
-(str-num? "12")
+;(str-is-long? "12")
 
 
 (defn slurp-lines
@@ -57,8 +57,8 @@
 (as-> "C:\\projects\\v-pipe\\bsp-daten\\bsp-01-nur-tasks\\Projekt-Start-End-Abt-Kapa.txt" $
       (slurp-lines $)
       (map (fn [line] [(nth line 0)
-                       (pd (nth line 1))
-                       (pd (nth line 2))
+                       (str-to-date (nth line 1))
+                       (str-to-date (nth line 2))
                        (nth line 3)
-                       (Long/valueOf (nth line 4))
+                       (str-to-long (nth line 4))
                        (if (= 6 (count line)) (nth line 5) nil)]) $))
