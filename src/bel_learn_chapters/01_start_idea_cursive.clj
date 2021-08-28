@@ -4,25 +4,28 @@
 ;; If you know java or groovy, then this is for you...
 ;;
 
-;; see: http://kimh.github.io/clojure-by-example for first
+;; see: http://kimh.github.io/clojure-by-example for first impression
 
 ;;
 ;; TO GET UP AND RUNNING
 ;;
 
-;; *** INTELLI-J & Cursive shortcuts ***
-;; open/import project folder...
-;; project is described by project.clj
+;; *** INTELLI-J & Cursive ***
+;; install cursive plugin (older version of intellij!)
+;; get license
+;; open/import this project folder...
 ;; then set JDK
-;; Load this file to REPL ALT-SHIFT-L
-;; Sync REPL ALT-SHIFT-M
-;; Send current form to REPL ALT-SHIFT-P
-;; shortcuts: https://cheatography.com/pupeno/cheat-sheets/cursive-on-windows-mac-style/
+;; project is described/imported from project.clj
+
+;;
+;; Start REPL - right-click "project.clj". Start REPL from menu
 ;;
 
-;; https://sekao.net/nightlight/
-;; cmd: lein nightlight (http://localhost:4000)
-
+;; Load this file to REPL ALT-SHIFT-L (this means it will be compiled also)
+;; Switch namespace to this file by ALT-SHIFT-R
+;; Sync REPL ALT-SHIFT-M (difference to ALT-SHIFT-L? -> sync ALL files, that were changed)
+;; Send current form to REPL ALT-SHIFT-P (create keymap with: CTRL-Enter)
+;; ALL shortcuts: https://cheatography.com/pupeno/cheat-sheets/cursive-on-windows-mac-style/
 
 ;; a function call is done like this
 ;; (function-name arg1 arg2 ...)
@@ -30,14 +33,13 @@
 ;; as a function call = println
 ;; and the rest as arguments = "hello, clojure"
 ;; TRY IT.
-;; place the curser somewhere into the list and
-;; press ALT-Enter.
-;;
+;; place the curser somewhere into "hello, clojure" and
+;; press SHIFT-ALT-P (or ALT-Enter - when you created that shortcut).
+;; This results in an error. Why? The file has not yet benn
 ;; println ("hello, world") ; NO, but
 
-(comment)
-
-;(println "hello, clojure"
+(comment
+  (println "hello, clojure"))
 
 ;; you are in a namespace - there is a global variable *ns*
 *ns*
@@ -67,7 +69,7 @@
 (= 3 5)
 (= 3.0 3) ; not equal...
 (== 3.0 3) ; but: compare by same effect
-(= '(1 2) '(1 2)) ; not compared by identity, but same content
+(= '(1 2) '[1 2]) ; not compared by identity or collection type, but same content
 
 
 ;;
@@ -96,7 +98,7 @@
 cats ; => 5 (evaluation to final value)
 
 ;;
-;; From names to values (symbol, namespace, variable, value)
+;; From names to values (namespace, symbol, variable, value)
 ;;
 
 ;; a real value (Symbol --> Variable --> Value)
@@ -104,10 +106,16 @@ cats ; => 5 (evaluation to final value)
 ;; => clojure.lang.Symbol
 
 (resolve 'cats) ; Variable cats in namespace bel-learn-chapters.01-up-and-running
-;; => #'bel-learn-chapters.01-up-and-running/cats
+;; => #'bel-learn-chapters.01-start-idea-cursive/cats
+
+;; this is the var
+(type #'bel-learn-chapters.01-start-idea-cursive/cats)
 
 (eval 'cats) ; Value
 ;; => 5
+
+(eval #'cats) ; var
+;; => #'bel-learn-chapters.01-start-idea-cursive/cats
 
 ;; a functions value (Symbol --> Variable --> Value)
 (type '+) ; Symbol ;; => clojure.lang.Symbol
@@ -165,7 +173,9 @@ cats ; => 5 (evaluation to final value)
 ;; there are no statements! only expressions.
 ;; even a (println "something") is an expression.
 ;; it returns nothing = nil
-;(println "print something but return nothing")
+
+(comment
+  (println "print something but return nothing"))
 
 ;;
 ;; first smell of a function
@@ -174,5 +184,5 @@ cats ; => 5 (evaluation to final value)
 (defn c*2 [n] (* n 2)) ;; exactly the same. very uncommon symbol - may contain...
 (mult2 10)
 (c*2 10)
-nil
-;"this last expression will be the result of run file (CTRL-ALT-C Enter in Calva) and printed in the REPL"
+
+;"this last expression will be the result of run file (CTRL-ALT-L in Cursive) and printed in the REPL"

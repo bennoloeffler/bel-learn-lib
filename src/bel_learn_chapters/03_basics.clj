@@ -109,3 +109,5 @@
   (vargs 1 2))
 
 ;(clojure.repl/source +)
+
+(+ 1 (reduce + (sort (map inc (range 10)))))

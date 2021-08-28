@@ -22,7 +22,7 @@
     (is (= [] (get-digits nil))))
   (testing "zero"
     (is (= [0] (get-digits 0)))
-    (is (= [1 0] (get-digits 10)))))
+    (is (= [1 200] (get-digits 10)))))
 
 ;; make a difference in data and see test runner output...
 (deftest run-readable-test

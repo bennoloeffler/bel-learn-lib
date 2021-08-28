@@ -10,6 +10,11 @@
 ;; http://clojure-doc.org/articles/language/macros.html
 ;; joy of clojure, chapter 8
 
+;;
+;; Keybinding: CTRL-SHIFT-# expand macro
+;;
+
+
 (defn try-spy
   [arg]
   (spyx (+ arg 4)))
@@ -42,7 +47,7 @@
 
 (defmacro only-quote
   []
-  '(println "abc"))                                         ;prevents from beeing executed immediately
+  '(println "abc")) ;prevents from beeing executed immediately
 
 (comment
   (only-quote)
@@ -55,7 +60,7 @@
 (defmacro quote-in-macro
   "docstring"
   [num]
-  `(println (+ 50 ~num)))                                   ;; otherwise its symbol num
+  `(println (+ 50 ~num))) ;; otherwise its symbol num
 
 (comment
   (quote-in-macro 5)
@@ -103,15 +108,12 @@
   [& list]
   (assert (seqable? list))
   (let [r-list# (reverse list)]
-        ;>> (spy r-list#)]
+    ;>> (spy r-list#)]
     (map (fn [e#]
            (if (and (seqable? e#) (> (count e#) 1))
              `(rev-list ~@e#)
              e#))
          r-list#)))
-
-
-(seq? '(1))
 
 (comment
   (def m '(rev-list (1 9 +) 16 (2 (2 1 +) +) 4 +))

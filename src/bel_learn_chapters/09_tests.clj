@@ -2,7 +2,7 @@
   (:require [clojure.test :refer :all]
             [bel-learn-lib.core :refer :all]
             [mate-clj.core :refer :all]
-            [erdos.assert :refer :all] ; overwrite assert
+            [erdos.assert :as ea] ;:refer :all] ; overwrite assert
             [expectations.clojure.test :refer [defexpect expect expecting more more-> more-of]]))
 ; http://www.futurile.net/2020/07/14/clojure-testing-with-clojure-test-and-expectations/
 ; https://github.com/clojure-expectations/clojure-test
@@ -21,11 +21,20 @@
 ;    └───bel_learn_lib
 
 
+;;
+;; Key bindings should be
+;;
+
+;; CTRL-SHIFT-T (Toggle between test and test subject)
+;; CTRL-ALT-T (run all tests in current namespace)
+;; CTRL-T (run only the current test)
+;; CTRL-WIN-T (run last test again)
+
 (deftest partition-by-nums-test
   (testing "empty"
     (is (= [] (partition-by-nums [] [])))
     (is (= [] (partition-by-nums [1 2] [])))
-    (is (= [] (partition-by-nums [] [1 2]))))
+    (ea/is (= [] (partition-by-nums [] [1 2]))))
   (testing "fit"
     (is (= [[1 2 3] [4 5]] (partition-by-nums [3 2] [1 2 3 4 5])))
     (is (= [[7]] (partition-by-nums [1] [7]))))
