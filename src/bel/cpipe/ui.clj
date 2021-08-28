@@ -7,6 +7,9 @@
 ; https://github.com/clj-commons/seesaw/wiki
 ; http://www.eli.sdsu.edu/courses/fall14/cs596/notes/D18SeesawGUI.pdf
 
+(defn open [e]
+  (println "open, event: " e))
+
 
 (defn run-frame []
   (invoke-later
@@ -14,7 +17,9 @@
     (-> (frame :title "plow"
                :size [2000 :by 1400]
                :on-close :dispose
-               :menubar (menubar :items [(menu :text "file" :items [(menu-item :text "open" :action)
+               :menubar (menubar :items [(menu :text "file" :items [(action :name "Open..."
+                                                                                   :key "menu O"
+                                                                                   :handler open)
                                                                     (menu-item :text "close")])
                                          (menu :text "tool" :items [(menu-item :text "analyse")
                                                                     (menu-item :text "fold")])])

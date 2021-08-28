@@ -39,6 +39,9 @@
   :ring {:handler bel-learn-chapters.50-http/handler}
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
+             :reveal {:dependencies [[nrepl,"0.8.3"][vlaaad/reveal "1.3.212"]]
+                      :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}}
              :dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/tools.namespace "1.1.0"]
                                   [org.clojure/java.classpath "1.0.0"]]}})
+

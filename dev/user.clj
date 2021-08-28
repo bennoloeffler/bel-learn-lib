@@ -42,7 +42,7 @@
   (stop)
   (refresh :after 'user/go))
 
-(defn run-bels-tests []
+(defn tests []
    (bels-test-runner/call-current-tests))
 
 

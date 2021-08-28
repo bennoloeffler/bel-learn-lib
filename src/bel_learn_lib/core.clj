@@ -31,5 +31,6 @@
 
 (comment
   (+ 3 4)
-  (bel-learn-lib.core/test-the-lib))
+  (bel-learn-lib.core/test-the-lib)
+  (type (first (get-digits 1235689000999999999999999999999999))))
 
