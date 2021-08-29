@@ -1,4 +1,7 @@
 (ns bel-learn-chapters.00-atom-proto-repl)
+
+;;    NOOOOOO - this is outdated and not updated any more
+
 ;; start atom.
 ;; install proto-repl: https://gist.github.com/jasongilman/d1f70507bed021b48625
 

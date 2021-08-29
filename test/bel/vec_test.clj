@@ -43,4 +43,4 @@
       (is (== 5 (distance v1 v2))))))
 
 (comment  
-  (run-tests 'bel.vec-test))
+  (run-tests 'bel.vec-test 'bel.))

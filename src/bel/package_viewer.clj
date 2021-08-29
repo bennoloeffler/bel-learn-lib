@@ -152,6 +152,11 @@
     f))
 
 
+
 (comment
   (def local-frame (-main))
-  (dispose-frame local-frame))
+  (dispose-frame local-frame)
+  (+ 5 7 (- 10 3)))
+
+
+

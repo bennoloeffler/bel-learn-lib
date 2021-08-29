@@ -9,7 +9,8 @@
             [debux.core :refer :all]
             [hashp.core :refer :all]
             [bel.cpipe.system :as system]
-            [bels-test-runner]))
+            [bels-test-runner])
+  (:use tupelo.core))
 
 
 (def system nil)
@@ -41,7 +42,7 @@
   (stop)
   (refresh :after 'user/go))
 
-(defn run-bels-tests []
+(defn tests []
    (bels-test-runner/call-current-tests))
 
 
@@ -66,7 +67,7 @@
   (run-bels-tests)
   (->> (all-ns) (filter #(re-find (re-pattern "datomic") (str %))))
   (map #(ns-name %) (all-ns))
-  (dbg (->> (all-ns) (shuffle) (take 20) (map ns-name) sort (partition 4)))
+  (dbg (->> (all-ns) (shuffle) (take 3) (map ns-name) sort (partition 4)))
   (/ 10 #p (/ (- 12 10) (+ 10 1)))
 
   (defn s []

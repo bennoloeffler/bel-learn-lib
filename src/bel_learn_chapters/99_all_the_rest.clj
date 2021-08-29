@@ -6,16 +6,17 @@
 
 
 
-(set! *print-length* 3)
+(set! *print-length* 30)
 
 (comment
 
 
   ;;
-  ;; TYPES, ARGS
+  ;; SYMBOLS, VARIABLES, VALUES, TYPES, ARGS
   ;;
 
-  (def cats 5)
+
+  (def cats 5) ; global var
   (type cats) ;Long
   (type 'cats) ;Symbol
   (type #'cats) ;VAr
@@ -25,19 +26,25 @@
   (resolve 'inc) ; #'clojure.core/inc ; the var
   (eval 'inc) ; #<core$inc clojure.core$inc@16bc0b3c> ; the value
 
-  (def third (fn [number] (/ number 3)))
+  (/ 10 3) ; divide 10 by 3 (function operand1 operand2 ...)
+  (fn [number] (/ number 3)) ; annonymous function
+  (def third (fn [number] (/ number 3))) ; function with name
+  (defn fifth [n] (/ n 5)) ; just an abbrevation (macro)
 
   (third 13) ; 13/3
-
   (type (third 13)) ; Ratio
 
-  (defn half
-    ([]  1/2)
-    ([x] (/ x 2)))
+  (type (fifth 10))
+  (type (fifth 10.0))
+  (type (fifth 123456789012345678901234567890123456789012345678901234567899))
+
+  (defn half ;multi-arity
+    "diviede operand by two - or return 1/2, if no operand" ;docstring
+    ([] 1/2) ; first function
+    ([x] (/ x 2))) ; second function
 
   (half 5)
-  (half)
-
+  (println (half))
 
 
   ;;
@@ -45,34 +52,30 @@
   ;;
 
   (def s-to-inc [1 2 3 4])
-  ;(defn inc-seq [the-seq]
-  ;  (when (seq the-seq)
-  ;    [(inc (first the-seq)) (inc-seq (rest the-seq))]))
-  ;(def inc-seq)
-  ;(println (inc-seq s-to-inc))
   (println s-to-inc)
 
-  (defn inc-seq [the-seq]
+
+  (defn inc-seq [the-seq] ; recursion
     (if (first the-seq)
-      (cons (inc (first the-seq)) (inc-seq (rest the-seq)))
+      (cons (inc (first the-seq))
+            (inc-seq (rest the-seq)))
       (list)))
 
-  (defn inc-seq-2 [the-seq]
-    (if (seq the-seq)
-      (cons (inc (first the-seq)) (inc-seq-2 (rest the-seq)))
-      (list)))
+  (println (inc-seq (range 1 10)))
+  (println (inc-seq (range 1 100000)))
 
-  (println (inc-seq-2 s-to-inc))
 
-  (println (inc-seq (range 1 100)))
 
   (defn transform-all [f all]
     (if (first all)
       (cons (f (first all)) (transform-all f (rest all)))
       (list)))
 
+  (println (transform-all inc (range 1 10)))
+  (println (transform-all inc (range 1 100000)))
+
   (defn transform-all-2 [f all]
-    (loop [in all
+    (loop [in  all
            out []]
       (if-not (seq in)
         out
@@ -82,9 +85,9 @@
 
   (transform-all keyword ["abc" "xyz"])
   (transform-all-2 keyword ["abc" "xyz"])
-  (transform-all-2 keyword  (map str (range 10000)))
+  (transform-all-2 keyword (map str (range 10000)))
 
-  (map keyword ['b 'c]) ; map by function
+  (map keyword ['b 'c]) ; this form of transform has a map function
 
   {:year  1969
    :event "moon landing"} ; also a mapping... by type
@@ -105,12 +108,12 @@
   (defn expand-2
     "apply f starting with start count times"
     [f start count]
-    (loop [next start
-           count count
+    (loop [next   start
+           count  count
            result []]
       (if-not (pos? count)
         result
-        (recur (f next) (dec count) (conj  result next)))))
+        (recur (f next) (dec count) (conj result next)))))
 
   (doc expand)
 
@@ -123,10 +126,10 @@
   (take 30 (iterate (fn [x] (if (odd? x) (+ 1 x) (/ x 2))) 17869))
 
   (take 10 (repeat "so"))
-  (repeat  3 "aha")
+  (repeat 3 "aha")
   (take 10 (repeatedly rand))
   (range 2 10) ; (2 3 4 5 6 7 8 9)
-  (range 0 100 5); (0 5 10... 95)
+  (range 0 100 5) ; (0 5 10... 95)
   (take 10 (cycle [1 2 3]))
 
   (map (fn [n vehicle] (str "I've got " n " " vehicle "s"))
@@ -147,7 +150,7 @@
 
 
   (use '[clojure.string :only (join split)])
-  (join (interpose " <-> "  (map str (take 10 (iterate inc 0)))))
+  (join (interpose " <-> " (map str (take 10 (iterate inc 0)))))
 
   (interpose :and [1 2 3 4])
 
@@ -157,7 +160,7 @@
 
   (def concat-list (concat [1 2 3] [:a :b :c] [4 5 6] '(7 8) #{9 10} {:a 11 :b 12}))
 
-  (type (nth  (vec concat-list) 13))
+  (type (nth (vec concat-list) 13))
 
   (apply str (reverse "woolf"))
 
@@ -185,10 +188,10 @@
   (frequencies [:meow :mrrrow :meow :meow])
 
   ;(use '[clojure.pprint :only '(pprint)])
-  (clojure.pprint/pprint (group-by :first [{:first "Li"    :last "Zhou"}
+  (clojure.pprint/pprint (group-by :first [{:first "Li" :last "Zhou"}
                                            {:first "Sarah" :last "Lee"}
                                            {:first "Sarah" :last "Dunn"}
-                                           {:first "Li"    :last "O'Toole"}]))
+                                           {:first "Li" :last "O'Toole"}]))
 
   (take 10 (iterate inc 0))
   ;; => (0 1 2 3 4 5 6 7 8 9)
@@ -242,9 +245,9 @@
   (vargs 1 2 3 4 5 6 7 8)
 
 
-   ;;
-   ;; MULTI-FUNCTION
-   ;;
+  ;;
+  ;; MULTI-FUNCTION
+  ;;
 
   (defn dispatch-number-format [num-s]
     (cond
@@ -291,7 +294,7 @@
     {:pre [(> x 10)] :post [(< % 30)]}
     (* 2 x))
   ;(double-big 9)                                              ; fails
-  (double-big 11)                                             ;ok
+  (double-big 11) ;ok
   ;(double-big 15)                                             ; fails
 
   (defn publish-bel [a-book]
@@ -316,7 +319,7 @@
     (cons fun (reverse args)))
   (macroexpand '(rev str "hi" (+ 1 2)))
   (eval (macroexpand '(rev str "hi" (+ 1 2))))
-  (rev str "hi" (+ 1 2)); 3hi statt hi3
+  (rev str "hi" (+ 1 2)) ; 3hi statt hi3
 
   (let [x 2] `(inc x))
   (let [x 2] `(inc ~x))
@@ -325,8 +328,8 @@
   `(foo ~@[1 2 3])
   (source or)
 
-  (gensym "hi"); uniquie symbol
-  `(let [x# 2] x#); auto symbol
+  (gensym "hi") ; uniquie symbol
+  `(let [x# 2] x#) ; auto symbol
 
   ;;
   ;;   CONTROL FLOW
@@ -405,7 +408,7 @@
   (sum-numbers '(1 2 3))
   ;(sum-numbers (range 100000000)) ; no stack - but 100 Mio times function call...
 
-  (loop [i 0
+  (loop [i        0
          expanded []]
     (if (> i 10)
       expanded
@@ -416,8 +419,8 @@
       (if (empty? vs)
         total
         (recur
-         (rest vs)
-         (+ total (first vs))))))
+          (rest vs)
+          (+ total (first vs))))))
 
   (sum-something (range 1 1000000))
 
@@ -428,7 +431,7 @@
   (defn integers ; ENDLESS!
     [x]
     (lazy-seq
-     (cons x (integers (inc x)))))
+      (cons x (integers (inc x)))))
 
   ;(println (integers 0))
 
@@ -440,8 +443,8 @@
   (take 12 ll) ; lazy-seq
 
   (def x-delayed (delay
-                  (println "computing a really big number!")
-                  (last (take 10000 (iterate inc 0)))))
+                   (println "computing a really big number!")
+                   (last (take 10000 (iterate inc 0)))))
 
   (deref x-delayed)
 
@@ -457,9 +460,9 @@
 
 
   (take 5
-        (for [x     (range 5)
-              y     (range 5)
-              :when (and (even? x) (odd? y))]; alternative is :while
+        (for [x (range 5)
+              y (range 5)
+              :when (and (even? x) (odd? y))] ; alternative is :while
           [x y]))
 
   ;;
@@ -468,10 +471,10 @@
 
   (require '[clojure.walk])
   (pprint (clojure.walk/macroexpand-all
-           '(->>
-             (range 10)
-             (filter odd?)
-             (reduce +))))
+            '(->>
+               (range 10)
+               (filter odd?)
+               (reduce +))))
   (reduce + (filter odd? (range 10)))
 
   (->> (range 10)
@@ -507,7 +510,7 @@
   ; start another thread - and then wait until its finished at deref
   (def xf (future (prn "hi") (+ 1 2)))
   (deref xf)
-  (deref xf); only evaluated once. "hi" is printed only once. fn value CACHED!
+  (deref xf) ; only evaluated once. "hi" is printed only once. fn value CACHED!
 
   ; multithreaded!
   (dotimes [i 50] (future (prn i)))
@@ -552,22 +555,22 @@
   (def x (ref 0))
   (def y (ref 0))
   (dosync
-   (ref-set x 1)
-   (ref-set y 2))
+    (ref-set x 1)
+    (ref-set y 2))
 
   [@x @y]
 
-  ; complete transation: alter
+  ; complete transaction: alter
   (dosync
-   (alter x + 2)
-   (alter y inc))
+    (alter x + 2)
+    (alter y inc))
 
   [@x @y]
 
   ; No complete transaction: commute
   (dosync
-   (commute x + 2)
-   (commute y inc))
+    (commute x + 2)
+    (commute y inc))
 
   (dosync
-   (alter x + (ensure y))))
+    (alter x + (ensure y))))

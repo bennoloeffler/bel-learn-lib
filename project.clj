@@ -9,7 +9,7 @@
                  [lein-koan "0.1.2"] ;; training exercises "medittions"
                  [quil "3.1.0"] ;; drawing to the screen
                  [com.formdev/flatlaf "0.37"] ;; swing support for big displays
-                 [erdos.assert "0.1.0"] ;; power assert and examine
+                 [io.github.erdos/erdos.assert "0.2.3"] ;; power assert and examine
                  [org.clojure/tools.trace "0.7.10"] ;; tracing
                  [seesaw "1.5.0"] ;; swing for clojure
                  [ring/ring-core "1.8.2"]
@@ -23,13 +23,31 @@
                  [tongue "0.2.10"]; i18n multi-lang ; 
                  [io.replikativ/datahike "0.3.3"]
                  [venantius/ultra "0.6.0"]
-                 [mate-clj "1.0.0"]]; included sourcecode - but does not work
+                 [mate-clj "1.0.0"]; included sourcecode - but does not work
+                 [io.aviso/pretty "0.1.37"]            ;formatting of exceptions
+                 [mvxcvi/puget "1.2.1"]                ;colour print data
+                 [expound "0.8.4"]                     ;improve error messages
+                 [expectations/clojure-test "1.2.1"]   ;library for testing
+                 [org.clojure/tools.namespace "1.0.0"] ;reload
+                 [philoskim/debux "0.6.5"]            ;dbg debugger
+                 [hashp "0.1.1"]                    ;debugging #p
+                 [tupelo "21.07.08"]
+                 [org.clojure/data.json "2.2.1"]
+                 [clj-http "3.12.3"]]
   :main ^:skip-aot bel-learn-lib.core
   :target-path "target/%s"
   :plugins [[lein-ring "0.12.5"]]
   :ring {:handler bel-learn-chapters.50-http/handler}
   :profiles {:uberjar {:aot :all
                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
+             :reveal {:dependencies [[nrepl,"0.8.3"][vlaaad/reveal "1.3.212"]]
+                      :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}}
              :dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/tools.namespace "1.1.0"]
-                                  [org.clojure/java.classpath "1.0.0"]]}})
+                                  [org.clojure/java.classpath "1.0.0"]
+                                  [nrepl,"0.8.3"]
+                                  [vlaaad/reveal "1.3.212"]]
+                   :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
+                   :plugins [[com.jakemccrary/lein-test-refresh "0.24.1"]
+                             [venantius/ultra "0.6.0"]]}})
+

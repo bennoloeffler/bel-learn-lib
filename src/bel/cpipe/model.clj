@@ -1,75 +1,65 @@
 (ns bel.cpipe.model
-  (:require [datahike.api :as d]
+  (:require [clojure.core.specs.alpha :as s]
+            [clojure.string :as str]
             [taoensso.timbre :as log]
-            [java-time :as jt])
+            [java-time :as t])
   (:gen-class))
 
+(defn str-is-date?
+  "check if Date of
+   format: 3.12.2021"
+  [str]
+  (re-matches #"\d{1,2}.\d{1,2}.\d{4}" str))
 
-(defn task-schema [] [{:db/ident :task/start
-                       :db/valueType :db.type/instant
-                       :db/cardinality :db.cardinality/one}
+(defn str-to-date
+  "parse Date (from String)
+   format: 3.12.2021"
+  [str]
+  (t/local-date "d.M.yyyy" str))
 
-                      {:db/ident :task/end
-                       :db/valueType :db.type/instant
-                       :db/cardinality :db.cardinality/one}
+(defn str-is-long?
+  "check, if string is long number"
+  [st]
+  (let [digits (set (map str (range 10)))]
+    (->> (map #(contains? digits %) (map str (seq st)))
+         (every? true?))))
 
-                      {:db/ident :task/capa-need
-                       :db/valueType :db.type/float
-                       :db/cardinality :db.cardinality/one}
+(defn str-to-long
+  "parse str to long"
+  [str]
+  (Long/valueOf str))
 
-                      {:db/ident :task/description
-                       :db/valueType :db.type/string
-                       :db/cardinality :db.cardinality/one}])
-
-
-(defn project-schema [] [{:db/ident :project/name
-                          :db/valueType :db.type/string
-                          :db/cardinality :db.cardinality/one
-                          :db/unique :db.unique/value}
-
-                         {:db/ident :project/delivery-date
-                          :db/valueType :db.type/instant
-                          :db/cardinality :db.cardinality/one}
-
-                         {:db/ident :project/tasks
-                          :db/valueType :db.type/ref
-                          :db/cardinality :db.cardinality/many}])
+;(str-is-long? "12")
 
 
-(defn dev-cfg [] {:name "cpipe-db"
-                  :store {:backend :file :path "/tmp/cpipe"}
-                  :schema-flexibility :read})
+(defn slurp-lines
+  "Reads all data lines in file, example:
+     data1  data2 data3
+     data4  5  6 7 8
+   and returns them as
+     [ [data1 data2 data3]
+       [data4 5 6 7 8] ]
+   Removes blank lines"
+  [file-name]
+  (as-> (slurp file-name) $
+        (str/split $ #"\n")
+        (map (fn [s] (filter not-empty (str/split s #"\s"))) $)
+        (filter not-empty $)))
 
 
-(defn make-schema [conn]
-  (d/transact conn (task-schema))
-  (d/transact conn (project-schema))
-  conn)
-
-
-(defn init-db [cfg delete-db]
-  (log/merge-config! {:min-level :info})
-  (when (= delete-db :delete-db)
-    (d/delete-database cfg))
-  (when-not (d/database-exists? cfg)
-    (d/create-database cfg))
-  ; do schema in every case!
-  (-> (d/connect cfg) make-schema))
-
-
-(defn create-project! [conn name delivery-date]
- (d/transact conn [{:project/name name :project/delivery-date delivery-date}]))
-
-
-(defn add-task! [conn p-name start end capa-need description]
- (d/transact conn [{:db/id -1 :task/start start :task/end end :task/capa-need capa-need :task/description description}
-                   {:db/id [:project/name p-name] :project/tasks -1}]))
-
+(def project-start-end-abt-kapa [{:validator nil :converter nil :err-msg ""}
+                                 {:validator str-is-date? :converter str-to-date :err-msg "is not a valid date"}
+                                 {:validator str-is-date? :converter str-to-date :err-msg "is not a valid date"}
+                                 {:validator nil :converter nil :err-msg ""}
+                                 {:validator str-is-long? :converter str-to-long :err-msg "is not a long"}
+                                 {:validator nil :converter nil :err-msg "" :optional true}])
 
 (comment
-  (d/delete-database (dev-cfg))
-  (let [conn (init-db (dev-cfg))]
-    (d/transact conn [{:task/start (jt/local-date)
-                       :task/end (jt/plus (jt/local-date) (jt/days 7))
-                       :task/capa-need 4.4
-                       :task/description "the task"}])))
+  (as-> "C:\\projects\\v-pipe\\bsp-daten\\bsp-01-nur-tasks\\Projekt-Start-End-Abt-Kapa.txt" $
+        (slurp-lines $)
+        (map (fn [line] [(nth line 0)
+                         (str-to-date (nth line 1))
+                         (str-to-date (nth line 2))
+                         (nth line 3)
+                         (str-to-long (nth line 4))
+                         (if (= 6 (count line)) (nth line 5) nil)]) $)))
