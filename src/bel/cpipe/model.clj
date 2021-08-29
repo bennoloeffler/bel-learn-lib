@@ -54,11 +54,12 @@
                                  {:validator str-is-long? :converter str-to-long :err-msg "is not a long"}
                                  {:validator nil :converter nil :err-msg "" :optional true}])
 
-(as-> "C:\\projects\\v-pipe\\bsp-daten\\bsp-01-nur-tasks\\Projekt-Start-End-Abt-Kapa.txt" $
-      (slurp-lines $)
-      (map (fn [line] [(nth line 0)
-                       (str-to-date (nth line 1))
-                       (str-to-date (nth line 2))
-                       (nth line 3)
-                       (str-to-long (nth line 4))
-                       (if (= 6 (count line)) (nth line 5) nil)]) $))
+(comment
+  (as-> "C:\\projects\\v-pipe\\bsp-daten\\bsp-01-nur-tasks\\Projekt-Start-End-Abt-Kapa.txt" $
+        (slurp-lines $)
+        (map (fn [line] [(nth line 0)
+                         (str-to-date (nth line 1))
+                         (str-to-date (nth line 2))
+                         (nth line 3)
+                         (str-to-long (nth line 4))
+                         (if (= 6 (count line)) (nth line 5) nil)]) $)))

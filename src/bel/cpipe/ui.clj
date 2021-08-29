@@ -15,7 +15,7 @@
   (invoke-later
     (FlatDarkLaf/install)
     (-> (frame :title "plow"
-               :size [2000 :by 1400]
+               :size [1000 :by 700]
                :on-close :dispose
                :menubar (menubar :items [(menu :text "file" :items [(action :name "Open..."
                                                                                    :key "menu O"
@@ -31,6 +31,6 @@
 
   (use 'seesaw.dev)
   (show-options (menu))
-  (show-events))
+  (show-events (menu)))
 
 "lein run -m seesaw.test.examples.launcher"
