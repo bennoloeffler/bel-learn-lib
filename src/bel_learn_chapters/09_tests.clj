@@ -95,3 +95,15 @@
 
 ;(defexpect string-user-name-test
 ;  (expect "John Smith" (str "John" "Williams")))
+
+;;
+;; ---------- continous testing ----------
+;;
+
+; metrosin bat-test https://github.com/metosin/bat-test
+; lein bat-test auto
+; lein bat-test cloverage
+; http://www.futurile.net/2020/07/14/clojure-testing-with-clojure-test-and-expectations/
+
+; test-refresh https://github.com/jakemcc/lein-test-refresh
+; lein test-refresh
