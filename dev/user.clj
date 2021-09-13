@@ -12,6 +12,7 @@
             [bels-test-runner])
   (:use tupelo.core))
 
+; see https://lambdaisland.com/blog/2018-02-09-reloading-woes
 
 (def system nil)
 

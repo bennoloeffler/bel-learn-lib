@@ -9,7 +9,7 @@
    [ring.middleware.session :refer [wrap-session]]))
 
 ; see: https://www.baeldung.com/clojure-ring
-; START: lein ring server
+
 
 (defn err-handler [request]
   (not-found "BELs file not found: "))
