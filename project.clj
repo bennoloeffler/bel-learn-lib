@@ -33,7 +33,8 @@
                  [hashp "0.1.1"]                    ;debugging #p
                  [tupelo "21.07.08"]
                  [org.clojure/data.json "2.2.1"]
-                 [clj-http "3.12.3"]]
+                 [clj-http "3.12.3"]
+                 [mount "0.1.16"]]
   :main ^:skip-aot bel-learn-lib.core
   :target-path "target/%s"
   :plugins [[lein-ring "0.12.5"]]
@@ -44,10 +45,10 @@
                       :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}}
              :dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/tools.namespace "1.1.0"]
-                                  [org.clojure/java.classpath "1.0.0"]
-                                  [nrepl,"0.8.3"]
-                                  [vlaaad/reveal "1.3.212"]]
-                   :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
+                                  [org.clojure/java.classpath "1.0.0"]]
+                                  ;[nrepl,"0.8.3"]
+                                  ;[vlaaad/reveal "1.3.212"]]
+                   :repl-options {#_:nrepl-middleware #_[vlaaad.reveal.nrepl/middleware]}
                    :plugins [[com.jakemccrary/lein-test-refresh "0.24.1"]
                              [venantius/ultra "0.6.0"]]}})
 
