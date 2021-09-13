@@ -6,8 +6,10 @@
            (javax.swing DefaultListModel)))
 
 
-(def current-package "clojure.repl")
-(def current-filter "repl")
+;(def current-package "clojure.repl")
+(def current-package (str *ns*))
+
+(def current-filter "")
 (def current-symbol-filter "")
 
 (defn doc-str
@@ -104,6 +106,7 @@
                (scroll! :to :top))
            (text! printer (str "SYMBOL:  " s "     in NAMESPACE  " current-package))))))
 
+
     (listen text-ns-filter :key-released
       (fn [e]
         (try
@@ -127,17 +130,21 @@
         (when-let [s (selection e)]
           (text! printer (str "try switching to name-space:  " s))
           (def current-package (str  s))
-          (set-model* ns-symbols (default-list-model-from-ns)))))))
+          (set-model* ns-symbols (default-list-model-from-ns)))))
+
+    (println "current package: " current-package)
+    (selection! ns-symbols current-package)) ; init
+
+  frame)
 
 
 (defn create-frame []
   (FlatDarkLaf/install)
-  (frame :title "BELs namespace-viewer" :size [2000 :by 1400]))
+  (set-frame-content! (frame :title "BELs namespace-viewer" :size [2000 :by 1400])))
 
 
 (defn show-frame [f]
   (invoke-later
-    (set-frame-content! f)
     (-> f  show!)))
     ;(toggle-full-screen! f))
 
@@ -154,6 +161,7 @@
 
 
 (comment
+  (-main)
   (def local-frame (-main))
   (dispose-frame local-frame)
   (+ 5 7 (- 10 3)))

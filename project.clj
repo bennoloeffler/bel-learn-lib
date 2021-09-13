@@ -45,10 +45,10 @@
                       :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}}
              :dev {:source-paths ["dev"]
                    :dependencies [[org.clojure/tools.namespace "1.1.0"]
-                                  [org.clojure/java.classpath "1.0.0"]]
-                                  ;[nrepl,"0.8.3"]
-                                  ;[vlaaad/reveal "1.3.212"]]
-                   :repl-options {#_:nrepl-middleware #_[vlaaad.reveal.nrepl/middleware]}
+                                  [org.clojure/java.classpath "1.0.0"]
+                                  [nrepl,"0.8.3"]
+                                  [vlaaad/reveal "1.3.212"]]
+                   :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
                    :plugins [[com.jakemccrary/lein-test-refresh "0.24.1"]
                              [venantius/ultra "0.6.0"]]}})
 

@@ -1,4 +1,4 @@
-(ns bel-learn-chapters.01-up-and-running)
+(ns bel-learn-chapters.01-start-vs-code-calva)
 
 
 ; https://github.com/ClojureBridge/curriculum

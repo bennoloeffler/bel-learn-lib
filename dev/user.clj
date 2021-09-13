@@ -5,12 +5,14 @@
             [puget.printer :refer (cprint)]
             [clojure.repl :refer :all]
             [clojure.test :as test]
-            [clojure.tools.namespace.repl :refer (refresh refresh-all)]
+            [clojure.tools.namespace.repl :refer (refresh refresh-all clear)]
             [debux.core :refer :all]
             [hashp.core :refer :all]
             [bel.cpipe.system :as system]
-            [bels-test-runner])
+            [bels-test-runner :refer [call-current-tests]])
   (:use tupelo.core))
+
+; https://github.com/stuartsierra/component.repl
 
 ; see https://lambdaisland.com/blog/2018-02-09-reloading-woes
 
@@ -44,8 +46,10 @@
   (refresh :after 'user/go))
 
 (defn tests []
-   (bels-test-runner/call-current-tests))
+   (refresh :after 'bels-test-runner/call-current-tests))
 
+(defn overview []
+  (bel.package-viewer/-main))
 
 (comment
   (go)

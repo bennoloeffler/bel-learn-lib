@@ -10,6 +10,14 @@
 (defn open [e]
   (println "open, event: " e))
 
+(defn display [title create-content-fn & args]
+  (invoke-later
+    (FlatDarkLaf/install) ; FIRST install LAF -then create content: (content)
+    (let [main-frame (frame :title title :on-close :dispose)]
+      (config! main-frame :content (if (seq args) (apply create-content-fn args)(create-content-fn)))
+      (pack! main-frame)
+      (show! main-frame)
+      (println main-frame))))
 
 (defn run-frame []
   (invoke-later
@@ -25,6 +33,11 @@
                                                                     (menu-item :text "fold")])])
                :icon (clojure.java.io/resource "check.png"))
         show!)))
+
+
+(defn -main [& args])
+  ;(display "cpipe" cpipe-draw-panel))
+
 
 (comment
   (run-frame)

@@ -11,13 +11,18 @@
 ; mklink ..\..\..\..\bel-learn-lib\src\ (AS ADMIN)
 ; THATS IT
 
+
 (defn test-the-lib
   "test function to be called"
   []
   (println "clj-learn-lib.core/test-the-lib seems to work! Hello, World!")
   "result is comming back... lib works!")
 
-(defn partition-by-nums [nums coll]
+(defn partition-by-nums
+  "does partition based on a sequence of partition sizes:
+  (partition-by-nums [1 2 4] [:a :b :c :d :e :f :g :h])
+  results in [ (:a) (:b :c) (:d :e :f :g) ]"
+  [nums coll]
   (loop [coll coll nums nums rslt []]
     (if (or (empty? coll) (empty? nums))
       rslt
@@ -30,11 +35,6 @@
   (map #(Character/digit % 10) (seq (str num))))
 
 (comment
-  (+ 3 4)
   (bel-learn-lib.core/test-the-lib)
-  (type (first (get-digits 1235689000999999999999999999999999))))
-
-(comment
-  (->> (range 10)
-       (map inc)
-       (reduce +)))
+  (get-digits 1235689000999999999999999999999999)
+  (partition-by-nums [1 2 4] [:a :b :c :d :e :f :g :h]))
