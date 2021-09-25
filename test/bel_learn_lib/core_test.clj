@@ -1,11 +1,11 @@
 (ns bel-learn-lib.core-test
-  (:require ;[clojure.test :refer :all]
-            [bel-learn-lib.core :refer :all]
-            [tupelo.test :refer :all])) ; NOT GOOD SUPPORTET in intellij
+  (:require [clojure.test :refer :all]
+            [bel-learn-lib.core :refer :all]))
+            ;[tupelo.test :refer :all])) ; NOT GOOD SUPPORTET in intellij (Move between tests)
 
 (deftest partition-by-nums-test
   (testing "empty"
-    (isnt (= [1] (partition-by-nums [] [])))
+    (is (= [] (partition-by-nums [] [])))
     (is (= [] (partition-by-nums [1 2] [])))
     (is (= [] (partition-by-nums [] [1 2]))))
   (testing "fit"

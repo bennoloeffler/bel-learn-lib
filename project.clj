@@ -2,7 +2,7 @@
   :description "Bennos library with all learnings in clojure"
   :url "https://github.com/bennoloeffler/bel-learn-lib"
   :license {:name "WTFPL"
-            :url "http://www.wtfpl.net/"}
+            :url  "http://www.wtfpl.net/"}
   :dependencies [[org.clojure/clojure "1.10.1"]
                  [org.clojure/tools.reader "1.2.2"]
                  [com.taoensso/timbre "5.1.0"] ; x logging, see: https://github.com/ptaoussanis/timbre
@@ -20,17 +20,17 @@
                  [proto-repl "0.3.1" :exclusions [org.clojure/core.async]] ; to use datahike
                  [org.clojure/tools.namespace "1.1.0"] ; needed for protorepl
                  [clojure.java-time "0.3.2"] ; https://github.com/dm3/clojure.java-time
-                 [tongue "0.2.10"]; i18n multi-lang ; 
+                 [tongue "0.2.10"] ; i18n multi-lang ;
                  [io.replikativ/datahike "0.3.3"]
                  [venantius/ultra "0.6.0"]
-                 [mate-clj "1.0.0"]; included sourcecode - but does not work
-                 [io.aviso/pretty "0.1.37"]            ;formatting of exceptions
-                 [mvxcvi/puget "1.2.1"]                ;colour print data
-                 [expound "0.8.4"]                     ;improve error messages
-                 [expectations/clojure-test "1.2.1"]   ;library for testing
+                 [mate-clj "1.0.0"] ; included sourcecode - but does not work
+                 [io.aviso/pretty "0.1.37"] ;formatting of exceptions
+                 [mvxcvi/puget "1.2.1"] ;colour print data
+                 [expound "0.8.4"] ;improve error messages
+                 [expectations/clojure-test "1.2.1"] ;library for testing
                  [org.clojure/tools.namespace "1.0.0"] ;reload
-                 [philoskim/debux "0.6.5"]            ;dbg debugger
-                 [hashp "0.1.1"]                    ;debugging #p
+                 [philoskim/debux "0.6.5"] ;dbg debugger
+                 [hashp "0.1.1"] ;debugging #p
                  [tupelo "21.07.08"]
                  [org.clojure/data.json "2.2.1"]
                  [clj-http "3.12.3"]
@@ -42,27 +42,27 @@
   :bat-test {:parallel? true :report [:pretty {:type :junit :output-to "target/junit.xml"}]} ; :report :progress ; xunit-viewer -r . -w -p 5050 -s true
 
   :test-paths ["test" "src"]
-  :profiles {:uberjar {:aot :all
-                       :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
-             :reveal {:dependencies [[nrepl,"0.8.3"][vlaaad/reveal "1.3.212"]]
-                      :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}}
-             :dev {:source-paths ["dev"]
-                   :dependencies [[org.clojure/tools.namespace "1.1.0"]
-                                  [org.clojure/java.classpath "1.0.0"]
-                                  [nrepl,"0.8.3"]
-                                  [vlaaad/reveal "1.3.212"]]
-                                  ;[pjstadig/humane-test-output "0.11.0"]]
+  :profiles {:uberjar  {:aot      :all
+                        :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
+             :reveal   {:dependencies [[nrepl, "0.8.3"] [vlaaad/reveal "1.3.212"]]
+                        :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}}
+             :dev      {:source-paths ["dev"]
+                        :dependencies [[org.clojure/tools.namespace "1.1.0"]
+                                       [org.clojure/java.classpath "1.0.0"]
+                                       [nrepl, "0.8.3"]
+                                       [vlaaad/reveal "1.3.212"]]
+                             ;[pjstadig/humane-test-output "0.11.0"]]
 
-                   :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
-                   :plugins [[com.jakemccrary/lein-test-refresh "0.24.1"] ; lein test-refresh
-                             [metosin/bat-test "0.4.4"] ; lein bat-test auto ;see eftest
-                             [lein-cloverage "1.2.2"]]} ; lein cloverage
-                            ;[venantius/ultra "0.6.0"];crashes with linux/idea2021.1]}})
-                   ;:injections [(require 'pjstadig.humane-test-output)
-                                ;(pjstadig.humane-test-output/activate!)]]}
+                        :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
+                        :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"] ; lein test-refresh
+                                       [metosin/bat-test "0.4.4"] ; lein bat-test auto ;see eftest
+                                       [lein-cloverage "1.2.2"]]} ; lein cloverage
+             ;[venantius/ultra "0.6.0"];crashes with linux/idea2021.1]}})
+             ;:injections [(require 'pjstadig.humane-test-output)
+             ;(pjstadig.humane-test-output/activate!)]]}
 
-             :bel-test {
-                        :test-paths ["test" "src"]
+             :bel-test {; does not work to put humane output to console runner...
+                        :test-paths   ["test" "src"]
                         :dependencies [;[org.clojure/tools.namespace "1.1.0"]
                                        ;[org.clojure/java.classpath "1.0.0"]
                                        ;[nrepl,"0.8.3"]
@@ -70,12 +70,14 @@
                                        [pjstadig/humane-test-output "0.11.0"]]
 
                         ;:repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
-                        :plugins [;[com.jakemccrary/lein-test-refresh "0.24.1"] ; lein test-refresh
-                                  [metosin/bat-test "0.4.4"] ; lein bat-test auto ;see eftest
-                                  [lein-cloverage "1.2.2"]] ; lein cloverage
-                        ;[venantius/ultra "0.6.0"];crashes with linux/idea2021.1]}})
-                        :injections [(require 'pjstadig.humane-test-output)
-                                     (pjstadig.humane-test-output/activate!)]}})
+                        :plugins      [;[com.jakemccrary/lein-test-refresh "0.24.1"] ; lein test-refresh
+                                       [metosin/bat-test "0.4.4"]
+                                       ; lein bat-test auto ;see eftest
+                                       ; OR lein with-profile bel-test  bat-test auto
+                                       [lein-cloverage "1.2.2"]] ; lein cloverage
+                        ;[venantius/ultra "0.6.0"]];crashes with linux/idea2021.1]}})
+                        :injections   [(require 'pjstadig.humane-test-output)
+                                       (pjstadig.humane-test-output/activate!)]}})
 
 
 
