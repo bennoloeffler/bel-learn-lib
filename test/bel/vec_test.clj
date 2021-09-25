@@ -1,6 +1,8 @@
 (ns bel.vec-test
   (:require [clojure.test :refer :all])
-  (:require [bel.vec :refer :all])
+  (:require [bel.vec :refer :all]
+            [puget.printer :refer (cprint)])
+
   (:import (bel.vec V))
   (:gen-class))
 
@@ -16,6 +18,9 @@
 
 
 (deftest make-rand-vec-test
+  (cprint '(let [td (rand-v 1 2 3 4)]
+             (is (<= 1 (:x td) 2))
+             (is (<= 2 (:y td) 3))))
   (testing "x y random creation"
     (dotimes [n 10]
       (let [td (v n n)]
@@ -42,5 +47,5 @@
           v2 (v 3 0)]
       (is (== 5 (distance v1 v2))))))
 
-(comment  
+(comment
   (run-tests 'bel.vec-test 'bel.))

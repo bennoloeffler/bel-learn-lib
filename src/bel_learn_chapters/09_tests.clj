@@ -2,13 +2,27 @@
   (:require [clojure.test :refer :all]
             [bel-learn-lib.core :refer :all]
             [mate-clj.core :refer :all]
-            [erdos.assert :as ea] ;:refer :all] ; overwrite assert
+            [erdos.assert :as ea] ; overwrite assert
             [expectations.clojure.test :refer [defexpect expect expecting more more-> more-of]]))
+            ;[tupelo.test :refer :all]))
 ; http://www.futurile.net/2020/07/14/clojure-testing-with-clojure-test-and-expectations/
 ; https://github.com/clojure-expectations/clojure-test
 
+; REPORTING
+; lein cloverage
+; lein bat-test auto
+; OR - if there is a profile, eg with humane test output:
+; lein with-profile bel-test  bat-test auto
+;
+; then in target-dir target (where junit.xml is...)
+; xunit-viewer -r . -w -p 5050 -s true
+; INSTALL, see: https://github.com/lukejpreston/xunit-viewer
+; NODE: https://blog.nevercodealone.de/nodejs-ubuntu-installieren/
+
+
+; TUPELO isnt --> ATTENTION. not recognized from bat-test runner
 (deftest run-readable-test
-  (testing "is it human readable"
+  (testing "is it human readable or comparable in intellij"
     (is (= ["val" 51 {:key {:deep-key "dv"}}] ["val" 51 {:key {:deep-key "dv"}}]))))
 
 ;;
@@ -38,7 +52,7 @@
   (testing "empty"
     (is (= [] (partition-by-nums [] [])))
     (is (= [] (partition-by-nums [1 2] [])))
-    (ea/is (= [] (partition-by-nums [] [1 2]))))
+    (is (= [] (partition-by-nums [] [1 2]))))
   (testing "fit"
     (is (= [[1 2 3] [4 5]] (partition-by-nums [3 2] [1 2 3 4 5])))
     (is (= [[7]] (partition-by-nums [1] [7]))))
