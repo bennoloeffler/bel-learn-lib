@@ -4,11 +4,12 @@
 
 ; HOW to use the lib
 ; ;;;;;;;;;;;;;;;;;;
-; Make a dir in the other project
-; c:\projects\bel-use-learn-lib\src\bel-learn-lib
-; BASICALLY: bel-learn-lib in src
-; Put a symbolic link there: 
-; mklink ..\..\..\..\bel-learn-lib\src\ (AS ADMIN)
+; Make a link in the other projects src-dir:
+; e.g. in bgame/src,
+; place a link to
+; mklink ..\..\..\..\bel-learn-lib\src\belib (AS ADMIN)
+; oder sowas wie:
+; ln -s ..\..\..\bel-learn-lib\src\belib
 ; THATS IT
 
 
