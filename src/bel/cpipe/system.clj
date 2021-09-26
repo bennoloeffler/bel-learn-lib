@@ -1,5 +1,5 @@
 (ns bel.cpipe.system
-  (:require [bel.package-viewer :as pv]
+  (:require [bel-learn-lib.package-viewer :as pv]
     ;[clojure.pprint :as pp]
             [java-time :as jt]
             [puget.printer :as pp]
@@ -29,7 +29,7 @@
   [system]
   (print "STOPPING the system: ")
   (if-let [s (:frame system)]
-    (bel.package-viewer/dispose-frame s)
+    (pv/dispose-frame s)
     (println "...there is nothing to stop"))
   (assoc system :frame nil))
 

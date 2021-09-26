@@ -1,9 +1,5 @@
 (ns bels-test-runner
-  (:require [clojure.test :refer :all])
-  (:gen-class))
-
-
-
+  (:require [clojure.test :refer :all]))
 
 ;; ALT -> WIN then T
 (defn call-current-tests []

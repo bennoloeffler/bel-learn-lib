@@ -53,7 +53,7 @@
   (refresh :after 'bels-test-runner/call-current-tests))
 
 (defn overview []
-  (bel.package-viewer/-main))
+  (belib.package-viewer/-main))
 
 (comment
   (go)

@@ -19,6 +19,7 @@
 
 (comment
 
+  (use 'hashp.core)
   ;hashp
   (/ 10 #p (/ (- 12 10) (+ 10 1)))
 

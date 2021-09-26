@@ -1,4 +1,4 @@
-(ns bel.package-viewer
+(ns bel-learn-lib.package-viewer
   (:gen-class)
   (:require [seesaw.core :refer :all]
             [clojure.repl :refer :all])

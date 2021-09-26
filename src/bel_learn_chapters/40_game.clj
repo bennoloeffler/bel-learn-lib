@@ -1,6 +1,6 @@
 (ns bel-learn-chapters.40-game
-  (:require [bel.vec :refer :all])
-  (:import (bel.vec V)))
+  (:require [belib.vec :refer :all])
+  (:import (belib.vec V)))
 
 (defrecord Food [^V pos ^V speed ^double energy ^double poison])
 
@@ -15,8 +15,8 @@
                       :auto-monster []}))
 
 (defn make-rand-food []
-  (Food. (rand-v world-x world-y)
-         (rand-v max-speed max-speed)
+  (Food. (v-rand world-x world-y)
+         (v-rand max-speed max-speed)
          (rand-int max-energy)
          (rand-int max-poison)))
 
@@ -33,17 +33,17 @@
 (defn move-one-food
   [food]
   {:pre [food (:pos food) (:speed food)]}
-  (let [new-pos (add-vec (:pos food) (:speed food))]
+  (let [new-pos (v-add (:pos food) (:speed food))]
     ;(println "--> FOOD: " food)
     (loop [pos new-pos food food]
-      (if (in-area? 0 0 world-x world-y pos)
+      (if (v-in-area? 0 0 world-x world-y pos)
         (Food. pos (:speed food) (:energy food) (:poison food))
         (let [new-speed (rand-direction (:speed food))]
           ;(println " - - - - CHANGED DIRECTION - - - - ")
           ;(println "speed: " new-speed)
           ;(println "pos: " (:pos food))
           (recur
-            (add-vec (:pos food) new-speed)
+            (v-add (:pos food) new-speed)
             (assoc food :speed new-speed)))))))
 
 
