@@ -41,7 +41,7 @@
   :ring {:handler bel-learn-chapters.50-http/handler}
   :bat-test {:parallel? true :report [:pretty {:type :junit :output-to "target/junit.xml"}]} ; :report :progress ; xunit-viewer -r . -w -p 5050 -s true
 
-  :test-paths ["test" "src"]
+  :test-paths ["test"] ; cant get bat-test to run in "src"
   :profiles {:uberjar  {:aot      :all
                         :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :reveal   {:dependencies [[nrepl, "0.8.3"] [vlaaad/reveal "1.3.212"]]
@@ -51,18 +51,18 @@
                                        [org.clojure/java.classpath "1.0.0"]
                                        [nrepl, "0.8.3"]
                                        [vlaaad/reveal "1.3.212"]]
-                             ;[pjstadig/humane-test-output "0.11.0"]]
+                                      ;[pjstadig/humane-test-output "0.11.0"]]
 
                         :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
                         :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"] ; lein test-refresh
                                        [metosin/bat-test "0.4.4"] ; lein bat-test auto ;see eftest
                                        [lein-cloverage "1.2.2"]]} ; lein cloverage
-             ;[venantius/ultra "0.6.0"];crashes with linux/idea2021.1]}})
-             ;:injections [(require 'pjstadig.humane-test-output)
-             ;(pjstadig.humane-test-output/activate!)]]}
+                                      ;[venantius/ultra "0.6.0"];crashes with linux/idea2021.1]}})
+                                      ;:injections [(require 'pjstadig.humane-test-output)
+                                      ;(pjstadig.humane-test-output/activate!)]]}
 
-             :bel-test {; does not work to put humane output to console runner...
-                        :test-paths   ["test" "src"]
+             :bel-test {; does not work to put humane output to console runner... bat-test with 'lein with-profile bel-test  bat-test auto'
+                        ;:test-paths   ["test" "src"]
                         :dependencies [;[org.clojure/tools.namespace "1.1.0"]
                                        ;[org.clojure/java.classpath "1.0.0"]
                                        ;[nrepl,"0.8.3"]
@@ -71,11 +71,8 @@
 
                         ;:repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
                         :plugins      [;[com.jakemccrary/lein-test-refresh "0.24.1"] ; lein test-refresh
-                                       [metosin/bat-test "0.4.4"]
-                                       ; lein bat-test auto ;see eftest
-                                       ; OR lein with-profile bel-test  bat-test auto
-                                       [lein-cloverage "1.2.2"]] ; lein cloverage
-                        ;[venantius/ultra "0.6.0"]];crashes with linux/idea2021.1]}})
+                                       [metosin/bat-test "0.4.4"]]
+                        ;[venantius/ultra "0.6.0"]] ; crashes with linux/idea2021.1]}})
                         :injections   [(require 'pjstadig.humane-test-output)
                                        (pjstadig.humane-test-output/activate!)]}})
 
