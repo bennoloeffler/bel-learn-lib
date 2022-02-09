@@ -1,6 +1,6 @@
 (ns bel-learn-chapters.x-130-reducers
-  [:require [clojure.core.reducers :as r]
-            [clojure.string :as str]])
+  [:require [clojure.core.reducers :as r]])
+
 
 ;; https://clojure.org/reference/reducers
 
