@@ -1,5 +1,5 @@
 (ns bel.cpipe.file-reader-test
-  (:require [clojure.test :refer [deftest is thrown?]])
+  (:require [clojure.test :refer :all])
   (:require [bel.cpipe.file-reader :refer :all]
             [erdos.assert :as pa]
             [java-time :as jt])
@@ -48,9 +48,22 @@
   (let [data (vec (parse-file-tasks "cpipe-test-files/bsp-01-nur-tasks/Projekt-Start-End-Abt-Kapa.txt"))]
     (is (= 12 (count data)))))
 
-(deftest parse-file-tasks-fail-test
-  (is (thrown? Exception (throw (Exception. "stuff")))))
+(deftest fail-test
+  (is (thrown? ArithmeticException (/ 1 0))))
 
+
+(deftest parse-file-tasks-fail-test
+  (is (thrown?
+        Exception
+        (parse-text-tasks
+          "proj1  22.3.2016 24.6.2017 res1   x      comment-it-1\n   \n
+          proj2  22.3.2017 24.6.2018 res1   23      comment-it-2\n"))))
+
+
+(comment
+  (parse-text-tasks
+    "proj1  22.3.2016 24.6.2017 res1   x      comment-it-1\n   \n
+    proj2  22.3.2017 24.6.2018 res1   23      comment-it-2\n"))
 
 
 

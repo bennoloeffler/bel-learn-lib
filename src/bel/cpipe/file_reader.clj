@@ -37,7 +37,9 @@
   (Long/parseLong string))
 
 (defn n [string]
-  (Double/parseDouble string))
+  (try
+    (Double/parseDouble string)
+    (catch Exception e (throw (Exception. (str "value " string " cannot be made a double, e = "  (.getMessage e)))))))
 
 (comment
   (pa/assert (= 17 (n"17"))))
@@ -83,9 +85,10 @@
                  LocalDate (d data)
                  Double (n data)
                  Long (l data)
-                 String data)]
+                 String data
+                 nil)]
     ; TODO: throw exception if wrong type
-    (or result (throw (Exception. "type not supported: " type)))))
+    (or result (throw (Exception. (str "type not supported: "  (str type)))))))
 (comment
   (type (parse-type "17" Long))
   (parse-type "17.5.2022" LocalDate))
