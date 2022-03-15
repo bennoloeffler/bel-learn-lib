@@ -3,7 +3,7 @@
 
 
 ;;
-;; ---------- definition of 2D-vector x y ----------
+;; ---------- definition of 2D-vector x y (or a Point) ----------
 ;;
 (defrecord V [^double x ^double y])
 
@@ -70,13 +70,11 @@
 ;; ----------- all the simple calculations -----------
 ;;
 
+(declare v-minus v-len)
 (defn v-distance
   "the distance from one point :x :y to another"
   [from-v to-v]
-  (Math/sqrt
-    (+
-      (Math/pow (- (:x to-v) (:x from-v)) 2)
-      (Math/pow (- (:y to-v) (:y from-v)) 2))))
+  (-> (v-minus to-v from-v) v-len))
 
 
 (defn v-minus
@@ -98,12 +96,19 @@
     (+ (:x v1) (:x v2))
     (+ (:y v1) (:y v2))))
 
+
 (defn v-mult
   "multiply vector v with num"
   [v num]
   (V.
     (* (:x v) num)
     (* (:y v) num)))
+
+(defn v-div
+  "divide vector v with num"
+  [v num]
+  (v-mult v (/ 1.0 num)))
+
 
 (defn v-len
   "get the len of a vector :x :y"
@@ -113,11 +118,29 @@
       (Math/pow (:x v) 2)
       (Math/pow (:y v) 2))))
 
+(defn v-max [v max-len]
+  (let [l (v-len v)
+        ratio (/ l max-len)]
+    (if (> ratio 1)
+      (v-div v ratio)
+      v)))
+
+(comment
+  (v-max (v 1 1) 1)
+  (v-max (v 2 2) 5))
+
+(defn v-zero?
+  "is vector zero"
+  [v]
+  (and (== 0 (:x v))
+       (== 0 (:y v))))
+
+
 (defn v-not-zero?
   "is vector longer than zero"
   [v]
-  (let [l (v-len v)]
-    (not= l 0.0)))
+  (not (v-zero? v)))
+
 
 (defn v-unity
   "get unity vector (vector of len 1) of v"
@@ -127,6 +150,7 @@
     (V.
       (/ (:x v) l)
       (/ (:y v) l))))
+
 
 (defn v-unity?
   "is unity vector?"
@@ -144,15 +168,18 @@
 ;; ----------- everything with angles -----------
 ;;
 
+
 (defn v-pi-to-grad
   "PI => 180°"
   [pi-num]
   (* pi-num (/ 180 Math/PI)))
 
+
 (defn v-grad-to-pi
   "180° => PI"
   [alpha]
   (* alpha (/ Math/PI 180)))
+
 
 (defn v-rotate
   "rotate around zero point (PI = 180° left)"
@@ -161,19 +188,23 @@
     (- (* (:x v) (Math/cos pi-angle)) (* (:y v) (Math/sin pi-angle)))
     (+ (* (:x v) (Math/sin pi-angle)) (* (:y v) (Math/cos pi-angle)))))
 
+
 (defn v-pi-angle
   "get angle of vector: pos x-axis = 0, pos y-axis = PI/2"
   [v]
   (Math/atan2 (:x v) (:y v)))
+
 
 (defn v-alpha-angle
   "get angle of vector: pos x-axis = 0, pos y-axis = 90°"
   [v]
   (v-pi-to-grad (v-pi-angle v)))
 
+
 ;;
 ;; ---------- check if inside something ----------
 ;;
+
 
 (defn v-in-area?
   "is v in the box? including the border values!"
@@ -186,12 +217,22 @@
     (>= (:y v) y-to) false
     :else true))
 
+
 (defn rand-direction
   "changes the direction randomly without changing the length"
   [v]
   (let [l (v-len v)
         u (v-unity (v-rand -1000 1000 -1000 1000))]
     (v-mult u l)))
+
+(defn rand-direction-max
+  "changes the direction randomly without changing the length between
+   +/- max-pi-angle"
+  [v max-pi-angle]
+  (let [pi-angle (as-> (rand) $
+                       (* $ 2 max-pi-angle)
+                       (- $ max-pi-angle))]
+    (v-rotate v pi-angle)))
 
 
 

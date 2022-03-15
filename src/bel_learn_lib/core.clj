@@ -1,5 +1,5 @@
-(ns bel-learn-lib.core
-  (:gen-class))
+(ns bel-learn-lib.core)
+
 
 
 ; HOW to use the lib

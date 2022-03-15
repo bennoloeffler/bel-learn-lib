@@ -1,6 +1,7 @@
 (ns bel-learn-chapters.31-swing
   (:gen-class)
   (:require [seesaw.core :refer :all]
+            [seesaw.font :refer :all]
             [clojure.repl :refer :all])
   (:import [javax.swing JFrame JLabel JButton]
            ;[java.awt.event WindowListener]
@@ -30,6 +31,7 @@
 ;; https://github.com/eugenkiss/7guis-Clojure-Seesaw/blob/master/src/sevenguis/cells.clj
 (comment
 
+  (swing)
   (native!)
   (FlatLightLaf/install)
   (FlatDarkLaf/install)
@@ -69,6 +71,7 @@
   line
   text"))
 
+  (.setFont area (font "MONOSPACED-PLAIN-12"))
   ;(display area)
   ;(text! area (java.net.URL. "https://www.spiegel.de/"))
   ;(display (scrollable area))

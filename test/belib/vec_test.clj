@@ -1,5 +1,7 @@
 (ns belib.vec-test
-  (:require [clojure.test :refer :all])
+  (:require [clojure.test :refer :all]
+            [expectations.clojure.test :refer [defexpect expect expecting more more-> more-of]]
+            [tupelo.core :refer [rel=]])
   (:require [belib.vec :refer :all])
   (:import (belib.vec V))
   (:gen-class))
@@ -64,4 +66,26 @@
 (deftest v-minus-test
   (is (= (V. -16 -1) (v-minus (v 1 2 17 3))))
   (is (= (V. -17 -3) (v-minus (v 17 3)))))
+
+
+(deftest v-not-zero?-test
+  (let [zvf (v 0.0 0.0)
+        zvi (v 0 0)]
+    (expect (not (v-not-zero? zvf)))
+    (expect (not (v-not-zero? zvi)))))
+
+(deftest v-zero?-test
+  (let [zvf (v 0.0 0N)
+        zvi (v 0 0)]
+    (expect (v-zero? zvf))
+    (expect (v-zero? zvi))))
+
+
+(deftest rand-direction-max-test
+ (dotimes [n 100]
+  (let [v (v 1 0)
+        vr (rand-direction-max v (/ pi-half (* 100 (inc n))))
+        #_ (println vr)]
+    (expect (rel= (:x vr) 1 :digits 3)))))
+
 
