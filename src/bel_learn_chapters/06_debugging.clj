@@ -107,13 +107,21 @@
 (comment
   (mate/d->> [:1 :2 :3 :4]
              shuffle
-             (map #(str % "--"))
-             str/join)
+             (map str))
+
+
   ; but this does
   (dbg (->> [:1 :2 :3 :4]
             shuffle
             (map #(str % "--"))
-            str/join)))
+            str/join))
+
+  ; this too
+  (def m {:body "flow test"})
+  (mate/d-> m
+            :body ;step #1
+            (clojure.string/upper-case) ;step #2
+            (clojure.string/reverse))) ;step #3)
 
 ;;---------------------------------------
 ;; POWER ASSERTS

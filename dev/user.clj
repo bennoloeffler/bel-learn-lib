@@ -13,8 +13,9 @@
   (:use tupelo.core))
 
 ; https://github.com/stuartsierra/component.repl
-
-; see https://lambdaisland.com/blog/2018-02-09-reloading-woes
+; https://lambdaisland.com/blog/2018-02-09-reloading-woes
+; https://www.cbui.dev/a-tutorial-to-stuart-sierras-component/
+; https://medium.com/@maciekszajna/reloaded-workflow-out-of-the-box-be6b5f38ea98
 
 (def system nil)
 
@@ -78,9 +79,9 @@
   (->> (all-ns) (filter #(re-find (re-pattern "datomic") (str %))))
   (map #(ns-name %) (all-ns))
   (dbg (->> (all-ns) (shuffle) (take 3) (map ns-name) sort (partition 4)))
-  (/ 10 #p (/ (- 12 10) (+ 10 1)))
+  ((/ 10 #p (/ (- 12 10) (+ 10 1))))
 
   (defn s []
-    (constantly (do (println "again...") (+ 20 100))))
+    constantly (do (println "again...") (+ 20 100)))
 
   ((s) 1 2 3))

@@ -7,6 +7,9 @@
 ; https://github.com/clj-commons/seesaw/wiki
 ; http://www.eli.sdsu.edu/courses/fall14/cs596/notes/D18SeesawGUI.pdf
 
+
+;; TODO put cpipe in own repository...
+
 (defn open [e]
   (println "open, event: " e))
 
