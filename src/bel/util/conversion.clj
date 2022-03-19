@@ -15,9 +15,14 @@
 ;;
 ;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
+
+(defn dt-str [local-data]
+  ;(println local-data)
+  (jt/format "d.M.yyyy hh:mm:ss" local-data))
+
 (defn d-str [local-data]
-  (println local-data)
-  (jt/format  "d.M.yyyy" local-data))
+  ;(println local-data)
+  (jt/format "d.M.yyyy" local-data))
 
 
 (defn d [string]
@@ -29,7 +34,7 @@
           (str "value \"" string "\" cannot be made"
                " a LocalDate, errMsg from parser=" (.getMessage e)))))))
 
-(jt/format  "d.M.yyyy" (d "21.3.2015"))
+(jt/format "d.M.yyyy" (d "21.3.2015"))
 
 (comment                                                    ; some examples how to use d
   (pa/assert (= (jt/local-date 2015 12 22)

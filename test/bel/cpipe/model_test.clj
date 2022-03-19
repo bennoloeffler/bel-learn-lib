@@ -2,8 +2,7 @@
   (:require [clojure.test :refer :all]
             [bel.cpipe.model :refer :all]
             [java-time :as jt]
-            [datahike.core :as d])
-  (:gen-class))
+            [datahike.core :as d]))
 
 
 #_(deftest init-db-test

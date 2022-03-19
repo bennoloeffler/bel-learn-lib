@@ -2,8 +2,8 @@
   (:require [clojure.core.specs.alpha :as s]
             [clojure.string :as str]
             [taoensso.timbre :as log]
-            [java-time :as t])
-  (:gen-class))
+            [java-time :as t]
+            [bel.cpipe.file-reader :refer :all]))
 
 (defn str-is-date?
   "check if Date of
@@ -27,7 +27,7 @@
 (defn str-to-long
   "parse str to long"
   [str]
-  (Long/valueOf str))
+  (Long/valueOf ^String str))
 
 ;(str-is-long? "12")
 
@@ -63,3 +63,11 @@
                          (nth line 3)
                          (str-to-long (nth line 4))
                          (if (= 6 (count line)) (nth line 5) nil)]) $)))
+
+
+(defn create-empty-model []
+  {:tasks []})
+
+(defn read-test-model []
+  (let [tasks (parse-file-tasks "cpipe-test-files/bsp-01-nur-tasks/Projekt-Start-End-Abt-Kapa.txt")]
+    {:tasks tasks}))

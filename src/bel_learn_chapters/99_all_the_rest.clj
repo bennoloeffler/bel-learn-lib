@@ -1,5 +1,4 @@
-(ns bel-learn-chapters.99-all-the-rest
-  (:gen-class))
+(ns bel-learn-chapters.99-all-the-rest)
 
 (require '[clojure.repl :refer :all])
 (require '[clojure.pprint :refer :all])

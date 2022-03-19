@@ -45,7 +45,7 @@
                  "proj1  22.3.2016 24.6.2017 res1   x       comment-it-1\n   \n
                       proj2  22.3.2017 24.6.2018 res1   23      comment-it-2\n")))))
 
-(deftest parse-file-ips-test
+(deftest parse-text-ips-test
  (let [expected {:max-ips 2
                  :project-ips
                  [{:end      (d "24.6.2018")

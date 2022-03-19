@@ -5,8 +5,8 @@
     ;[javax.swing JFrame JLabel JButton]
     ;[java.awt.event WindowListener]
     (java.util Date)
-    (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf))
-  (:gen-class))
+    (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf)))
+
 
 ; https://cljdoc.org/d/io.replikativ/datahike/0.3.3/doc/readme
 ; https://docs.datomic.com/on-prem/overview/introduction.html

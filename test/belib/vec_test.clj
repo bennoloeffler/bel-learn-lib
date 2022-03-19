@@ -3,8 +3,7 @@
             [expectations.clojure.test :refer [defexpect expect expecting more more-> more-of]]
             [tupelo.core :refer [rel=]])
   (:require [belib.vec :refer :all])
-  (:import (belib.vec V))
-  (:gen-class))
+  (:import (belib.vec V)))
 
 (deftest make-vec-test
   (testing "x y creation"

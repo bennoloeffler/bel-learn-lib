@@ -27,10 +27,11 @@
             n
             (+' (fib (- n 1)) (fib (- n 2)))))
 
-(time (fib 400))
-(time (fib 1400))
-(time (fib 2400))
-(time (fib 3400))
-(time (fib 4400))
-(time (fib 5400))
-(time (fib 6400))
+(comment
+  (time (fib 400))
+  (time (fib 1400))
+  (time (fib 2400))
+  (time (fib 3400))
+  (time (fib 4400))
+  (time (fib 5400))
+  (time (fib 6400)))

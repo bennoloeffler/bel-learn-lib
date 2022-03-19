@@ -1,5 +1,4 @@
 (ns bel-learn-chapters.31-swing
-  (:gen-class)
   (:require [seesaw.core :refer :all]
             [seesaw.font :refer :all]
             [clojure.repl :refer :all])

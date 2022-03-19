@@ -1,5 +1,4 @@
 (ns bel-learn-chapters.90-threads
-  (:gen-class)
   (:require
     [clojure.data.json :as json]
     [puget.printer :as puget :refer [cprint]]
