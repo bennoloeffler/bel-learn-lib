@@ -50,14 +50,14 @@
              :dev      {:source-paths ["dev"]
                         :dependencies [[org.clojure/tools.namespace "1.2.0"]
                                        [org.clojure/java.classpath "1.0.0"]
-                                       [nrepl, "0.9.0"]
-                                       [vlaaad/reveal "1.3.214"]]
+                                       [nrepl, "0.9.0"]]}
+                                       ;[vlaaad/reveal "1.3.214"]]
                         ;[pjstadig/humane-test-output "0.11.0"]]
 
-                        :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
-                        :plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"] ; lein test-refresh
-                                       [metosin/bat-test "0.4.4"] ; lein bat-test auto ;see eftest
-                                       [lein-cloverage "1.2.2"]]} ; lein cloverage
+                        ;:repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}
+                        ;:plugins      [[com.jakemccrary/lein-test-refresh "0.24.1"] ; lein test-refresh
+                        ;               [metosin/bat-test "0.4.4"] ; lein bat-test auto ;see eftest
+                        ;               [lein-cloverage "1.2.2"]]} ; lein cloverage
              ;[venantius/ultra "0.6.0"];crashes with linux/idea2021.1]}})
              ;:injections [(require 'pjstadig.humane-test-output)
              ;(pjstadig.humane-test-output/activate!)]]}
