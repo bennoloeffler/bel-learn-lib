@@ -30,6 +30,7 @@
 ; s c    L Load File to Repl
 ; s c    R switch Repl to namespace
 
+;   c  a R Refactor
 ; s   a  G go system (in user)
 ; s   a  R Reset system (in user)
 ; s   a  S Sync all files
@@ -83,6 +84,7 @@
 (defn go
   "Initializes the current development system and starts it running."
   []
+  (stop)
   (init)
   (start)
   (println "initialized and started!"))
@@ -100,6 +102,7 @@
 
 (defn overview []
   (bel-learn-lib.package-viewer/-main))
+
 
 (comment
   (go)
