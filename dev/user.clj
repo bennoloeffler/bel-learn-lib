@@ -24,21 +24,35 @@
 ; cmnd ⌘  =  alt
 ; all: s c a = shift ctrl alt = ⇧ ⌃ ⌘
 
-;   c    D Repl Debug
-;   c a  U Update Project
-
-; s c    L Load File to Repl
-; s c    R switch Repl to namespace
-
-;   c  a R Refactor
-; s   a  G go system (in user)
-; s   a  R Reset system (in user)
-; s   a  S Sync all files
-
+; OVERVIEW
 ; s c a  T Testing actions
 ; s c a  S Structural editing action
 ; s c a  R Repl actions
 ; s c a  M Move actions
+
+; MOVE in files and actions
+; s c    A all actions
+; c      TAB switcher
+;     a  O Open ALL
+
+; SESSION
+;   c    R Run Repl
+;   c    D Debug Repl
+;   c a  U Update Project
+;     a  U Pull
+;     a  K Commit
+
+; ONE FILE
+; s c    L Load File to Repl
+; s c    R switch Repl to namespace
+
+
+; s   a  S Sync all files
+; s   a  G go system (in user)
+; s   a  R Reset system (in user)
+
+;   c  a R Refactor
+
 
 
 
@@ -103,8 +117,15 @@
 (defn overview []
   (bel-learn-lib.package-viewer/-main))
 
+(defn rf []
+  (refresh))
+
+(defn ra []
+  (refresh-all))
 
 (comment
+  (rf)
+  (ra)
   (go)
   (stop)
   (start)
@@ -120,6 +141,56 @@
 ; use profile in order to switch on humane-test-output etc in terminal and keep
 ; it off in intellij
 ; lein with-profile bel-test  bat-test auto
+
+(defn repl []
+  (require '[clojure.java.io :as io]
+           '[clojure.string :as str]
+           '[clojure.pprint :as pp :refer (pprint)]
+           '[puget.printer :refer (cprint)]
+           '[clojure.repl :refer :all]
+           '[clojure.test :as test]
+           '[clojure.reflect :as reflect]
+           '[clojure.inspector :as insp]
+           '[clojure.java.javadoc :as jdoc]
+           '[clojure.tools.namespace.repl :refer (refresh refresh-all clear)]
+           '[debux.core :refer :all]
+           '[hashp.core :refer :all])
+  (println "pprint, cprint, refresh, dbg, #h, test/, reflect/, insp/, jdoc/"))
+
+(defn dir-here []
+  (dir-fn *ns*))
+
+#_(defn ai [obj]
+    "all information on obj"
+    (println "--- type:" (type obj))
+    (println "--- doc:")
+    (doc obj)
+    (println "--- src:")
+    (source obj)
+    (println "--- jdoc: see browser")
+    (jdoc/javadoc obj)
+    (println "--- reflect:")
+    (->> (reflect/reflect obj) :members (sort-by :name) (pp/print-table [:name :flags :parameter-types :return-type])))
+
+(defn show-members [o]
+  (->> (reflect/reflect o)
+       :members
+       (sort-by :name)
+       (pp/print-table [:name :flags :parameter-types :return-type])))
+
+(defn j [o]
+  (find-doc (str o))
+  (jdoc/javadoc (clojure.reflect/typename o)))
+
+(comment
+  (def c (atom 1))
+  (def t (type c))
+  (def r (reflect/reflect t))
+  (def s (symbol t))
+  (def s (str t))
+
+  (def n (name (type c)))
+  (find-doc (str (type c))))
 
 (comment
   (require '[clojure.string :as str :refer [upper-case]])

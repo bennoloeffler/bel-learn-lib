@@ -13,111 +13,112 @@
 ; https://github.com/kristianmandrup/datascript-tutorial/blob/master/SUMMARY.md
 ; http://www.learndatalogtoday.org/
 
-(def cfg {:name               "bels-db"
-          :store              {:backend :file :path "/tmp/example"}
-          :schema-flexibility :read})
+(comment
+  (def cfg {:name               "bels-db"
+            :store              {:backend :file :path "/tmp/example"}
+            :schema-flexibility :read})
 
-(defn create-connect-db []
-  (if-not (d/database-exists? cfg)
-    (d/create-database cfg))
-  (def conn (d/connect cfg)))
-
-
-(defn delete-db []
-  ;; you might need to release the connection for specific stores like leveldb
-  ;(d/release conn)
-  ;; clean up the database if it is not need any more
-  (d/delete-database cfg))
+  (defn create-connect-db []
+    (if-not (d/database-exists? cfg)
+      (d/create-database cfg))
+    (def conn (d/connect cfg)))
 
 
-(defn delete-recreate-db []
-  (delete-db)
-  (create-connect-db))
-
-(defn create-schema []
-
-  ; person (name, sur-name, born, email, uses-cars, weight)
-  ; car (manufacturer, model, built, license-plate)
-
-  (d/transact conn [{:db/ident       :person/name
-                     :db/valueType   :db.type/string
-                     :db/cardinality :db.cardinality/one}
-
-                    {:db/ident       :person/sur-name
-                     :db/valueType   :db.type/string
-                     :db/cardinality :db.cardinality/one}
-
-                    {:db/ident       :person/born
-                     :db/valueType   :db.type/long
-                     :db/cardinality :db.cardinality/one}
-
-                    {:db/ident       :person/email
-                     :db/valueType   :db.type/string
-                     :db/cardinality :db.cardinality/one
-                     :db/unique      :db.unique/value}
-
-                    {:db/ident       :person/uses-cars
-                     :db/valueType   :db.type/ref
-                     :db/cardinality :db.cardinality/many}
-
-                    {:db/ident       :person/weight
-                     :db/valueType   :db.type/double
-                     :db/cardinality :db.cardinality/one}
+  (defn delete-db []
+    ;; you might need to release the connection for specific stores like leveldb
+    ;(d/release conn)
+    ;; clean up the database if it is not need any more
+    (d/delete-database cfg))
 
 
-                    {:db/ident       :car/manufacturer
-                     :db/valueType   :db.type/string
-                     :db/cardinality :db.cardinality/one}
+  (defn delete-recreate-db []
+    (delete-db)
+    (create-connect-db))
 
-                    {:db/ident       :car/model
-                     :db/valueType   :db.type/string
-                     :db/cardinality :db.cardinality/one}
+  (defn create-schema []
 
-                    {:db/ident       :car/built
-                     :db/valueType   :db.type/long
-                     :db/cardinality :db.cardinality/one}
+    ; person (name, sur-name, born, email, uses-cars, weight)
+    ; car (manufacturer, model, built, license-plate)
 
-                    {:db/ident       :car/license-plate
-                     :db/valueType   :db.type/string
-                     :db/cardinality :db.cardinality/one
-                     :db/unique      :db.unique/value}]))
+    (d/transact conn [{:db/ident       :person/name
+                       :db/valueType   :db.type/string
+                       :db/cardinality :db.cardinality/one}
 
-(defn create-sample []
-  (d/transact conn [{:car/manufacturer  "BMW",
-                     :car/model         "325",
-                     :car/built         2001
-                     :car/license-plate "S-GH-5443"}
+                      {:db/ident       :person/sur-name
+                       :db/valueType   :db.type/string
+                       :db/cardinality :db.cardinality/one}
 
-                    {:car/manufacturer  "BMW",
-                     :car/model         "530d",
-                     :car/built         2019
-                     :car/license-plate "H-VS-898"}
+                      {:db/ident       :person/born
+                       :db/valueType   :db.type/long
+                       :db/cardinality :db.cardinality/one}
 
-                    {:db/id             -1,
-                     :car/manufacturer  "Subaru",
-                     :car/model         "Justy",
-                     :car/built         1991,
-                     :car/license-plate "TBB-SK-123"}
+                      {:db/ident       :person/email
+                       :db/valueType   :db.type/string
+                       :db/cardinality :db.cardinality/one
+                       :db/unique      :db.unique/value}
 
-                    {:person/name      "Alice",
-                     :person/sur-name  "Cooper",
-                     :person/born      1947
-                     :person/email     "alice.cooper@animal.com"
-                     :person/uses-cars [{:db/id [:car/license-plate "S-GH-5443"]}]}
+                      {:db/ident       :person/uses-cars
+                       :db/valueType   :db.type/ref
+                       :db/cardinality :db.cardinality/many}
 
-                    {:person/name      "John",
-                     :person/sur-name  "Lennon",
-                     :person/born      1941
-                     :person/email     "jo.le@heaven.de"
-                     :person/uses-cars [{:db/id [:car/license-plate "H-VS-898"]}
-                                        {:db/id [:car/license-plate "S-GH-5443"]}
-                                        -1]}
+                      {:db/ident       :person/weight
+                       :db/valueType   :db.type/double
+                       :db/cardinality :db.cardinality/one}
 
-                    {:person/name      "Angela",
-                     :person/sur-name  "Merkel",
-                     :person/born      1960
-                     :person/email     "angela.merkel@leader.de"
-                     :person/uses-cars -1}]))
+
+                      {:db/ident       :car/manufacturer
+                       :db/valueType   :db.type/string
+                       :db/cardinality :db.cardinality/one}
+
+                      {:db/ident       :car/model
+                       :db/valueType   :db.type/string
+                       :db/cardinality :db.cardinality/one}
+
+                      {:db/ident       :car/built
+                       :db/valueType   :db.type/long
+                       :db/cardinality :db.cardinality/one}
+
+                      {:db/ident       :car/license-plate
+                       :db/valueType   :db.type/string
+                       :db/cardinality :db.cardinality/one
+                       :db/unique      :db.unique/value}]))
+
+  (defn create-sample []
+    (d/transact conn [{:car/manufacturer  "BMW",
+                       :car/model         "325",
+                       :car/built         2001
+                       :car/license-plate "S-GH-5443"}
+
+                      {:car/manufacturer  "BMW",
+                       :car/model         "530d",
+                       :car/built         2019
+                       :car/license-plate "H-VS-898"}
+
+                      {:db/id             -1,
+                       :car/manufacturer  "Subaru",
+                       :car/model         "Justy",
+                       :car/built         1991,
+                       :car/license-plate "TBB-SK-123"}
+
+                      {:person/name      "Alice",
+                       :person/sur-name  "Cooper",
+                       :person/born      1947
+                       :person/email     "alice.cooper@animal.com"
+                       :person/uses-cars [{:db/id [:car/license-plate "S-GH-5443"]}]}
+
+                      {:person/name      "John",
+                       :person/sur-name  "Lennon",
+                       :person/born      1941
+                       :person/email     "jo.le@heaven.de"
+                       :person/uses-cars [{:db/id [:car/license-plate "H-VS-898"]}
+                                          {:db/id [:car/license-plate "S-GH-5443"]}
+                                          -1]}
+
+                      {:person/name      "Angela",
+                       :person/sur-name  "Merkel",
+                       :person/born      1960
+                       :person/email     "angela.merkel@leader.de"
+                       :person/uses-cars -1}])))
 
 
 

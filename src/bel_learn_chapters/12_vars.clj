@@ -16,17 +16,17 @@
     @f2
     @f1
     ;(Thread/sleep 400)
-    (println non-atomic)))
+    (println non-atomic))
 
-(do
-  (def atomic (atom 0))
-  (def f1 (future
-            (doall (repeatedly 10000 #(swap! atomic inc)))))
-  (def f2 (future
-            (doall (repeatedly 10000 #(swap! atomic inc)))))
-  @f2
-  @f1
-  (println @atomic))
+  (do
+    (def atomic (atom 0))
+    (def f1 (future
+              (doall (repeatedly 10000 #(swap! atomic inc)))))
+    (def f2 (future
+              (doall (repeatedly 10000 #(swap! atomic inc)))))
+    @f2
+    @f1
+    (println @atomic)))
 
 
 (comment

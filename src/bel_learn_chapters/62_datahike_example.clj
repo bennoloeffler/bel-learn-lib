@@ -7,115 +7,116 @@
 ;; information on the different types of schema flexibility. After the first
 ;; example we will have a short schema-on-read example.
 
-; first define data model
-(def schema [{:db/ident       :contributor/name
-              :db/valueType   :db.type/string
-              :db/unique      :db.unique/identity
-              :db/index       true
-              :db/cardinality :db.cardinality/one
-              :db/doc         "a contributor's name"}
-             {:db/ident       :contributor/email
-              :db/valueType   :db.type/string
-              :db/cardinality :db.cardinality/many
-              :db/doc         "a contributor's email"}
-             {:db/ident       :repository/name
-              :db/valueType   :db.type/string
-              :db/unique      :db.unique/identity
-              :db/index       true
-              :db/cardinality :db.cardinality/one
-              :db/doc         "a repository's name"}
-             {:db/ident       :repository/contributors
-              :db/valueType   :db.type/ref
-              :db/cardinality :db.cardinality/many
-              :db/doc         "the repository's contributors"}
-             {:db/ident       :repository/public
-              :db/valueType   :db.type/boolean
-              :db/cardinality :db.cardinality/one
-              :db/doc         "toggle whether the repository is public"}
-             {:db/ident       :repository/tags
-              :db/valueType   :db.type/ref
-              :db/cardinality :db.cardinality/many
-              :db/doc         "the repository's tags"}
-             {:db/ident :language/clojure}
-             {:db/ident :language/rust}])
+(comment
+  ; first define data model
+  (def schema [{:db/ident       :contributor/name
+                :db/valueType   :db.type/string
+                :db/unique      :db.unique/identity
+                :db/index       true
+                :db/cardinality :db.cardinality/one
+                :db/doc         "a contributor's name"}
+               {:db/ident       :contributor/email
+                :db/valueType   :db.type/string
+                :db/cardinality :db.cardinality/many
+                :db/doc         "a contributor's email"}
+               {:db/ident       :repository/name
+                :db/valueType   :db.type/string
+                :db/unique      :db.unique/identity
+                :db/index       true
+                :db/cardinality :db.cardinality/one
+                :db/doc         "a repository's name"}
+               {:db/ident       :repository/contributors
+                :db/valueType   :db.type/ref
+                :db/cardinality :db.cardinality/many
+                :db/doc         "the repository's contributors"}
+               {:db/ident       :repository/public
+                :db/valueType   :db.type/boolean
+                :db/cardinality :db.cardinality/one
+                :db/doc         "toggle whether the repository is public"}
+               {:db/ident       :repository/tags
+                :db/valueType   :db.type/ref
+                :db/cardinality :db.cardinality/many
+                :db/doc         "the repository's tags"}
+               {:db/ident :language/clojure}
+               {:db/ident :language/rust}])
 
-;; define configuration
-(def cfg {:store {:backend :mem :id "schema-intro"} :initial-tx schema})
+  ;; define configuration
+  (def cfg {:store {:backend :mem :id "schema-intro"} :initial-tx schema})
 
-;; cleanup previous database
-(d/delete-database cfg)
+  ;; cleanup previous database
+  (d/delete-database cfg)
 
-;; create the in-memory database
-(d/create-database cfg)
+  ;; create the in-memory database
+  (d/create-database cfg)
 
-;; connect to it
-(def conn (d/connect cfg))
+  ;; connect to it
+  (def conn (d/connect cfg))
 
-;; let's insert our first user
-(d/transact conn [{:contributor/name "alice" :contributor/email "alice@exam.ple"}])
+  ;; let's insert our first user
+  (d/transact conn [{:contributor/name "alice" :contributor/email "alice@exam.ple"}])
 
-;; let's find her with a query
-(def find-name-email '[:find ?e ?n ?em :where [?e :contributor/name ?n] [?e :contributor/email ?em]])
+  ;; let's find her with a query
+  (def find-name-email '[:find ?e ?n ?em :where [?e :contributor/name ?n] [?e :contributor/email ?em]])
 
-(d/q find-name-email @conn)
+  (d/q find-name-email @conn)
 
-;; let's find her directly, as contributor/name is a unique, indexed identity
-(d/pull @conn '[*] [:contributor/name "alice"])
+  ;; let's find her directly, as contributor/name is a unique, indexed identity
+  (d/pull @conn '[*] [:contributor/name "alice"])
 
-;; add a second email, as we have a many cardinality, we can have several ones as a user
-(d/transact conn [{:db/id [:contributor/name "alice"] :contributor/email "alice@test.test"}])
+  ;; add a second email, as we have a many cardinality, we can have several ones as a user
+  (d/transact conn [{:db/id [:contributor/name "alice"] :contributor/email "alice@test.test"}])
 
-;; let's see both emails
-(d/q find-name-email @conn)
+  ;; let's see both emails
+  (d/q find-name-email @conn)
 
-;; try to add something completely not defined in the schema
-;(d/transact conn [{:something "different"}])
-;; => error occurs
+  ;; try to add something completely not defined in the schema
+  ;(d/transact conn [{:something "different"}])
+  ;; => error occurs
 
-;; try to add wrong contributor values
-;(d/transact conn [{:contributor/email :alice}])
+  ;; try to add wrong contributor values
+  ;(d/transact conn [{:contributor/email :alice}])
 
-;; add another contributor
-(d/transact conn [{:contributor/name "bob" :contributor/email "bob@ac.me"}])
+  ;; add another contributor
+  (d/transact conn [{:contributor/name "bob" :contributor/email "bob@ac.me"}])
 
-(d/q find-name-email @conn)
+  (d/q find-name-email @conn)
 
-(d/pull @conn '[*] [:contributor/name "bob"])
+  (d/pull @conn '[*] [:contributor/name "bob"])
 
-;; change bob's name to bobby
-(d/transact conn [{:db/id [:contributor/name "bob"] :contributor/name "bobby"}])
+  ;; change bob's name to bobby
+  (d/transact conn [{:db/id [:contributor/name "bob"] :contributor/name "bobby"}])
 
-;; check it
-(d/q find-name-email @conn)
+  ;; check it
+  (d/q find-name-email @conn)
 
-(d/pull @conn '[*] [:contributor/name "bobby"])
+  (d/pull @conn '[*] [:contributor/name "bobby"])
 
-;; bob is not related anymore as index
-(d/pull @conn '[*] [:contributor/name "bob"])
+  ;; bob is not related anymore as index
+  (d/pull @conn '[*] [:contributor/name "bob"])
 
-;; create a repository, with refs from uniques, and an ident as enum
-(d/transact conn [{:repository/name         "top secret"
-                   :repository/public       false
-                   :repository/contributors [[:contributor/name "bobby"] [:contributor/name "alice"]]
-                   :repository/tags         :language/clojure}])
+  ;; create a repository, with refs from uniques, and an ident as enum
+  (d/transact conn [{:repository/name         "top secret"
+                     :repository/public       false
+                     :repository/contributors [[:contributor/name "bobby"] [:contributor/name "alice"]]
+                     :repository/tags         :language/clojure}])
 
-;; let's search with pull inside the query
-(def find-repositories '[:find (pull ?e [*]) :where [?e :repository/name ?n]])
+  ;; let's search with pull inside the query
+  (def find-repositories '[:find (pull ?e [*]) :where [?e :repository/name ?n]])
 
-;; looks good
-(d/q find-repositories @conn)
+  ;; looks good
+  (d/q find-repositories @conn)
 
-;; let's go further and fetch the related contributor data as well
-(def find-repositories-with-contributors '[:find (pull ?e [* {:repository/contributors [*] :repository/tags [*]}]) :where [?e :repository/name ?n]])
+  ;; let's go further and fetch the related contributor data as well
+  (def find-repositories-with-contributors '[:find (pull ?e [* {:repository/contributors [*] :repository/tags [*]}]) :where [?e :repository/name ?n]])
 
-(d/q find-repositories-with-contributors @conn)
+  (d/q find-repositories-with-contributors @conn)
 
-;; the schema is part of the index, so we can query them too.
-;; Let's find all attribute names and their description.
-(d/q '[:find ?a ?d :where [?e :db/ident ?a] [?e :db/doc ?d]] @conn)
+  ;; the schema is part of the index, so we can query them too.
+  ;; Let's find all attribute names and their description.
+  (d/q '[:find ?a ?d :where [?e :db/ident ?a] [?e :db/doc ?d]] @conn)
 
-;; cleanup the database
-(d/delete-database cfg)
+  ;; cleanup the database
+  (d/delete-database cfg))
 
 ;; Schema On Read
 

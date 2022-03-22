@@ -25,6 +25,7 @@
                   :cursor-y 0
                   :size     10}))
 
+
 (def last-state (atom {}))
 
 (future (while
