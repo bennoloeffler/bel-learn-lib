@@ -2,6 +2,7 @@
   (:import (java.lang String)))
 
 ; https://www.braveclojure.com/multimethods-records-protocols/
+; see Book pdf Pragmatic.Clojure.Applied.From.Practice.to.Practitioner
 
 (defmulti full-moon-behavior (fn [were-creature] (:were-type were-creature)))
 (defmethod full-moon-behavior :wolf
