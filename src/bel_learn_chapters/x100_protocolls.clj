@@ -99,7 +99,8 @@
 
 
 ; define a record and implement a protocol
-(defrecord WereWolf [name title] Psychodynamics
+(defrecord WereWolf [name title]
+  Psychodynamics
   (thoughts [x] (str "I'm a WereWolf: " (:title x) " WERE-" (:name x)))
   ; multi arity are separately defined!
   (feelings-about [x] (str "Im a a bloody " (:name x)))
