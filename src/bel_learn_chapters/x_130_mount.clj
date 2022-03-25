@@ -10,19 +10,26 @@
 ; https://medium.com/@maciekszajna/reloaded-workflow-out-of-the-box-be6b5f38ea98
 
 
-(def bel-state (atom {}))
 
 (defn create-bel-component []
   ;(println "starting bel-component")
-  {:model   {}
-   :creation-date (Date.)})
+  (atom {:model   {}
+         :creation-date (Date.)}))
 
 (defn release-bel-component [comp]
   ;(println "stopping bel-component")
-  (assoc comp :model nil))
+  (assoc @comp :model nil))
 
 (defstate bel-component
           :start (create-bel-component)
           :stop (release-bel-component bel-component))
 
-;(m/start #'bel-learn-chapters.x-130-mount/bel-component)
+(Thread/sleep 200)
+(def glob bel-component)
+
+(defn start []
+  (m/start #'bel-learn-chapters.x-130-mount/bel-component))
+
+(defn stop []
+  (m/stop #'bel-learn-chapters.x-130-mount/bel-component))
+

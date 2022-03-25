@@ -1,6 +1,9 @@
 (ns bel-learn-chapters.x-155-core-async
   (:require [clojure.core.async :as async :refer :all]))
 
+; components with thread / start stop: How do you organize your Core.async code?
+; https://www.reddit.com/r/Clojure/comments/2ka3na/how_do_you_organize_your_coreasync_code/?utm_source=share&utm_medium=ios_app&utm_name=iossmf
+; http://adambard.com/blog/stream-processing-core-async/
 ; https://www.braveclojure.com/core-async/
 ; https://github.com/clojure/core.async/tree/master/examples
 ; https://www.youtube.com/watch?v=096pIlA3GDo
@@ -8,7 +11,35 @@
 ; when you use >! and <!, or parking put and parking take.
 ; >!! and <!! are blocking put and blocking take.
 
+(add-tap println)
+(defn pr [& args]
+  (tap> (str (clojure.string/join args))))
+
+
 (comment
+  (do
+    (def a (chan))
+    (go (pr "got: " (<! a)))
+    (go (>! a 17))
+    (go (close! a))))
+
+
+(comment
+  (do
+    (def xform (clojure.core/map clojure.string/upper-case))
+    (def scream-chan (chan 1 xform))
+
+    (put! scream-chan "hello")
+    (<!! scream-chan) ; "HELLO"
+
+    (eduction xform ["hello"]))
+
+    ; (pipe in-chan out-chan)
+    ; (pipeline 4 to xform from
+    ;(clojure.core.async/merge [scream-chan other-one])
+    ; (def c-mult (mult scream-chan))
+    ; (def out-1-c (tap c-mult (chan)))
+    ; (def out-2-c (tap c-mult (chan)))
   (do
     (defn square [x] (* x x))
 
@@ -71,7 +102,7 @@
     ; use the next channel for the fastest
     (let [c1 (chan)
           c2 (chan)]
-      (thread (do                                           ;(Thread/sleep 100)
+      (thread (do ;(Thread/sleep 100)
                 (loop []
                   (let [[v ch] (alts!! [c1 c2])]
                     (println "Read" v)
@@ -81,7 +112,7 @@
 
       (>!! c1 "hi")
       (>!! c2 "there")
-      (close! c1)))                                         ; in order to get nil from alts!!
+      (close! c1))) ; in order to get nil from alts!!
 
   (do
     (def c (async/chan))

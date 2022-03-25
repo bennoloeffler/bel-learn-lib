@@ -11,6 +11,8 @@
 ;; Chapter 5 ... "A minimla CES Famework" from Clojure Reactive Programming, Leonardo Borges
 ;; see https://github.com/chourave/reagi/tree/release-0.11.0
 ;; https://blog.jayway.com/2014/09/16/comparing-core-async-and-rx-by-example/
+;; https://www.slideshare.net/borgesleonardo/functional-reactive-programming-compositional-event-systems
+(add-tap println)
 
 
 (defprotocol IBehavior
@@ -60,6 +62,13 @@
 
 (declare event-stream)
 
+(defn view-buf-es [es & [name]]
+  (tap> (str "buf in ch in es: " name (.buf (.buf (.channel es))))))
+
+(defn view-buf-ch [ch & [name]]
+  (let [b (.buf (.buf ch))]
+    (tap> (str "buf in ch: " name b))))
+
 (deftype EventStream [channel multiple completed]
 
   IEventStream
@@ -74,7 +83,11 @@
       (do (reset! completed true)
           (go (>! channel value)
               (close! channel)))
-      (go (>! channel value))))
+      (go
+        (tap> (str "going to deliver: " value))
+        (>! channel value)
+        (tap> (str "delivered: " value)))))
+        ;(view-buf-ch channel))))
 
   (deliver-sync [_ value]
     (if (= value ::complete)
@@ -113,6 +126,7 @@
          (go-loop []
            (let [v1 (<! (.channel this))
                  v2 (<! (.channel es-other))]
+             (tap> (str "v1=" v1 ", v2=" v2))
              (when (and v1 v2)
                (deliver-sync es [v1 v2])
                (recur))))
@@ -167,9 +181,12 @@
     ;(tap (.multiple es1) out1)
     ;(tap (.multiple es2) out2)
     (go-loop []
+      (tap> "try zip reading channels")
+      (view-buf-es es1)
+      ;(tap> (str "buf c2: " (.buf (.buf (.channel es2)))))
       (let [v1 (<! (.channel es1))
             v2 (<! (.channel es2))]
-        (println "READ: v1=" v1 " v2=" v2)
+        (tap> (str "v1=" v1 " v2=" v2))
         (if (and v1 v2)
           (do
             (println "DELIVER: v1=" v1 " v2=" v2)
@@ -262,18 +279,70 @@
     (subscribe es1 #(println "range: " %)))
 
   (do
-    ; TODO es-zipped does not work ? see ref and dosync
+    ; TODO WORKS!
     (def es1 (es-from-interval 500))
     (def es2 (es-from-interval 500))
     (def es-zipped (es-from-zip es1 es2))
     (def tok (subscribe es-zipped #(println "zipped: " %))))
-  (go
-    ;(<! (timeout 1000))
+
+
+  (do
+    ; TODO es-zipped does not work ? see ref and dosync
+    (def es1 (es-from-range 50))
+    (def t (subscribe es1 #(println "sub:" %)))
+    (view-buf-es es1)
+    (def es2 (es-from-range 50))
+    (def es-zipped (es-from-zip es1 es2)))
+  (do
+    (def tok (subscribe es-zipped #(println "zipped: " %)))
+    (Thread/sleep 1000)
     (println "going to dispose")
     (dispose tok)
     ; stop the intervals
     (deliver es1 ::complete)
-    (deliver es2 ::complete)))
+    (deliver es2 ::complete))
+
+  (do
+
+    (defn put-n [ch n]
+      (go
+        (doseq [v (range n)]
+          (>! ch v))))
+
+    (defn take-all [ch f]
+      (go-loop []
+        (if-let [v (<! ch)]
+          (do
+            (f v)
+            (recur))
+          (println "take over..."))))
+
+    (defn zip-all [ch1 ch2 f]
+      (go-loop []
+        (let [v1 (<! ch1)
+              v2 (<! ch2)]
+          (if (and v1 v2)
+            (do (f [v1 v2])
+                (recur))
+            (println "zip over...")))))
+
+    (def c1 (chan))
+    (put-n c1 10)
+    (take-all c1 #(prn %))
+    (Thread/sleep 100)
+    (close! c1)
+
+    (def c1 (chan 2))
+    (def c2 (chan 2))
+    (put-n c1 12)
+    (put-n c2 20)
+    (Thread/sleep 100)
+    (zip-all c1 c2 #(prn %))
+    (Thread/sleep 100)
+    (close! c1)))
+
+
+
   ;(do-sync))
 
 
