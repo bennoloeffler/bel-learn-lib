@@ -1,6 +1,6 @@
 (ns bel-learn-chapters.x-168-rx-core-async
   (:refer-clojure :exclude [filter map deliver])
-  (:require [clojure.core.async :refer [go-loop <! >! close! chan mult map> filter> tap go timeout]])
+  (:require [clojure.core.async :refer [go-loop <! >! <!! >!! close! chan mult map> filter> tap go timeout]])
   (:import [clojure.lang IDeref]))
 
 
@@ -30,6 +30,8 @@
     from all underlying streams combined.")
   (deliver [s value]
     "Delivers a value to the stream s")
+  (deliver-sync [s value]
+    "Delivers a value to the stream s - do in go or thread block...")
   (completed? [s]
     "returns true, if this stream has stopped emitting values.")
   (zip [s s-other]
@@ -74,6 +76,17 @@
               (close! channel)))
       (go (>! channel value))))
 
+  (deliver-sync [_ value]
+    (if (= value ::complete)
+      (do (reset! completed true)
+          (>!! channel value)
+          (close! channel))
+      (do
+        ;(println "going to deliver sync")
+        (>!! channel value))))
+        ;(println "delivered synced " value))))
+
+
   (flatmap [_ f]
     (let [es  (event-stream)
           out (chan)]
@@ -101,7 +114,7 @@
            (let [v1 (<! (.channel this))
                  v2 (<! (.channel es-other))]
              (when (and v1 v2)
-               (deliver es [v1 v2])
+               (deliver-sync es [v1 v2])
                (recur))))
          es))
 
@@ -109,11 +122,15 @@
 
   IObservable
 
-  (subscribe [this f]
+  (subscribe [_ f]
+    (println "subscribe")
+
     (let [out (chan)]
       (tap multiple out)
       (go-loop []
+        (println "read val..")
         (let [value (<! out)]
+          (println "subs val = " value)
           (when (and value (not= value ::complete))
             (f value)
             (recur))))
@@ -152,10 +169,11 @@
     (go-loop []
       (let [v1 (<! (.channel es1))
             v2 (<! (.channel es2))]
+        (println "READ: v1=" v1 " v2=" v2)
         (if (and v1 v2)
           (do
-            (println "v1=" v1 " v2=" v2)
-            (deliver es [v1 v2])
+            (println "DELIVER: v1=" v1 " v2=" v2)
+            (deliver-sync es [v1 v2])
             ;(deliver es v2)
             (recur))
           (println "stoppped es-from-zip"))))
@@ -166,9 +184,11 @@
   "creates an event stream which delivers (range 0 n)"
   [n]
   (let [es (event-stream (chan n))]
-    (doseq [n (range n)]
-      (deliver es n))
+    (go (doseq [n (range n)]
+          ;(println "range:" n)
+          (deliver-sync es n)))
     es))
+
 
 (defn es-from-interval
   "Creates and returns a new event stream which
@@ -183,7 +203,7 @@
                next-value seed]
        (when-not (completed? es)
          (<! timeout-ch)
-         (deliver es next-value)
+         (deliver-sync es next-value)
          (recur (timeout msecs) (inc-fun next-value))))
      es)))
 
@@ -200,8 +220,9 @@
     (subscribe es2 #(tap> (str "es2 double: " %)))
 
     (def es3 (filter es1 even?))
-    (subscribe es3 #(tap> (str "es3 even: " %))))
-  (do
+    (subscribe es3 #(tap> (str "es3 even: " %)))
+
+
     (Thread/sleep 100)
     (deliver es1 10)
     (Thread/sleep 100)
@@ -211,7 +232,8 @@
 
   (do
     (def es1 (event-stream))
-    (subscribe es1 #(tap> (str "es1 normal: " %))))
+    (subscribe es1 #(tap> (str "es1 normal: " %)))
+    (deliver es1 {:a 42}))
 
   (do
     (def es1 (event-stream))
@@ -235,10 +257,15 @@
     (dispose tok))
 
   (do
+    (def es1 (es-from-range 10))
+    (Thread/sleep 1000)
+    (subscribe es1 #(println "range: " %)))
+
+  (do
     ; TODO es-zipped does not work ? see ref and dosync
-    (def es1 (es-from-range 50))
-    (def es2 (es-from-range 50))
-    (def es-zipped (zip es1 es2))
+    (def es1 (es-from-interval 500))
+    (def es2 (es-from-interval 500))
+    (def es-zipped (es-from-zip es1 es2))
     (def tok (subscribe es-zipped #(println "zipped: " %))))
   (go
     ;(<! (timeout 1000))
@@ -250,4 +277,9 @@
   ;(do-sync))
 
 
+
+(def es1 (es-from-interval 100))
+(def t (subscribe es1 #(println "res: " %)))
+(Thread/sleep 1000)
+(dispose t)
 
