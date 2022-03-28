@@ -1,6 +1,9 @@
 (ns bel-learn-chapters.x-170-missionary-rx
   (:require [missionary.core :as m]))
 
+;; TODO learn this https://github.com/leonoel/missionary
+;; TODO GUI-Example "cpipe" - provide as example for missionary open source
+
 ; this is a reactive computation, the println reacts to input changes
 (comment
   (def !input (atom 1))
