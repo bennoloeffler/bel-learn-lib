@@ -39,7 +39,8 @@
   ;:main ^:skip-aot bel-learn-lib.core
   :main ^:skip-aot user
   :target-path "target/%s"
-  :plugins [[lein-ring "0.12.6"]]
+  :plugins [[lein-ring "0.12.6"]
+            [lein-cloverage "1.2.2"]]
   :ring {:handler bel-learn-chapters.50-http/handler}
   :bat-test {:parallel? true :report [:pretty {:type :junit :output-to "target/junit.xml"}]} ; :report :progress ; xunit-viewer -r . -w -p 5050 -s true
 
