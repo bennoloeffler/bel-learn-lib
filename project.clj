@@ -35,7 +35,8 @@
                  [org.clojure/data.json "2.4.0"]
                  [clj-http "3.12.3"]
                  [mount "0.1.16"]
-                 [io.reactivex/rxclojure "1.0.0"]]
+                 [io.reactivex/rxclojure "1.0.0"]
+                 [missionary "b.26"]]
   ;:main ^:skip-aot bel-learn-lib.core
   :main ^:skip-aot user
   :target-path "target/%s"
