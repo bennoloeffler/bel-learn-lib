@@ -40,8 +40,8 @@
                  "proj1  22.3.2016 24.6.2017 res1   22.0      comment-it-1\n\n
                  proj2  22.3.2017 24.6.2018 res1   23      comment-it-2\n
                  ")
-               [(ct "proj1" (d "22.3.2016") (d "24.6.2017") "res1" (i "22") "comment-it-1")
-                (ct "proj2" (d "22.3.2017") (d "24.6.2018") "res1" (i "23") "comment-it-2")])))
+               [(ct "proj1" (d "22.3.2016") (d "24.6.2017") "res1" (l "22") "comment-it-1")
+                (ct "proj2" (d "22.3.2017") (d "24.6.2018") "res1" (l "23") "comment-it-2")])))
 
 (defn parse-text-ips
   "make the first number the :max-ips and the rest :project-ips

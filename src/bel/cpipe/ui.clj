@@ -13,7 +13,9 @@
 ; http://darevay.com/talks/clojurewest2012/#/title-slide
 ; https://github.com/clj-commons/seesaw/wiki
 ; http://www.eli.sdsu.edu/courses/fall14/cs596/notes/D18SeesawGUI.pdf
+
 (debug!)
+
 (comment
   (use 'seesaw.dev)
   (show-options (menu))
@@ -21,21 +23,25 @@
 
 ;; TODO put cpipe in own repository...
 
+
 (def state (atom {:cursor-x 0
                   :cursor-y 0
                   :size     10}))
 
 
+;; holds all old states in order to
+;; calc real difference on updates in state-sub
 (def last-state (atom {}))
 
-(future (while
-          (and
-            (>= (:cursor-y @state) 0)
-            (<= (:cursor-y @state) 20))
-          (swap! state update :cursor-x inc)
-          (Thread/sleep 500)))
+;; that state may be changed from other threads
+#_(future (while
+           (and
+             (>= (:cursor-y @state) 0)
+             (<= (:cursor-y @state) 20))
+           (swap! state update :cursor-x inc)
+           (Thread/sleep 500)))
 
-
+; this is a way to register subscriptions to the state
 (defn state-sub [state keys f]
   (println "register keys:" keys)
   (bind/bind
@@ -49,14 +55,14 @@
                    (swap! last-state assoc-in keys current-value)
                    (f current-value))))))
 
-
-
 (defn open [e]
   (println "open, event: " e))
 
 
 (defn load-model []
   (simple-tree-model vector? vec [[1 2 [3]] [4]]))
+
+
 
 (def star
   (path []
@@ -65,11 +71,12 @@
         (line-to 0 -20) (line-to -5 -5)
         (line-to -20 0) (line-to -5 5)
         (line-to 0 20)))
+
 (def text-style (style :foreground (color 0 0 0)
                        :font "ARIAL-BOLD-12"))
 
 
-(defn paint2 [c g]
+(defn paint [c g]
   (let [;w (.getWidth c) w2 (/ w 2)
         ;h (.getHeight c) h2 (/ h 2)
         size (:size @state)
@@ -112,28 +119,25 @@
         action (key-actions key)]
     (if action
       (action)
-      (println "key: " key))))
+      (println "key not bound: " key))))
 
 
 (defn create-grid-panel []
-  (let [grid-panel (canvas :id :grid-panel :paint paint2)]
+  (let [grid-panel (canvas :id :grid-panel :paint paint)]
 
     (.setFocusable grid-panel true)
     (listen grid-panel #{:key-pressed} key-listener)
     (listen grid-panel #{:mouse-entered} (fn [e] (.grabFocus grid-panel)))
     (state-sub state
                [:cursor-x]
-               (fn [v](println "val: " v)(.repaint grid-panel)))
+               (fn [v]
+                 ;(println "val: " v)
+                 (.repaint grid-panel)))
     (state-sub state
                [:cursor-y]
-               (fn [v](println "val: " v)(.repaint grid-panel)))
-    #_(bind/bind
-        state
-        (bind/notify-later)
-        (bind/b-do [x]
-                   ;(println "bound notified" x)
-                   (.repaint grid-panel)))
-
+               (fn [v]
+                 ;(println "val: " v)
+                 (.repaint grid-panel)))
     grid-panel))
 
 
@@ -171,19 +175,3 @@
     (-> f show! #_pack!)))
 
 
-
-(comment
-  (def f (-> (frame :title "cpipe"
-                    :size [1000 :by 700]
-                    :on-close :dispose
-                    :menubar (menubar :items [(menu :text "file" :items [(action :name "Open..."
-                                                                                 :key "menu O"
-                                                                                 :handler open)
-                                                                         (menu-item :text "close")])
-                                              #_(menu :text "tool" :items [(menu-item :text "analyse")
-                                                                           (menu-item :text "fold")])])
-                    :icon (clojure.java.io/resource "check.png"))))
-
-  (.setVisible f true)
-  (.pack f)
-  (.dispose f))

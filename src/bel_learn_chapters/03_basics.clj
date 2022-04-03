@@ -110,4 +110,4 @@
 
 ;(clojure.repl/source +)
 
-(+ 1 (reduce + (sort (map inc (range 10)))))
+(+ 1 (reduce + (sort (shuffle (map inc (range 10))))))
