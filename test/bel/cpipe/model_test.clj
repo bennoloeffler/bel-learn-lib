@@ -26,3 +26,5 @@
           (let [p (d/pull @conn '[*] [:project/name "p1"])]
             (is (= 2 (count (:project/tasks p))))))))
           ;(is (= [#:db{:id 9} #:db{:id 10}] (:project/tasks p)))))))
+
+

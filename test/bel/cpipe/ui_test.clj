@@ -12,3 +12,6 @@
     (is (= 77 77)))
   (testing "structure"
     (is (= {:a 4 :b {:sub1 "abc" :sub2 "def"} :c 12.6} {:a 4 :b {:sub1 "abc" :sub2 "def"} :c 12.6}))))
+
+(deftest state-sub-test)
+

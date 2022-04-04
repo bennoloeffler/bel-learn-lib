@@ -23,6 +23,7 @@
   [system]
   (println "STARTING the system...")
   ;(pp/cprint system)
+  (ui/set-system system)
   (-> ( :frame system) ui/show-frame)
   system)
 

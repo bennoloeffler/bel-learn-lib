@@ -3,6 +3,7 @@
             [seesaw.tree :refer :all]
             [clojure.repl :refer :all]
             [seesaw.bind :as bind])
+
   (:use
     seesaw.graphics
     seesaw.color
@@ -168,6 +169,9 @@
     (listen frame #{:key-pressed :mouse-clicked} (fn [e] (println "frame event: " e)))
     frame))
 
+(defn set-system [system]
+  (swap! state assoc :projects (:projects system))
+  (println "ui start state: " @state))
 
 
 (defn show-frame [f]
