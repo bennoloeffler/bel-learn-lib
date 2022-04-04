@@ -7,8 +7,14 @@
             [debux.core :refer :all]))
 
 
-(deftest to-test-test)
 
+;; TODO: test flatmap and implement split, zip ???
+;; -> NOOOOO - use  https://github.com/leonoel/missionary
+(comment
+  (require 'bel-learn-chapters.x-170-missionary-rx-test))
+
+
+(deftest to-test-test)
 
 (defn helper-collect-callbacks
   "receives or creates an event stream, subsribes to it
@@ -175,7 +181,7 @@
     (swap! a inc)
     (Thread/sleep 35) ; SOME TIME NEEDED TO KEEP RIGHT SEQUENCE!
     (swap! a inc)
-    (Thread/sleep 50) ; SOME TIME NEEDED TO KEEP RIGHT SEQUENCE!
+    (Thread/sleep 150) ; SOME TIME NEEDED TO KEEP RIGHT SEQUENCE!
     ;(deliver es-source ::tes/complete)
     (let [[_ _ received] (<!! res-ch)]
       (is (= [4 5 6] @received)))))
@@ -236,7 +242,8 @@
         es     (sample b 20)
         res-ch (helper-collect-callbacks es 4)]
     (Thread/sleep 100)
-    (deliver es ::tes/complete)
+    (is (number? @b))
+    (complete es) ; instead of (deliver es ::tes/complete)
     (let [[es subscription received] (<!! res-ch)]
       (dispose subscription)
      (is (<= 4 (count @received))))))
@@ -251,8 +258,9 @@
   ; could be done with ::tes/complete
   (complete time-stream))
 
-;;
-;; TODO: test flatmap and implement split, zip ???
-;;
 
+;; TODO: test flatmap and implement split, zip ???
+;; -> NOOOOO - use  https://github.com/leonoel/missionary
+(comment
+  (require 'bel-learn-chapters.x-170-missionary-rx-test))
 

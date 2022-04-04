@@ -24,10 +24,14 @@
 
 (comment (-main))
 
-;;-------------------------------------------
+;;--------------------------------------------------------------------------------------
+;;
 ;; https://gist.github.com/daveray/1441520
 ;; http://darevay.com/talks/clojurewest2012/#/overview
 ;; https://github.com/eugenkiss/7guis-Clojure-Seesaw/blob/master/src/sevenguis/cells.clj
+;;
+;;--------------------------------------------------------------------------------------
+
 (comment
 
   (swing)

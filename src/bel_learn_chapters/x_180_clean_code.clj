@@ -4,6 +4,8 @@
 
 ; SOLID Principles With (almost) Real-Life Examples in Java von Berke Soysal
 ; https://link.medium.com/PtyjGUgQBob
+; https://github.com/jumarko/solid-principles-in-clojure
+; Video https://www.youtube.com/watch?v=RCpobDSmHHg
 
 ;A Solid Guide to S.O.L.I.D Principles. Foundation for modern software architecture . von Mukul Attavania
 ; https://link.medium.com/ZhZuHfdQBob
