@@ -7,19 +7,10 @@
             [bel.util.conversion :refer :all])
   (:import (java.time LocalDate LocalTime)))
 
-;(use 'hashp.core)
-;(use 'debux.core)
 
-
-
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
-;;
-;; model-specific (task, delivery-date, ...
-;;
-;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;
 
 (defn ct
-  "create task with unnamed args"
+  "create task based on unnamed args"
   [project start end resource capacity comment]
   {:project  project :start start :end end
    :resource resource :capacity capacity :comment comment})
@@ -34,14 +25,6 @@
                  [:project :start :end :resource :capacity :comment])]
     result))
 
-(comment
-  (pa/assert (=
-               (parse-text-tasks
-                 "proj1  22.3.2016 24.6.2017 res1   22.0      comment-it-1\n\n
-                 proj2  22.3.2017 24.6.2018 res1   23      comment-it-2\n
-                 ")
-               [(ct "proj1" (d "22.3.2016") (d "24.6.2017") "res1" (l "22") "comment-it-1")
-                (ct "proj2" (d "22.3.2017") (d "24.6.2018") "res1" (l "23") "comment-it-2")])))
 
 (defn parse-text-ips
   "make the first number the :max-ips and the rest :project-ips
@@ -67,16 +50,22 @@
   (-> file-str
       slurp
       parse-text-ips))
+
+
 (comment
-  (parse-file-ips "cpipe-test-files/bsp-03-tasks-kapa-und-ip/Integrations-Phasen.txt"))
 
-(comment
-  (parse-file-tasks "cpipe-test-files/Projekt-Start-Ende-Abt-Kapa.txt")
-  (parse-file-tasks "cpipe-test-files/bsp-01-nur-tasks/Projekt-Start-End-Abt-Kapa.txt"))
+  (parse-file-ips
+    "cpipe-test-files/bsp-03-tasks-kapa-und-ip/Integrations-Phasen.txt")
 
+  (parse-file-tasks
+    "cpipe-test-files/Projekt-Start-Ende-Abt-Kapa.txt")
 
-;;-------------
-(comment (parse-text-tasks
-           "proj1  22.3.2016 24.6.2017 res1   x      comment-it-1\n\n
-  proj2  22.3.2017 24.6.2018 res1   23      comment-it-2\n
-  "))
+  (parse-file-tasks
+    "cpipe-test-files/bsp-01-nur-tasks/Projekt-Start-End-Abt-Kapa.txt")
+
+  (def tasks (time (parse-file-tasks
+                     "cpipe-test-files/bsp-05-riesen-datensatz/Projekt-Start-End-Abt-Kapa.txt")))
+
+  (parse-text-tasks
+    "proj1  22.3.2016 24.6.2017 res1   12      comment-it-1\n\n
+     proj2  22.3.2017 24.6.2018 res1   23      comment-it-2\n"))

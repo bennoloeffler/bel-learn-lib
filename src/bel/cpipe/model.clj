@@ -30,8 +30,6 @@
   [str]
   (Long/valueOf ^String str))
 
-;(str-is-long? "12")
-
 
 (defn slurp-lines
   "Reads all data lines in file, example:
@@ -81,3 +79,9 @@
      :current-week (w/get-abs-current-week)}))
 
 (def projects (read-test-model))
+
+(comment
+  (def read-tasks (time (parse-file-tasks
+                          "cpipe-test-files/bsp-05-riesen-datensatz/Projekt-Start-End-Abt-Kapa.txt")))
+  (def weekified-tasks (time (weekify-tasks read-tasks))))
+

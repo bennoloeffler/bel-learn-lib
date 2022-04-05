@@ -1,6 +1,6 @@
 (ns bel-learn-chapters.x-170-missionary-rx
   (:require [missionary.core :as m])
-  (:import [missionary Cancelled])
+  (:import [missionary Cancelled]))
 
   ;; TODO learn this https://github.com/leonoel/missionary
   ;; TODO GUI-Example "cpipe" - provide as example for missionary open source
@@ -10,22 +10,22 @@
 
 
   ; this is a reactive computation, the println reacts to input changes
-  (defn missionary-example-01 []
-        (let [input    (atom 2)
-              main     (m/reactor
-                         (let [>x (m/signal! (m/watch input)) ; continuous signal reflecting atom state
-                               >y (m/signal! (m/latest + >x >x))] ; derived computation, diamond shape
-                           (m/stream! (m/ap (println "bel: " (m/?< >y))))))
-              disposer (main #(prn ::success %) #(prn ::crash %))]
-          (Thread/sleep 40)
-          (swap! input inc)
-          (swap! input inc)
-          (swap! input inc)
-          (swap! input inc)
-          (swap! input inc)
-          (swap! input inc)
-          (swap! input inc)
-          (disposer))))
+(defn missionary-example-01 []
+      (let [input    (atom 2)
+            main     (m/reactor
+                       (let [>x (m/signal! (m/watch input)) ; continuous signal reflecting atom state
+                             >y (m/signal! (m/latest + >x >x))] ; derived computation, diamond shape
+                         (m/stream! (m/ap (println "bel: " (m/?< >y))))))
+            disposer (main #(prn ::success %) #(prn ::crash %))]
+        (Thread/sleep 40)
+        (swap! input inc)
+        (swap! input inc)
+        (swap! input inc)
+        (swap! input inc)
+        (swap! input inc)
+        (swap! input inc)
+        (swap! input inc)
+        (disposer)))
 
 ; using tasks
 (defn missionary-example-02 []

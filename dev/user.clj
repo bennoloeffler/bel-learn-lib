@@ -155,7 +155,7 @@
            '[clojure.tools.namespace.repl :refer (refresh refresh-all clear)]
            '[debux.core :refer :all]
            '[hashp.core :refer :all])
-  (println "pprint, cprint, refresh, dbg, #h, test/, reflect/, insp/, jdoc/"))
+  (println "pprint, cprint, refresh, dbg, #p, test/, reflect/, insp/, jdoc/"))
 
 (defn dir-here []
   (dir-fn *ns*))
