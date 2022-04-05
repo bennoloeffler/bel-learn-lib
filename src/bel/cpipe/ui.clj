@@ -9,7 +9,8 @@
     seesaw.color
     seesaw.dev)
   (:import (com.formdev.flatlaf FlatLightLaf FlatDarkLaf))
-  (:import (java.awt.event KeyEvent)))
+  (:import (java.awt.event KeyEvent)
+           (java.awt Color)))
 
 ; http://darevay.com/talks/clojurewest2012/#/title-slide
 ; https://github.com/clj-commons/seesaw/wiki
@@ -27,7 +28,8 @@
 
 (def state (atom {:cursor-x 0
                   :cursor-y 0
-                  :size     10}))
+                  :zoom     1.0
+                  :grid-size     10}))
 
 
 ;; holds all old states in order to
@@ -36,11 +38,11 @@
 
 ;; that state may be changed from other threads
 #_(future (while
-           (and
-             (>= (:cursor-y @state) 0)
-             (<= (:cursor-y @state) 20))
-           (swap! state update :cursor-x inc)
-           (Thread/sleep 500)))
+            (and
+              (>= (:cursor-y @state) 0)
+              (<= (:cursor-y @state) 20))
+            (swap! state update :cursor-x inc)
+            (Thread/sleep 500)))
 
 ; this is a way to register subscriptions to the state
 (defn state-sub [state keys f]
@@ -50,7 +52,7 @@
     (bind/notify-later)
     (bind/b-do [s]
                (let [current-value (get-in @state keys)
-                     last-value (get-in @last-state keys)]
+                     last-value    (get-in @last-state keys)]
                  (when (not= current-value last-value)
                    (println keys " changed: " last-value " --> " current-value)
                    (swap! last-state assoc-in keys current-value)
@@ -63,57 +65,92 @@
 (defn load-model []
   (simple-tree-model vector? vec [[1 2 [3]] [4]]))
 
+;; scrolling scrollRectToVisible
 
 
-(def star
-  (path []
-        (move-to 0 20) (line-to 5 5)
-        (line-to 20 0) (line-to 5 -5)
-        (line-to 0 -20) (line-to -5 -5)
-        (line-to -20 0) (line-to -5 5)
-        (line-to 0 20)))
+#_(def star
+    (path []
+          (move-to 0 0) (line-to 20 0)
+          (line-to 20 20) (line-to 0 20)))
+
+(defn grid [g w h size]
+  (doseq [x (range 0 w size)]
+     (draw g (line x 0 x h) (style :foreground Color/DARK_GRAY)))
+  (doseq [y (range 0 h size)]
+     (draw g (line 0 y w y) (style :foreground Color/DARK_GRAY))))
+
 
 (def text-style (style :foreground (color 0 0 0)
                        :font "ARIAL-BOLD-12"))
 
 
 (defn paint [c g]
-  (let [;w (.getWidth c) w2 (/ w 2)
-        ;h (.getHeight c) h2 (/ h 2)
-        size (:size @state)
-        cx (* (:cursor-x @state) size)
-        cy (* (:cursor-y @state) size)]
+  (let [grid-size (:grid-size @state)
+        cx        (* (:cursor-x @state) grid-size)
+        cy        (* (:cursor-y @state) grid-size)
+        z         (:zoom @state)
+        w         (.getWidth c)
+        h         (.getHeight c)
+        w-zoomed  (/ w z)
+        h-zoomed  (/ h z)]
+
     #_(draw g
             (ellipse 0 0 w2 h2) (style :background (color 224 224 0 128))
             (ellipse 0 h2 w2 h2) (style :background (color 0 224 224 128))
             (ellipse w2 0 w2 h2) (style :background (color 224 0 224 128))
             (ellipse w2 h2 w2 h2) (style :background (color 224 0 0 128)))
     (push g
-          (rotate g 0)
+          (scale g z)
+          (grid g w-zoomed h-zoomed grid-size)
+          (draw g (rect cx cy grid-size) (style :foreground Color/YELLOW))
           (draw g (string-shape 20 20 (str "cursor x: " (:cursor-x @state))) text-style)
-          (draw g (string-shape 20 50 (str "cursor y: " (:cursor-y @state))) text-style))
-    (push g
-          (translate g cx cy)
-          (draw g star (style :foreground java.awt.Color/BLACK :background java.awt.Color/YELLOW)))))
+          (draw g (string-shape 20 50 (str "cursor y: " (:cursor-y @state))) text-style)
+          (draw g (string-shape 20 80 (str "zoom: " (:zoom @state))) text-style)
+          (draw g (string-shape 20 110 (str "width: " w)) text-style)
+          (draw g (string-shape 20 140 (str "height: " h)) text-style)
+          (translate g cx cy))))
+
+#_(push g
+        (rotate g 0)
+        (draw g (string-shape 20 20 (str "cursor x: " (:cursor-x @state))) text-style)
+        (draw g (string-shape 20 50 (str "cursor y: " (:cursor-y @state))) text-style)
+        (draw g (string-shape 20 80 (str "zoom: " (:zoom @state))) text-style)
+        (draw g (string-shape 20 110 (str "width: " w)) text-style)
+        (draw g (string-shape 20 140 (str "height: " h)) text-style))
+;(draw g star (style :foreground java.awt.Color/BLACK :background java.awt.Color/YELLOW)))))
+
 
 
 (defn move-up []
   ;(println "move up")
   (swap! state update :cursor-y dec))
+
 (defn move-down []
   ;(println "move down")
   (swap! state update :cursor-y inc))
+
 (defn move-right []
   ;(println "move right")
   (swap! state update :cursor-x inc))
+
 (defn move-left []
   ;(println "move left")
   (swap! state update :cursor-x dec))
 
+(defn zoom-in []
+  ;(println "move left")
+  (swap! state update :zoom #(* % 1.1)))
+
+(defn zoom-out []
+  ;(println "move left")
+  (swap! state update :zoom #(* % 0.9)))
+
 (def key-actions {KeyEvent/VK_UP    move-up
                   KeyEvent/VK_DOWN  move-down
                   KeyEvent/VK_RIGHT move-right
-                  KeyEvent/VK_LEFT  move-left})
+                  KeyEvent/VK_LEFT  move-left
+                  KeyEvent/VK_PLUS  zoom-in
+                  KeyEvent/VK_MINUS zoom-out})
 
 (defn key-listener [e]
   (let [key    (.getExtendedKeyCode e)
@@ -136,6 +173,11 @@
                  (.repaint grid-panel)))
     (state-sub state
                [:cursor-y]
+               (fn [v]
+                 ;(println "val: " v)
+                 (.repaint grid-panel)))
+    (state-sub state
+               [:zoom]
                (fn [v]
                  ;(println "val: " v)
                  (.repaint grid-panel)))

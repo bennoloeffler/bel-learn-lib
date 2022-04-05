@@ -4,10 +4,11 @@
                                  TimeUnit)
            (clojure.lang PersistentQueue)))
 
+
 ;; https://vdoc.pub/documents/clojure-reactive-programming-3bpf8l6ge0pg
 ;; Part 3
 ;; chapter: Building a stock market monitoring application
-
+;; slides to book: https://www.slideshare.net/borgesleonardo/functional-reactive-programming-compositional-event-systems
 ;; threads
 
 (def pool (atom nil))

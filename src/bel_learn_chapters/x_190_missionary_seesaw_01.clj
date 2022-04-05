@@ -27,5 +27,5 @@
               (invoke-later (? time-task))
               (Thread/sleep 1000)))))
 
-(-main)
+(comment (-main))
 

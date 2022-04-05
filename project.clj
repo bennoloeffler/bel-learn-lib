@@ -1,3 +1,7 @@
+
+; reaload and load libs
+; Alembic https://spantree.net/blog/2016/05/09/useful-leiningen-plugins.html
+
 (defproject bel-learn-lib "0.1.0-SNAPSHOT"
   :description "Bennos library with all learnings in clojure"
   :url "https://github.com/bennoloeffler/bel-learn-lib"

@@ -1,4 +1,4 @@
-(ns bel.cpipe.week-cal
+(ns bel.cpipe.cal-week
   (:require [java-time :as jt])
   (:import [java.time.temporal ChronoField WeekFields]
            [java.time LocalDate]
@@ -62,11 +62,12 @@
       (calc-abs-weeks all-days-with-week))))
 
 ;; lookup-table
-(def abs-week-map (time (init-absolut-weeks)))
+(defonce abs-week-map (init-absolut-weeks))
 
 
 (defn get-abs-week
   "Delivers an absolute week number that is linear over all years.
+  Returns [absolute-week-since-2010-01-04 year week-of-year]
   Starting with 2010-01-04, which is the start of week 1 in that year.
   Ending with 2039-12-31. Before and after that dates, nil results
   will be returned."
@@ -74,5 +75,22 @@
   (assert inst? local-date)
   (abs-week-map local-date))
 
-(defn get-abs-current-week []
+(defn get-abs-current-week
+  "Returns current time as abs week: [abs-week year cal-week]"
+  []
   (get-abs-week (jt/local-date)))
+
+(defn weekify-element
+  "An element is a map that contains a :start and :end as LocalDate.
+  Returns the map with two additional keys:
+  :start-week and :end-week will be there representing the start and end week
+  as abs-week as integer."
+  [element]
+  (assoc element
+    :start-week (first (get-abs-week (:start element)))
+    :end-week (first (get-abs-week (:end element)))))
+
+(defn weekify
+  "See weekify-element. Does it for a coll of elements."
+  [coll]
+  (map weekify-element coll))

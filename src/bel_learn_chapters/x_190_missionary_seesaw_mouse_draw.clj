@@ -54,6 +54,6 @@
 #_(? (sp
        (println "bel")))
 
-;(comment)
-(-main)
+(comment
+ (-main))
 

@@ -4,7 +4,7 @@
             [taoensso.timbre :as log]
             [java-time :as t]
             [bel.cpipe.file-reader :refer :all]
-            [bel.cpipe.week-cal :as w]))
+            [bel.cpipe.cal-week :as cw]))
 
 (defn str-is-date?
   "check if Date of
@@ -63,25 +63,19 @@
                          (str-to-long (nth line 4))
                          (if (= 6 (count line)) (nth line 5) nil)]) $)))
 
-(defn weekify-task [task]
-  (assoc task
-    :start-week (first (w/get-abs-week (:start task)))
-    :end-week (first (w/get-abs-week (:end task)))))
 
-(defn weekify-tasks [tasks]
-  (map weekify-task tasks))
 
 (defn read-test-model []
   (let [tasks           (parse-file-tasks "cpipe-test-files/bsp-01-nur-tasks/Projekt-Start-End-Abt-Kapa.txt")
-        weekified-tasks (weekify-tasks tasks)
+        weekified-tasks (cw/weekify tasks)
         projects        (group-by :project weekified-tasks)]
     {:projects     projects
-     :current-week (w/get-abs-current-week)}))
+     :current-week (first (cw/get-abs-current-week))}))
 
-(def projects (read-test-model))
+(def projects  (read-test-model))
 
 (comment
   (def read-tasks (time (parse-file-tasks
                           "cpipe-test-files/bsp-05-riesen-datensatz/Projekt-Start-End-Abt-Kapa.txt")))
-  (def weekified-tasks (time (weekify-tasks read-tasks))))
+  (def weekified-tasks (time (cw/weekify read-tasks))))
 

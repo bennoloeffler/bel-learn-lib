@@ -1,7 +1,7 @@
-(ns bel.cpipe.week-cal-test
+(ns bel.cpipe.cal-week-test
   (:require [clojure.test :refer :all]
             [java-time :as jt])
-  (:require [bel.cpipe.week-cal :refer [get-abs-week]]))
+  (:require [bel.cpipe.cal-week :refer [get-abs-week]]))
 
 (deftest get-abs-week-test
   (let [[abs-week year week-of-year] (get-abs-week (jt/local-date 2022 1 1))]
