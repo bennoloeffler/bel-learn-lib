@@ -6,7 +6,8 @@
             [clojure.java.io :as jio]
             [bel.cpipe.model :as model :refer :all]
             [bel.util.conversion :refer :all]
-            [bel.cpipe.ui :as ui :refer :all]))
+            [bel.cpipe.ui :as ui :refer :all]
+            [mount.core :as m :refer [defstate]]))
 
 
 (defn init
@@ -16,15 +17,15 @@
   (let [data (model/read-test-model)]
     {:created (dt-str (jt/local-date-time))
      :data    data
-     :frame   (ui/create-frame)}))
+     :ui   ui/ui}))
 
 (defn start
   "do all the side effects to start the system"
   [system]
   (println "STARTING the system...")
   ;(pp/cprint system)
-  (ui/set-system system)
-  (-> ( :frame system) ui/show-frame)
+  ;(ui/set-system system)
+  (-> (:ui ( :frame system) ui/show-frame))
   system)
 
 
@@ -32,7 +33,9 @@
   "do all the side effects to stop the system"
   [system]
   (print "STOPPING the system: ")
-  (doto (:frame system) (.setVisible false) .dispose))
+  (-> (:ui (:frame system))
+      (.setVisible false)))
+      ;.dispose))
   ;(if-let [s (:frame system)]
     ;(pv/dispose-frame s)
   ;(println "...there is nothing to stop")

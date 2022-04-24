@@ -1,6 +1,8 @@
 (ns bel-learn-chapters.96-spec
   (:require [clojure.spec.alpha :as s]))
 
+; https://dawranliou.com/blog/domain-exploring-with-spec/
+
 (defrecord V [^double x ^double y])
 
 (defn v?

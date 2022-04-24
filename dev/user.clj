@@ -12,7 +12,8 @@
             [debux.core :refer :all]
             [hashp.core :refer :all]
             [bel.cpipe.system :as system]
-            [bels-test-runner :refer [call-current-tests]])
+            [bels-test-runner :refer [call-current-tests]]
+            [mount.core :as m])
   (:use tupelo.core))
 
 
@@ -80,7 +81,8 @@
   []
   #_emtpy-system
   (if system
-    (alter-var-root #'system system/start)
+    (do (m/start)
+        (alter-var-root #'system system/start))
     (println "no system - nothing to start")))
 
 (defn stop
@@ -88,17 +90,18 @@
   []
   #_emtpy-system
   (if system
-    (alter-var-root #'system
-                    (fn [s]
-                      (when s (system/stop s))
-                      (def last-system s)
-                      nil))
+    (do (m/stop)
+        (alter-var-root #'system
+                        (fn [s]
+                          (when s (system/stop s))
+                          (def last-system s)
+                          nil)))
     (println "no system - nothing to stop")))
 
 (defn go
   "Initializes the current development system and starts it running."
   []
-  (stop)
+  ;(stop)
   (init)
   (start)
   (println "initialized and started!"))
