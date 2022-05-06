@@ -77,3 +77,5 @@
 
 (defn -main [& args]
   (display "Flight Booker" bookflight-panel))
+
+(comment (-main))

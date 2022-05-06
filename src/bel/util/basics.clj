@@ -23,7 +23,7 @@
 
 
 (defn != [x y]
-  (not (= x y)))
+  (not= x y))
 
 (comment
-  (pa/assert (dbg-bel (!= 2 3))))
+  (pa/assert (dbg-bel (!= (* 2 3) (- 10 5)))))

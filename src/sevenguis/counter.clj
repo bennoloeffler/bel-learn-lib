@@ -11,3 +11,6 @@
 
 (defn -main [& args]
   (display "Counter" counter-panel))
+
+
+(comment (-main))

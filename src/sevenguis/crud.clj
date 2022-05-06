@@ -82,3 +82,6 @@
 
 (defn -main [& args]
   (display "CRUD" crud-panel (atom database)))
+
+
+(comment (-main))

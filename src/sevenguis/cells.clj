@@ -164,3 +164,5 @@
 
 (defn -main [& args]
   (display "Cells" cells-panel 12 5))
+
+(comment (-main))

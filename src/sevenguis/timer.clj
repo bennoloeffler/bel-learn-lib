@@ -42,3 +42,5 @@
 
 (defn -main [& args] 
   (display "Timer" timer-panel))
+
+(comment (-main))

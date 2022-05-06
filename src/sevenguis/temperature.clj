@@ -37,3 +37,5 @@
 
 (defn -main [& args] 
   (display "Temperature Converter" convert-panel))
+
+(comment (-main))

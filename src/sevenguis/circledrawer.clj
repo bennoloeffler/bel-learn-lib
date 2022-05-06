@@ -103,3 +103,5 @@
 
 (defn -main [& args]
   (display "Circle Drawer" circledraw-panel))
+
+(comment (-main))
