@@ -1,5 +1,6 @@
 (ns bel-learn-chapters.01-start-vs-code-calva)
 
+; https://clojureverse.org/t/my-beginner-s-journey-week-august-16-22-2021/8087
 
 ; https://github.com/ClojureBridge/curriculum
 ; https://exercism.io/tracks/clojure
