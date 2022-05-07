@@ -1,5 +1,7 @@
 (ns bel-learn-chapters.03-beginners-stuff)
 
+;; https://tryclojure.org/
+
 ;; https://yogthos.net/ClojureDistilled.html
 
 ;; https://www.clojurenewbieguide.com/
