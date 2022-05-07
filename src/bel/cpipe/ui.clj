@@ -46,7 +46,8 @@
                         :grid-size 10
                         :size-x    3000
                         :size-y    1000})
-        frame (create-frame ui-state)]
+        frame (create-frame ui-state)
+        _ (show! frame)]
     {:ui-state ui-state
      :frame frame}))
 
