@@ -106,8 +106,13 @@
 
 (comment
   (vargs 1 2 3 4 5 6)
-  (vargs 1 2))
+  (vargs 1 2)
+  (+ 1 (reduce + (sort (shuffle (map inc (range 10))))))
+  (conj #{1 2 3} 1 1 1 2 3 4)
+  (disj #{1 2 3 4} 1)
+  (remove #(= 2 %) [1 2 3 4 2])
+  (apply max [1 2 3 4]))
 
 ;(clojure.repl/source +)
 
-(+ 1 (reduce + (sort (shuffle (map inc (range 10))))))
+

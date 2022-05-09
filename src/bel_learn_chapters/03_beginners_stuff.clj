@@ -10,6 +10,8 @@
 
 ;; https://blog.jakubholy.net/clojure-for-beginners/
 
+;; https://grison.me/2020/04/04/starting-with-clojure/
+
 ;; https://clojure.org/community/resources
 
 ;; 2013 https://elangocheran.com/2012/03/26/the-newbies-guide-learning-clojure/
