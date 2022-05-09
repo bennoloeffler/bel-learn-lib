@@ -4,6 +4,9 @@
 
 ; https://www.newline.co/@shivekkhurana/reaching-flow-state-with-clojures-repl--14018b04
 
+; clojurescript preserving state between reloads
+; https://gist.github.com/roman01la/b939e4f2341fc2f931e34a941aba4e15
+
 *ns* ; show current
 (in-ns 'user) ; switch to
 (in-ns 'bel-learn-chapters.07-repl) ; switch to (UNAVAILABLE?)
