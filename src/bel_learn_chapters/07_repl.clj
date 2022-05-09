@@ -1,6 +1,9 @@
 ;;
 ;; namespaces
 ;;
+
+; https://www.newline.co/@shivekkhurana/reaching-flow-state-with-clojures-repl--14018b04
+
 *ns* ; show current
 (in-ns 'user) ; switch to
 (in-ns 'bel-learn-chapters.07-repl) ; switch to (UNAVAILABLE?)
