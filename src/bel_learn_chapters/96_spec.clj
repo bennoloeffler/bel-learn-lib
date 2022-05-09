@@ -2,6 +2,8 @@
   (:require [clojure.spec.alpha :as s]))
 
 ; https://dawranliou.com/blog/domain-exploring-with-spec/
+; https://gist.github.com/maacl/b0795e5f3d4ab72ca8add1e2d091e0e4
+; https://github.com/didibus/clj-ddd-example
 
 (defrecord V [^double x ^double y])
 
