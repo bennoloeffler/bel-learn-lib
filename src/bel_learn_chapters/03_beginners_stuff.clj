@@ -15,3 +15,5 @@
 ;; https://clojure.org/community/resources
 
 ;; 2013 https://elangocheran.com/2012/03/26/the-newbies-guide-learning-clojure/
+
+;; https://kimh.github.io/clojure-by-example/#literal-5
