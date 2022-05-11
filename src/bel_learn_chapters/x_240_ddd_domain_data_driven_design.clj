@@ -8,6 +8,13 @@
            [java.util Date]))
 
 
+; malli
+; https://www.karimarttila.fi/clojure/2020/12/07/malli-clojure-library.html
+; https://www.metosin.fi/blog/malli/
+; https://github.com/metosin/malli
+
+
+; spec
 ; https://dawranliou.com/blog/domain-exploring-with-spec/
 ; https://gist.github.com/maacl/b0795e5f3d4ab72ca8add1e2d091e0e4
 ; https://github.com/didibus/clj-ddd-example
