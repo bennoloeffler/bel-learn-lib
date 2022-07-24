@@ -3,11 +3,11 @@
     [clojure.string :as str]
     [clojure.pprint :refer (pprint)]
     [puget.printer :refer (cprint)]
-    [erdos.assert :as pa] ;power-assert
-    [taoensso.timbre :refer [spy error warn info debug]] ;logging
+    [erdos.assert :as pa]                                   ;power-assert
+    [taoensso.timbre :refer [spy error warn info debug]]    ;logging
     [clojure.tools.trace :as trace :refer [dotrace trace-forms]] ;tracing
-    [debux.core :refer :all] ; dbg
-    [hashp.core :refer :all]]) ;#p
+    [debux.core :refer :all]                                ; dbg
+    [hashp.core :refer :all]])                              ;#p
 
 ; http://www.futurile.net/2020/05/16/clojure-observability-and-debugging-tools/
 
@@ -34,7 +34,7 @@
   ;erdos
   (pa/examine (->> (range 10)
                    (map inc)
-                   doall ; because lazy result from map
+                   doall                                    ; because lazy result from map
                    (reduce +))))
 
 ;;---------------------------------------
@@ -43,13 +43,13 @@
 
 
 (defn debug-this [arg1 arg2]
-  (let [from  (min arg1 arg2) ; breakpoint may have conditions
-        to    (max arg1 arg2)
+  (let [from (min arg1 arg2)                                ; breakpoint may have conditions
+        to (max arg1 arg2)
         start (+ arg1 arg2)]
-    (->> (range from to 3) ; get range
-         (map #(* % 3)) ; multiply each by 3
-         (filter odd?) ; get only the odds
-         (reduce #(- %1 %2) start)))) ; reduce by minus, starting at 1000
+    (->> (range from to 3)                                  ; get range
+         (map #(* % 3))                                     ; multiply each by 3
+         (filter odd?)                                      ; get only the odds
+         (reduce #(- %1 %2) start))))                       ; reduce by minus, starting at 1000
 
 (comment (debug-this 155 25))
 
@@ -58,7 +58,7 @@
 ;;---------------------------------------
 
 (defn ^:dynamic do-div [x y]
-  (/ x #p y)) ; setting an exception breakpoint helps
+  (/ x #p y))                                               ; setting an exception breakpoint helps
 
 (defn ^:dynamic calc [x y]
   (let [xx (inc x) yy (dec y)]
@@ -68,11 +68,11 @@
 ; https://github.com/clojure/tools.trace
 (comment
   (dotrace [calc do-div] (calc 4 7))
-  (trace-forms (+ 1 3) (* 5 6) (/ 1 0))) ;; To identify which form is failing
+  (trace-forms (+ 1 3) (* 5 6) (/ 1 0)))                    ;; To identify which form is failing
 
-(comment (calc 10 1)) ; set an exception breakpoint...
+(comment (calc 10 1))                                       ; set an exception breakpoint...
 
-(comment ; printing something in between
+(comment                                                    ; printing something in between
   (let [pow 3 value 3]
     (loop [i pow res 1]
       (if (zero? i)
@@ -93,7 +93,7 @@
 (defn mult-pow [to]
   (->> (range 1N (inc to)) (map #(pow % %))))
 
-(comment ; tracing
+(comment                                                    ; tracing
   (trace/trace-vars bel-learn-chapters.06-debugging/pow)
   (mult-pow 20N))
 
@@ -103,12 +103,11 @@
 
 (require '[mate-clj.core :as mate])
 ;; https://github.com/AppsFlyer/mate-clj
-;; DOES NOT WORK! SHIT!
-(comment
+
+(comment ;; DOES NOT WORK! SHIT!
   (mate/d->> [:1 :2 :3 :4]
              shuffle
              (map str))
-
 
   ; but this does
   (dbg (->> [:1 :2 :3 :4]
@@ -119,9 +118,9 @@
   ; this too
   (def m {:body "flow test"})
   (mate/d-> m
-            :body ;step #1
-            (clojure.string/upper-case) ;step #2
-            (clojure.string/reverse))) ;step #3)
+            :body                                           ;step #1
+            (clojure.string/upper-case)                     ;step #2
+            (clojure.string/reverse)))                      ;step #3)
 
 ;;---------------------------------------
 ;; POWER ASSERTS
@@ -135,7 +134,7 @@
   (pa/examine (->> [:1 :2 :3 :4]
                    (shuffle)
                    (map #(str % "--"))
-                   (doall) ;see lazy ones
+                   (doall)                                  ;see lazy ones
                    (clojure.string/join))))
 
 ;;---------------------------------------
@@ -144,7 +143,7 @@
 ;;---------------------------------------
 
 (comment
-  (taoensso.timbre/merge-config! {:min-level :info}) ; :level debug does nothing!
+  (taoensso.timbre/merge-config! {:min-level :info})        ; :level debug does nothing!
   (taoensso.timbre/info "This will print")
   (taoensso.timbre/debug "error"))
 ;(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
@@ -154,11 +153,11 @@
 (comment (spy (my-calc 1 2 3)))
 
 (comment
-  (->> [:1 :2 :3 :4] ; spy does work
+  (->> [:1 :2 :3 :4]                                        ; spy does work
        shuffle
        spy
        (map #(str % "--"))
-       vec ; doall does not work?
+       vec                                                  ; doall does not work?
        spy
        str/join
        spy))
