@@ -2,6 +2,8 @@
 
 ;; https://tryclojure.org/
 
+;; https://calva.io/get-started-with-clojure/
+
 ;; https://yogthos.net/ClojureDistilled.html
 
 ;; https://www.clojurenewbieguide.com/
@@ -17,3 +19,12 @@
 ;; 2013 https://elangocheran.com/2012/03/26/the-newbies-guide-learning-clojure/
 
 ;; https://kimh.github.io/clojure-by-example/#literal-5
+
+;; https://learnxinyminutes.com/docs/clojure/
+
+;; https://jeoygin.gitbooks.io/learn-y-in-x-minutes/content/clojure.html
+
+;; https://github.com/braveclojure/training
+
+;; https://enterpriseclojure.com/
+

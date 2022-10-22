@@ -8,6 +8,10 @@
 ; http://www.futurile.net/2020/07/14/clojure-testing-with-clojure-test-and-expectations/
 ; https://github.com/clojure-expectations/clojure-test
 
+
+; RICH Tests
+;https://github.com/hyperfiddle/rcf
+
 ; REPORTING
 ; lein cloverage
 ; lein bat-test auto

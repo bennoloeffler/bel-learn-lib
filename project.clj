@@ -40,7 +40,9 @@
                  [clj-http "3.12.3"]
                  [mount "0.1.16"]
                  [io.reactivex/rxclojure "1.0.0"]
-                 [missionary "b.26"]]
+                 [missionary "b.26"]
+                 [com.hyperfiddle/rcf "20220405"]]
+
   ;:main ^:skip-aot bel-learn-lib.core
   :main ^:skip-aot user
   :target-path "target/%s"
