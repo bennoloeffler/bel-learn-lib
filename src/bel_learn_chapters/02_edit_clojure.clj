@@ -17,6 +17,7 @@
 (comment
   (+ 1 (/ 4 2) (dec 9)))
 
+
 ;; place the cursor to the 6, press CTRL-W until (+ 6 7 8 9) is marked.
 ;; then press CTRL-Enter or CTRL-ALT-P
 ;; you should see this: => 30
@@ -57,7 +58,7 @@
     (->> (map inc [x y 7 1])
          sort
          (#(do (prn %) %))
-         (partition 2)))) ;just comment with trialing semicolon
+         (partition 2))))                                   ;just comment with trialing semicolon
 
 
 ; ENTF and SPACE move the whole block in parinfer mode. TAB moves one line. SHIFT-TAB reverses TAB.
@@ -68,6 +69,28 @@
 
 ;; BACKSPACE doese probably not what you expect! Try it.
 
+;; splice Alt + S (remove parens of current form)
+(+ 3 (* 4 5))
+
+;; raise Alt + R (overwrite outer by form to the right)
+(* 17 (+ 3 (* 4 5)))
+
+;; kill Alt + D (remove all forms in form to the right)
+(+ 3 (* 4 5 6 7 85))
+
+;; split Alt + Shift + S (create two forms, split at cursor)
+(comment
+  (+ 3 (* 4 4 + 5 5)))
+
+;; kill sexp Alt + Shift + D (remove ONE form to the right)
+(+ 3 (* 4 (/ 10 100) 5))
+
+;; wrap with () Ctrl + Shift + 9
+(+ 3 (* 4 (/ 10 100) 5))
+
+;; view macro
+(or (string? 12) (number? "12") (boolean? false))
+
 ;;
 ;; Comments
 ;;
@@ -76,13 +99,20 @@
 ;; comment
 #_(ignore the next expression) (str "but not the next")
 (comment
- (+ 100 #_(+ 200 300) (+ 1))
- (+ 5 11))
+  (+ 100 #_(+ 200 300) (+ 1))
+  (+ 5 11))
 
 ;; threading macros - make code more readable
 ;;STRG-ALT-, STRG-ALT-.
-;; place curser here ->>(range 10)
+;; place curser before last form (map inc CURSOR-HERE (range 10)))))
 ;; start pressing repeatedly STRG-ALT-,
+;; if finished, start pressing STRG-ALT-. (to undo threading step by step)
 
 (+ 1 (reduce + (sort (map inc (range 10)))))
-(+ 1 (reduce + (sort (map inc (range 10)))))
+
+;; this will be the readable form...
+(->> (range 10)
+     (map inc)
+     (sort)
+     (reduce +)
+     (+ 1))

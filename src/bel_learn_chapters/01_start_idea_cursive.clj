@@ -185,4 +185,4 @@ cats ; => 5 (evaluation to final value)
 (mult2 10)
 (c*2 10)
 
-;"this last expression will be the result of run file (CTRL-ALT-L in Cursive) and printed in the REPL"
+"this last expression will be the result of run file (CTRL-ALT-L in Cursive) and printed in the REPL"

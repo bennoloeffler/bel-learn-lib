@@ -85,7 +85,7 @@
 
 (add 3 4)
 
-;(clojure.repl/doc add)
+(clojure.repl/doc add)
 (meta #'add)
 (supers (type add))
 
