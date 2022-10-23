@@ -8,8 +8,10 @@
   :license {:name "WTFPL"
             :url  "http://www.wtfpl.net/"}
   :dependencies [[org.clojure/clojure "1.10.3"]
+                 [com.taoensso/encore "3.23.0"]
+                 [io.github.nextjournal/clerk "0.11.603"]
                  [org.clojure/tools.reader "1.3.6"]
-                 [com.taoensso/timbre "5.1.2"] ; x logging, see: https://github.com/ptaoussanis/timbre
+                 [com.taoensso/timbre "5.2.1"] ; x logging, see: https://github.com/ptaoussanis/timbre
                  [lein-koan "0.1.5"] ;; training exercises "medittions"
                  [quil "3.1.0"] ;; drawing to the screen
                  [com.formdev/flatlaf "2.0.2"] ;; swing support for big displays
@@ -42,6 +44,7 @@
                  [io.reactivex/rxclojure "1.0.0"]
                  [missionary "b.26"]
                  [com.hyperfiddle/rcf "20220405"]]
+
 
   ;:main ^:skip-aot bel-learn-lib.core
   :main ^:skip-aot user
