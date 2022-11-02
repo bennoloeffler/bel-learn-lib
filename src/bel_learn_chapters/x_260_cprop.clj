@@ -7,8 +7,6 @@
                           from-env]]))
 
 
-
-
 (println)
 (cprint :-----system-properties-------------------------------------------------)
 (cprint (from-system-props))
