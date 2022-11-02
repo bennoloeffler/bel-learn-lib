@@ -43,7 +43,8 @@
                  [mount "0.1.16"]
                  [io.reactivex/rxclojure "1.0.0"]
                  [missionary "b.26"]
-                 [com.hyperfiddle/rcf "20220405"]]
+                 [com.hyperfiddle/rcf "20220405"]
+                 [cprop "0.1.19"]]
 
 
   ;:main ^:skip-aot bel-learn-lib.core
