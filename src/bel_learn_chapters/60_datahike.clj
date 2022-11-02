@@ -6,6 +6,7 @@
            ;[java.awt.event WindowListener]
            (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf)))
 
+;; datalog https://nextjournal.com/learn-xtdb-datalog-today/learn-xtdb-datalog-today
 
 (comment
 
