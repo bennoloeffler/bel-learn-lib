@@ -1,3 +1,12 @@
+
+
+; https://gist.github.com/pithyless/e00362aa6061bfb4e4749079a33be073
+; https://cljdoc.org/d/io.replikativ/datahike/0.3.3/doc/readme
+; https://docs.datomic.com/on-prem/overview/introduction.html
+; https://github.com/kristianmandrup/datascript-tutorial/blob/master/SUMMARY.md
+; http://www.learndatalogtoday.org/
+
+
 (ns bel-learn-chapters.61-datahike-model-query
   (:require [datahike.api :as d]
             [clojure.inspector :as insp])
@@ -6,12 +15,6 @@
     ;[java.awt.event WindowListener]
     (java.util Date)
     (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf)))
-
-
-; https://cljdoc.org/d/io.replikativ/datahike/0.3.3/doc/readme
-; https://docs.datomic.com/on-prem/overview/introduction.html
-; https://github.com/kristianmandrup/datascript-tutorial/blob/master/SUMMARY.md
-; http://www.learndatalogtoday.org/
 
 (comment
   (def cfg {:name               "bels-db"
