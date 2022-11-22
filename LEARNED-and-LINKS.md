@@ -31,12 +31,12 @@
     - Clojure.Format: Disable
 
 - [Atom](https://gist.github.com/jasongilman/d1f70507bed021b48625)
-    -  
+    
 
 ### Inspiration
 - [Robert C. Martin on clojure](https://blog.cleancoder.com/uncle-bob/2019/08/22/WhyClojure.html)  
 
-# Learning ressources
+### Learning ressources
 - [git clojure in 15 min](https://gist.github.com/hindol/727eb69e9943b371e66902c19960fd0c)  
 - [git clojure koan intense](https://github.com/functional-koans)
 - [koan online](http://clojurescriptkoans.com/)
@@ -55,7 +55,7 @@
 - https://github.com/razum2um/awesome-clojure
 - http://www.learningclojure.com/2013/01/how-sessions-work-in-ring.html
 
-# datalog
+### datalog
 - https://gist.github.com/pithyless/e00362aa6061bfb4e4749079a33be073
 - https://cljdoc.org/d/io.replikativ/datahike/0.3.3/doc/readme
 - https://cljdoc.org/d/io.replikativ/datahike/0.6.1522/api/datahike.api
