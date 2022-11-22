@@ -28,3 +28,5 @@
 
 ;; https://enterpriseclojure.com/
 
+;; http://www.learningclojure.com/2013/01/how-sessions-work-in-ring.html
+

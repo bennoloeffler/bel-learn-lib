@@ -12,6 +12,7 @@
 ; https://clojureverse.org/t/a-quick-way-to-start-experimenting-with-datomic/5004
 ; http://www.karimarttila.fi/clojure/2020/11/14/clojure-datomic-exercise.html
 ; https://stackoverflow.com/questions/42786046/how-to-update-overwrite-a-ref-attribute-with-cardinality-many-in-datomic
+; https://blog.davemartin.me/posts/datomic-how-to-update-cardinality-many-attribute/
 
 
 (ns bel-learn-chapters.61-datahike-model-query

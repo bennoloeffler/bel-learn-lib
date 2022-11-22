@@ -53,3 +53,22 @@
 - [geiles Tutorial](http://clojurebridge-berlin.org/community-docs/docs/clojure/higher-order-function/)
 - [ns:](https://www.braveclojure.com/organization/)
 - https://github.com/razum2um/awesome-clojure
+- http://www.learningclojure.com/2013/01/how-sessions-work-in-ring.html
+
+# datalog
+- https://gist.github.com/pithyless/e00362aa6061bfb4e4749079a33be073
+- https://cljdoc.org/d/io.replikativ/datahike/0.3.3/doc/readme
+- https://cljdoc.org/d/io.replikativ/datahike/0.6.1522/api/datahike.api
+- https://docs.datomic.com/on-prem/overview/introduction.html
+- https://docs.datomic.com/on-prem/tutorial/introduction.html
+- https://github.com/Datomic/day-of-datomic/blob/master/doc-examples/tutorial2.repl
+- https://github.com/Datomic/day-of-datomic source for tutorial
+- https://github.com/ftravers/datomic-tutorial
+- https://github.com/kristianmandrup/datascript-tutorial/blob/master/SUMMARY.md
+- http://www.learndatalogtoday.org/
+- https://clojureverse.org/t/a-quick-way-to-start-experimenting-with-datomic/5004
+- http://www.karimarttila.fi/clojure/2020/11/14/clojure-datomic-exercise.html
+- https://stackoverflow.com/questions/42786046/how-to-update-overwrite-a-ref-attribute-with-cardinality-many-in-datomic
+- https://blog.davemartin.me/posts/datomic-how-to-update-cardinality-many-attribute/
+- https://docs.datomic.com/cloud/tutorial/retract.html
+- https://cljdoc.org/d/datascript/datascript/1.3.15/api/datascript.core#q
