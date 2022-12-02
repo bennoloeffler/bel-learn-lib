@@ -8,10 +8,21 @@
   :license {:name "WTFPL"
             :url  "http://www.wtfpl.net/"}
   :dependencies [[org.clojure/clojure "1.10.3"]
-                 [com.taoensso/encore "3.23.0"]
+                 [com.taoensso/encore "3.39.0"]
                  [io.github.nextjournal/clerk "0.11.603"]
                  [org.clojure/tools.reader "1.3.6"]
-                 [com.taoensso/timbre "5.2.1"] ; x logging, see: https://github.com/ptaoussanis/timbre
+
+
+                 [com.taoensso/timbre "6.0.2"] ; x logging, see: https://github.com/ptaoussanis/timbre
+                 ;; route slf4j through timbre
+                 [com.fzakaria/slf4j-timbre "0.3.21"]
+                 ; route everything through slf4j
+                 ;[org.slf4j/slf4j-api "2.0.3"]
+                 [org.clojure/tools.logging "1.2.4"]
+                 [org.slf4j/log4j-over-slf4j "2.0.3"]
+                 [org.slf4j/jul-to-slf4j "2.0.3"]
+                 [org.slf4j/jcl-over-slf4j "2.0.3"]
+
                  [lein-koan "0.1.5"] ;; training exercises "medittions"
                  [quil "3.1.0"] ;; drawing to the screen
                  [com.formdev/flatlaf "2.0.2"] ;; swing support for big displays
@@ -44,7 +55,8 @@
                  [io.reactivex/rxclojure "1.0.0"]
                  [missionary "b.26"]
                  [com.hyperfiddle/rcf "20220405"]
-                 [cprop "0.1.19"]]
+                 [cprop "0.1.19"]
+                 [org.clojure/tools.logging "1.2.4"]]
 
 
   ;:main ^:skip-aot bel-learn-lib.core

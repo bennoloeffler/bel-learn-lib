@@ -1,12 +1,15 @@
 (ns bel-learn-chapters.x-170-missionary-rx
-  (:require [missionary.core :as m])
+  (:require [missionary.core :as m]
+            [clojure.string :as str])
   (:import [missionary Cancelled]))
 
   ;; TODO learn this https://github.com/leonoel/missionary
   ;; TODO GUI-Example "cpipe" - provide as example for missionary open source
   ;; https://clojureverse.org/t/missionary-new-release-with-streaming-support-design-notes/4510
   ;; VIDEO from Leo ... https://www.reddit.com/r/Clojure/comments/rn0wcx/functional_effect_and_streaming_systems_in/?utm_source=share&utm_medium=ios_app&utm_name=iossmf
-  ;;
+
+  ;; https://github.com/ribelo/praxis
+  ;; https://nextjournal.com/dustingetz/missionary-flow-tutorial-%E2%80%93peter-nagy
 
 
   ; this is a reactive computation, the println reacts to input changes
@@ -162,3 +165,51 @@
      (map str)
      (map keyword))
 (keyword "5")
+
+(comment
+
+  ;; ######  TASKS  #######
+
+  (def task-1 (m/sp
+                (println "one")
+                :two)) ; sequential process
+  (def nap (m/sleep 1000))
+  (def timeout-nap (m/timeout (m/sleep 1000) 100)) ; long running tasks may be stopped by timeout
+
+  ; async : with continuation function for success and error
+  (task-1
+    #(println "Hello" %)
+    #(println :KO %))
+
+  (m/? task-1) ;; execute it, clj ONLY
+
+  ; compose task
+  (def task-nap (m/sp (println "Let's take a nap...")
+                      (str (m/? (m/sleep 90 "Hi "))
+                           (m/? (m/sleep 1000 "there!")))))
+
+  (do ;; cancel does not work ???
+    (def a-task (m/sleep 15000 :done))
+    (def cancel (a-task #(println :ok %) (fn [_] (println :KO))))
+    (cancel)) ; (on stdout) :KO)
+
+  (do
+    (def cancel (task-nap #(println :ok %) (fn [_] (println :KO))))
+    (cancel))
+
+  ;; ######  FLOWS  #######
+
+  (def input (m/seed (range 10)))
+  (def sum-task (m/reduce + input))
+  (m/? sum-task)
+  (m/? (m/reduce conj (m/eduction (partition-all 4) input)))
+
+  ;; ambiguous evaluation (fork)
+  (def hello-world
+    (m/ap
+      (let [x (m/?> (m/seed ["Hello," "world" "and" "Benno"]))
+            y 13]
+        (m/? (m/sleep 1000 (do (println x) (repeat y x)))))))
+  (m/? (m/reduce conj hello-world))
+
+  nil)
