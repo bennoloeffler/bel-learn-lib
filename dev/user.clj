@@ -229,3 +229,7 @@
     (constantly (do (println "again...") (+ 20 100))))
   (dbg 3)
   ((s) 1 2 3))
+
+(comment
+  (first (str/split "17-del" #"-"))
+  (first (str/split "17" #"-")))

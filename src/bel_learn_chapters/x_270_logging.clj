@@ -3,9 +3,10 @@
              ;; Optional, just refer what you like:
              :refer [log trace debug info warn error fatal report
                      logf tracef debugf infof warnf errorf fatalf reportf
-                     spy set-min-level!]]
+                     spy set-min-level! set-ns-min-level!]]
             [taoensso.timbre.appenders.core :as appenders]
-            [taoensso.timbre.tools.logging :refer [use-timbre]])
+            [taoensso.timbre.tools.logging :refer [use-timbre]]
+            [clojure.tools.logging :as cl])
   (:import [java.util TimeZone]))
 
 ;; https://dev.to/dpsutton/logging-in-clojure-jar-tidiness-4jka
@@ -23,11 +24,6 @@
  ;[org.slf4j/jul-to-slf4j "2.0.3"]
  ;[org.slf4j/jcl-over-slf4j "2.0.3"])
 
-
-
-;; :trace < :debug < :info < :warn < :error < :fatal < :report
-(set-min-level! :info)
-
 (use-timbre) ;Sets the root binding of `clojure.tools.logging/*logger-factory*` to use Timbre.
 
 ; format logging message
@@ -40,15 +36,55 @@
                             :event event)))
 
 ; http://ptaoussanis.github.io/timbre/taoensso.timbre.html#var-*config*
-(timbre/merge-config!
-  {:appenders      {:spit (appenders/spit-appender {:fname "cr-eam.log"})}
-   :timestamp-opts {:pattern "yyyy-MM-dd HH:mm:ss" :timezone (TimeZone/getTimeZone "CET")}})
+#_(timbre/merge-config!
+    {:appenders      {:spit (appenders/spit-appender {:fname "cr-eam.log"})}
+     :timestamp-opts {:pattern "yyyy-MM-dd HH:mm:ss" :timezone (TimeZone/getTimeZone "CET")}})
 ;:output-fn bels-output})
 
 ; taoensso.timbre/*config*
 ; taoensso.timbre/default-timestamp-opts
 
+(def ^:private color-log-map
+  {:trace  :cyan
+   :debug   :green
+   :warn   :yellow
+   :error  :red
+   :fatal  :purple
+   :report :blue})
+
+(defn- color-logger [options {:keys [level output-fn] :as data}]
+  (let [level-color (color-log-map level)]
+    (if (and (:color options) level-color)
+      (println (timbre/color-str level-color (output-fn data)))
+      (println (output-fn data)))))
+
+(defn config-timbre! [options]
+  (timbre/set-config!
+    {
+     :timestamp-opts {:pattern "yyyy-MM-dd HH:mm:ss" :timezone (TimeZone/getTimeZone "CET")}
+
+     :appenders {:color-appender
+                 {:enabled? true
+                  :fn       (partial color-logger options)}}})
+  (timbre/set-level! (:level options)))
+
+
+
+(config-timbre! {:level :info :output-fn timbre/default-output-fn :color true})
+
+;; :trace < :debug < :info < :warn < :error < :fatal < :report
+
+;; overwrite global logging level
+(set-min-level! :debug)
+
+;; overwrite namespace logging level
+(set-ns-min-level! :warn)
 
 (comment
+  (log :trace "def")
+  (debug "debug")
   (log :info "abc") ; log with timbre
-  (log :trace "def")) ; log with clojure.logging
+  (warn "warn") ; log with clojure.logging
+  (cl/error "clojure log")
+  (log :fatal "fatal")
+  (report "rep"))

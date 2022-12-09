@@ -4,7 +4,7 @@
     [clojure.pprint :refer (pprint)]
     [puget.printer :refer (cprint)]
     [erdos.assert :as pa]                                   ;power-assert
-    [taoensso.timbre :refer [spy error warn info debug]]    ;logging
+    [taoensso.timbre :refer [spy error warn info debug set-min-level!]]    ;logging
     [clojure.tools.trace :as trace :refer [dotrace trace-forms]] ;tracing
     [debux.core :refer :all]                                ; dbg
     [hashp.core :refer :all]])                              ;#p
@@ -68,7 +68,7 @@
 ; https://github.com/clojure/tools.trace
 (comment
   (dotrace [calc do-div] (calc 4 7))
-  (trace-forms (+ 1 3) (* 5 6) (/ 1 0)))                    ;; To identify which form is failing
+  (trace-forms (+ 1 3) (* 5 6) (/ 1 1)))                    ;; To identify which form is failing
 
 (comment (calc 10 1))                                       ; set an exception breakpoint...
 
@@ -135,7 +135,8 @@
                    (shuffle)
                    (map #(str % "--"))
                    (doall)                                  ;see lazy ones
-                   (clojure.string/join))))
+                   (clojure.string/join)))
+  (pa/examine (->> [:1 :2 :3 :4] shuffle str/join)))
 
 ;;---------------------------------------
 ;; TIMBRE LOGGING
@@ -151,9 +152,10 @@
 
 (defn my-calc [a b c] (* a b c))
 (comment (spy (my-calc 1 2 3)))
-
 (comment
+  (set-min-level! :debug)
   (->> [:1 :2 :3 :4]                                        ; spy does work
+       spy
        shuffle
        spy
        (map #(str % "--"))
@@ -162,6 +164,16 @@
        str/join
        spy))
 
+(pa/examine
+  (->> [:1 :2 :3 :4]
+       (shuffle)
+       (map #(str % "--"))
+       (clojure.string/join)))
+
+(dbg (->> [:1 :2 :3 :4]
+          (shuffle)
+          (map #(str % "--"))
+          (clojure.string/join)))
 
 ;;---------------------------------------
 ;; OWN MACRO
@@ -180,7 +192,6 @@
   (dbg-bel (+ 1 2))
 
   (->> [:1 :2 :3 :4]
-       dbg-bel
        shuffle
        dbg-bel
        (map #(str % "--"))
