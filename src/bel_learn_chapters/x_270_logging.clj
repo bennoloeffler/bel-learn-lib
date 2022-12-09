@@ -65,12 +65,12 @@
 
      :appenders {:color-appender
                  {:enabled? true
-                  :fn       (partial color-logger options)}}})
-  (timbre/set-level! (:level options)))
+                  :fn       (partial color-logger options)}}}))
 
 
 
-(config-timbre! {:level :info :output-fn timbre/default-output-fn :color true})
+
+(config-timbre! { :output-fn timbre/default-output-fn :color true})
 
 ;; :trace < :debug < :info < :warn < :error < :fatal < :report
 
@@ -78,7 +78,7 @@
 (set-min-level! :debug)
 
 ;; overwrite namespace logging level
-(set-ns-min-level! :warn)
+(set-ns-min-level! :trace)
 
 (comment
   (log :trace "def")
