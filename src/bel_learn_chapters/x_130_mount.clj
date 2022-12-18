@@ -9,7 +9,9 @@
 ; https://www.cbui.dev/a-tutorial-to-stuart-sierras-component/
 ; https://medium.com/@maciekszajna/reloaded-workflow-out-of-the-box-be6b5f38ea98
 
-
+;; https://mccue.dev/pages/12-7-22-clojure-web-primer
+;; https://www.emcken.dk/programming/2019/02/06/clojure-testing-recent-findings/
+;; https://grishaev.me/en/clj-book-systems/
 
 
 (defn create-bel-component []

@@ -17,7 +17,9 @@
                  ;; route slf4j through timbre
                  [com.fzakaria/slf4j-timbre "0.3.21"]
                  ; route everything through slf4j
-                 [org.slf4j/slf4j-api "2.0.3"]
+                 [org.slf4j/slf4j-api "1.7.14"] ;; 2.x does not work any more...
+                 ;; see https://github.com/vaughnd/clojure-example-logback-integration
+                 ;[ch.qos.logback/logback-classic "1.1.1"] ;;
                  [org.clojure/tools.logging "1.2.4"]
                  [org.slf4j/log4j-over-slf4j "2.0.3"]
                  [org.slf4j/jul-to-slf4j "2.0.3"]
