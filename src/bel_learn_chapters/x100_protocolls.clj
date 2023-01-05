@@ -6,23 +6,23 @@
 
 (defmulti full-moon-behavior (fn [were-creature] (:were-type were-creature)))
 (defmethod full-moon-behavior :wolf
-   [were-creature]
-   (str (:name were-creature) " will howl and murder"))
+  [were-creature]
+  (str (:name were-creature) " will howl and murder"))
 (defmethod full-moon-behavior :simmons
-   [were-creature]
-   (str (:name were-creature) " will encourage people and sweat to the oldies"))
+  [were-creature]
+  (str (:name were-creature) " will encourage people and sweat to the oldies"))
 (defmethod full-moon-behavior :default
-   [were-creature]
-   (str (:name were-creature) " will do NOTHING"))
+  [were-creature]
+  (str (:name were-creature) " will do NOTHING"))
 
 (full-moon-behavior {:were-type :wolf
-                     :name "Rachel from next door"})
+                     :name      "Rachel from next door"})
 
-(full-moon-behavior {:name "Andy the baker"
+(full-moon-behavior {:name      "Andy the baker"
                      :were-type :simmons})
 
 (full-moon-behavior {:name "Benno the consultant"})
-(full-moon-behavior {:name "Sabine the mother"
+(full-moon-behavior {:name      "Sabine the mother"
                      :were-type :sports-woman})
 
 ;; -----------------------
@@ -52,10 +52,10 @@
 
 ; extend existing types
 (extend-type String Psychodynamics
- (thoughts [x] (str "I'm a chain of chars... and would like to be uppercase..." x))
- (feelings-about
-  ([x] (str "I'm a lonely string..." x))
-  ([x y] (str "I'm a happy socializing string: " x " <-> " y))))
+  (thoughts [x] (str "I'm a chain of chars... and would like to be uppercase..." x))
+  (feelings-about
+     ([x] (str "I'm a lonely string..." x))
+     ([x y] (str "I'm a happy socializing string: " x " <-> " y))))
 
 (feelings-about "me")
 (thoughts "abc")
@@ -63,10 +63,10 @@
 
 ; default implementation...
 (extend-type Object Psychodynamics
- (thoughts [x] (str "You are looking at me as an object :-( " x))
- (feelings-about
-  ([x] (str "object " x))
-  ([x y] (str "as object, im not subjective on -> " y))))
+  (thoughts [x] (str "You are looking at me as an object :-( " x))
+  (feelings-about
+     ([x] (str "object " x))
+     ([x y] (str "as object, im not subjective on -> " y))))
 
 (feelings-about :abc "string")
 
@@ -86,8 +86,8 @@
 (extend-type Point Psychodynamics
   (thoughts [x] (str "I'm a Point with thoughts..." (:x x) (:y x)))
   (feelings-about
-   ([x] (str "points dont feel. they just are " (:x x) ":" (:y x)))
-   ([x y] (str "no feelings about -> " y))))
+    ([x] (str "points dont feel. they just are " (:x x) ":" (:y x)))
+    ([x y] (str "no feelings about -> " y))))
 
 (thoughts (Point. 2 3))
 (feelings-about (Point. 2 3) :other)
@@ -107,7 +107,95 @@
   (feelings-about [x] (str "Im a a bloody " (:name x)))
   (feelings-about [x y] (str "Im a happy biting -> " y)))
 
-(def w ( ->WereWolf "B" "Dr."))
+(def w (->WereWolf "B" "Dr."))
 (thoughts w)
 (feelings-about w 5)
 
+
+; tutorial video https://www.youtube.com/watch?v=xpH6RGjZwNg
+
+(comment
+  (def jeep-wrangler {:make "Jeep" :model "Wrangler"})
+
+  (defrecord CarModel [make model])
+  (def fiat-500 (->CarModel "Fiat" "500"))
+  (def ford-focus (map->CarModel {:make "Ford" :model "Focus"}))
+  (:make ford-focus)
+  (:model fiat-500)
+
+  (defprotocol ProductInfo
+    (title [this])
+    (description [this description]))
+
+  ;; if you are able to implement protocols / interfaces
+  ;; directly: do it
+  (defrecord CarModel [make model]
+    ProductInfo
+    (title [this] (str "This is a " make " " model))
+    (description [this description] (str "The " make " " model " is " description))
+    Object
+    (toString [this] (str "STRING: " (title this))))
+
+  (def fiat-500 (->CarModel "Fiat" "500"))
+  (str fiat-500)
+  (title fiat-500)
+  (description fiat-500 "a great, supersmall car")
+  nil)
+
+
+(comment
+  ;; imagine, HomeProduct would be defined in
+  ;; a library package...
+  (defrecord HomeProduct [product-name price])
+
+  ; you may create it and access it like a map
+  (def toaster (->HomeProduct "Toaster" 45.99))
+  (:price toaster)
+  (str toaster) ; but this does work strange
+  ; and what about ProductInfo? How could
+  ; you make HomeProducts use the same
+  ; abstract protocol like all your other product types?
+  nil)
+
+(comment
+  ;; use extend-protocol, if you have no access to
+  ;; the base like Object or HomeProduct
+
+  (defprotocol PAppendable
+    (append [this to-append]))
+
+  (extend-protocol PAppendable
+    String
+    (append [this to-append] (str this ", " to-append)))
+
+  ; makes append applicable to String
+  (append "my-str" :something)
+
+  ; try to get toString into extended protocol
+
+  (defprotocol ToStringable
+    (toString [this]))
+
+  (extend-protocol ProductInfo
+    HomeProduct
+    (title [this] (str "This Homeprodukt is a " (:product-name this)))
+    (description [this description] (str "The homeproduct " (:product-name this) " is " description)))
+
+  #_(extend-protocol ToStringable
+      Object
+      ; does not work...
+      (toString [this] (str "TO-STRING: " (title this))))
+
+  (def toaster (->HomeProduct "Toaster" 45.99))
+  (title toaster)
+  (description toaster "a blinking, warm product")
+  (str toaster) ; does not work...
+
+  ;; strange... this does not work
+  (defmethod print-method HomeProduct [hp, w] ; Overload the printer
+    (print-method (str "PR-STRING: " (title hp)) w))
+
+  (type toaster)
+  (println toaster)
+  (str toaster) ; does not work...
+  nil)

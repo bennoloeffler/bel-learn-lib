@@ -146,13 +146,31 @@
 (comment
   (taoensso.timbre/merge-config! {:min-level :info})        ; :level debug does nothing!
   (taoensso.timbre/info "This will print")
-  (taoensso.timbre/debug "error"))
-;(info (Exception. "Oh no - this is a shituation") "data 1" 1234)
-;(error (Exception. "Oh no - this is a shituation") "data 1" 1234))
+  (taoensso.timbre/debug "error")
 
-(defn my-calc [a b c] (* a b c))
-(comment (spy (my-calc 1 2 3)))
+  ;; not thrown - but stacktrace printed
+  (error (Exception. "Oh no - this is a shituation") "data 1" 1234)
+
+  ; not thrown, not cought - but stacktrace
+  (try
+    (error (Exception. "Oh no - this is a shituation") "data 1" 1234)
+    (catch Exception e (str "cought..." e)))
+
+  ;; cought.. and reported
+  (try
+    (/ 1 0)
+    (catch Exception e (str "caught exception: " (.getMessage e))))
+
+  ;; reported but better
+  (try
+    (/ 1 0)
+    (catch Throwable e (error e))))
+
+
+
 (comment
+  (defn my-calc [a b c] (* a b c))
+  (spy (my-calc 1 2 3))
   (set-min-level! :debug)
   (->> [:1 :2 :3 :4]                                        ; spy does work
        spy
@@ -162,18 +180,18 @@
        vec                                                  ; doall does not work?
        spy
        str/join
-       spy))
+       spy)
 
-(pa/examine
-  (->> [:1 :2 :3 :4]
-       (shuffle)
-       (map #(str % "--"))
-       (clojure.string/join)))
+  (pa/examine
+    (->> [:1 :2 :3 :4]
+         (shuffle)
+         (map #(str % "--"))
+         (clojure.string/join)))
 
-(dbg (->> [:1 :2 :3 :4]
-          (shuffle)
-          (map #(str % "--"))
-          (clojure.string/join)))
+  (dbg (->> [:1 :2 :3 :4]
+            (shuffle)
+            (map #(str % "--"))
+            (clojure.string/join))))
 
 ;;---------------------------------------
 ;; OWN MACRO
@@ -186,10 +204,10 @@
      (cprint ['~body :--> body#])
      (println)
      body#))
-
+;(macroexpand '(dbg-bel (+ 1 2)))
 
 (comment
-  (dbg-bel (+ 1 2))
+  (+ 5 (dbg-bel (+ 1 2)))
 
   (->> [:1 :2 :3 :4]
        shuffle
@@ -219,3 +237,42 @@
        (#(do (println (swap! c inc) ": " %) %))
        (map clojure.string/join)
        (#(do (println (swap! c inc) ": " %) %))))
+
+
+; https://github.com/AbhinavOmprakash/snitch
+
+(require '[snitch.core :refer [defn* defmethod* *fn *let]])
+
+
+(defn* foo [e f]
+       (+ e f))
+
+;;  calling foo with random integers
+(foo (rand-int 100) (rand-int 100)) ; nil
+
+;; we can evaluate the value of a and b
+[e f] ; 15  85
+
+
+;; we can get the return value of foo by appending a < to foo
+
+foo< ; see the return value
+foo> ; see the calling values
+
+(*let [x 12
+       y 13
+       z (* x y)]
+  [x y z])
+
+[x y z]
+
+(defn outer []
+  (defn inner [] (println "inner"))
+  (println "outer"))
+
+(dir-here)
+(outer)
+(inner)
+
+
+

@@ -145,41 +145,62 @@
 ; it off in intellij
 ; lein with-profile bel-test  bat-test auto
 
-(defn repl []
-  (require '[clojure.java.io :as io]
-           '[clojure.string :as str]
-           '[clojure.pprint :as pp :refer (pprint)]
-           '[puget.printer :refer (cprint)]
-           '[clojure.repl :refer :all]
-           '[clojure.test :as test]
-           '[clojure.reflect :as reflect]
-           '[clojure.inspector :as insp]
-           '[clojure.java.javadoc :as jdoc]
-           '[clojure.tools.namespace.repl :refer (refresh refresh-all clear)]
-           '[debux.core :refer :all]
-           '[hashp.core :refer :all])
-  (println "pprint, cprint, refresh, dbg, #p, test/, reflect/, insp/, jdoc/"))
+#_(defn repl []
+    (require '[clojure.java.io :as io]
+             '[clojure.string :as str]
+             '[clojure.pprint :as pp :refer (pprint)]
+             '[puget.printer :refer (cprint)]
+             '[clojure.repl :refer :all]
+             '[clojure.test :as test]
+             '[clojure.reflect :as reflect]
+             '[clojure.inspector :as insp]
+             '[clojure.java.javadoc :as jdoc]
+             '[clojure.tools.namespace.repl :refer (refresh refresh-all clear)]
+             '[debux.core :refer :all]
+             '[hashp.core :refer :all])
+    (println "pprint, cprint, refresh, dbg, #p, test/, reflect/, insp/, jdoc/"))
 
-(defn dir-here []
-  (dir-fn *ns*))
+#_(defn dir-here []
+    (dir-fn *ns*))
+#_(comment
+    (dir-here))
+#_(defn try-symbol-or-nil [s]
+    (println s)
+    (let [sym (try (name s)
+                   (catch Exception e (println "no symbol. no source.")))]
+      (println "sym: " sym)
+      (when sym
+        (println "--- src: ----------------------------------")
+        (source (resolve sym)))))
 
-#_(defn ai [obj]
+(comment
+  (try-symbol-or-nil '+))
+
+#_(defmacro ai
     "all information on obj"
-    (println "--- type:" (type obj))
-    (println "--- doc:")
-    (doc obj)
-    (println "--- src:")
-    (source obj)
-    (println "--- jdoc: see browser")
-    (jdoc/javadoc obj)
-    (println "--- reflect:")
-    (->> (reflect/reflect obj) :members (sort-by :name) (pp/print-table [:name :flags :parameter-types :return-type])))
+    [obj]
+    `(do
+       (println "--- jdoc: see browser")
+       (jdoc/javadoc ~obj)
+       (println "--- type:" (type ~obj))
 
-(defn show-members [o]
-  (->> (reflect/reflect o)
-       :members
-       (sort-by :name)
-       (pp/print-table [:name :flags :parameter-types :return-type])))
+       (println "--- reflect:")
+       (->> (reflect/reflect ~obj) :members (sort-by :name) (pp/print-table [:name :flags :parameter-types :return-type]))
+       (try
+         (source ~obj)
+         (bean ~obj)
+         (catch Exception e#))))
+
+(comment
+  (ai +)
+  (ai 3)
+  (source +))
+
+#_(defn show-members [o]
+    (->> (reflect/reflect o)
+         :members
+         (sort-by :name)
+         (pp/print-table [:name :flags :parameter-types :return-type])))
 
 (defn j [o]
   (find-doc (str o))

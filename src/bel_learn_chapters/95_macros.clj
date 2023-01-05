@@ -8,6 +8,7 @@
 ;; https://learnxinyminutes.com/docs/clojure-macros/
 ;; https://purelyfunctional.tv/mini-guide/when-to-use-a-macro-in-clojure/
 ;; http://clojure-doc.org/articles/language/macros.html
+;; https://abhinavomprakash.com/posts/macrobrew/
 ;; joy of clojure, chapter 8
 
 ;;
