@@ -3,8 +3,54 @@
 
 
 ; READ THIS CAREFULLY: https://functional.works-hub.com/learn/a-mental-model-for-thinking-about-clojures-transducers-6baba
+; AND THIS: https://andreyorst.gitlab.io/posts/2022-08-13-understanding-transducers/
 ; AND THIS: page 88, FILE: 050 Pragmatic.Clojure.Applied.From.Practice.to.Practitioner.pdf
 ; NOT THIS ;-) https://eli.thegreenplace.net/2017/reducers-transducers-and-coreasync-in-clojure/
+
+(comment ; what is "abstraction" in a functional way?
+  ; we have a function...
+  ; that reduces two collections each
+  ; and multiplies those results.
+  (defn add-multiply [coll1 coll2]
+    (let [val1 (reduce + coll1)
+          val2 (reduce + coll2)]
+      (* val1 val2)))
+
+  ; we notice, that we have several functions:
+  (defn add-add [coll1 coll2]
+    (let [val1 (reduce + coll1)
+          val2 (reduce + coll2)]
+      (+ val1 val2)))
+
+  ; basically, we have an EXPLOSION of functions
+  ; that do permutations of
+  ; add, mult, divide, minus, for the first step:
+  ; 1. reducing the two collections
+  ; then we have many functions with arity-2 to
+  ; 2. combine those two values to one, eg: +
+
+  (defn reduce-and-combine [coll1 coll2]
+    (fn [reduce-f, combine-f]
+      (let [val1 (reduce reduce-f coll1)
+            val2 (reduce reduce-f coll2)]
+        (combine-f val1 val2))))
+
+  (def f (reduce-and-combine [1 2 3] [4 5 6]))
+
+  (add-multiply [1 2 3] [4 5 6])
+  (f + ; first reduce with +
+     *) ; then combine with *
+  (f * *)
+  (f * -)
+  (f - +)
+
+  ;; we abstracted away the inner dependency from
+  ;; the reducing-function and the combining-function
+
+  ;; transducers abstract away the collection access
+
+  nil)
+
 (comment
 
   (def nums (range 10))
@@ -45,7 +91,7 @@
        (prn "result is "))
 
 
-  ; now with core async
+  ; now with core.async
   (do
     (def result (a/chan))
 
@@ -264,14 +310,14 @@
 
   ;; transduce exists in clojure.core
   (transduce part-trcer conj [] (range 8))
-  (transduce part-trcer conj    []) ;; works already ?
+  (transduce part-trcer conj []) ;; works already ?
 
   ;; finally, if there is no initialization value here ,,,,,
   ;; the reducing function may be called without
   ;; initial value. Therefore, there are 3 arities:
   ;; ,,,,, without init value, e.g. []
   (let [pt-coll (part-trcer conj)
-        result  (reduce pt-coll ,,,,,, (range 8))]
+        result  (reduce pt-coll,,,,,, (range 8))]
     (pt-coll result)) ; call competing function
   ; => ERROR
   ; may be solved with r/reduce
@@ -300,12 +346,12 @@
 
   (def part-trcer-2 (partition-all-transducer-2 3))
   (let [pt-coll (part-trcer-2 conj)
-        result  (reduce pt-coll ,,,,, (range 8))]
+        result  (reduce pt-coll,,,,, (range 8))]
     (pt-coll result)) ; call competing function
   ; => still ERROR
 
   (let [pt-coll (part-trcer-2 conj)
-        result  (clojure.core.reducers/reduce pt-coll ,,,,, (range 8))]
+        result  (clojure.core.reducers/reduce pt-coll,,,,, (range 8))]
     (pt-coll result)) ; call competing function
   ; => but this works
 
@@ -313,3 +359,28 @@
 
   nil)
 
+;; https://functional.works-hub.com/learn/a-mental-model-for-thinking-about-clojures-transducers-6baba
+(comment
+  ; a reducing function has a signature like this:
+  ; acc, val -> acc
+  ; a transducer receives a reducing function
+  ; and returns another one.
+  ; (acc, val -> acc) -> (acc, val -> acc)
+
+  ; basic idea: reducers
+  (defn r-map [mapping-f coll]
+    (reduce (fn [acc val]
+              (conj acc (mapping-f val)))
+            []
+            coll))
+
+  (defn r-filter [predicate coll]
+    (reduce (fn [acc val]
+              (if (predicate val)
+                (conj acc val)
+                acc))
+            []
+            coll))
+
+
+  nil)

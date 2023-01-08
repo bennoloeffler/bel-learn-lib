@@ -119,7 +119,12 @@
 
   ; fold way to do it
   (defn word-frequency-fold [words]
-    (r/fold merge-counts count-words words))
+    (let [n (/ (count words) 3)] ; use 8 parallel work chunks
+      ;; the default of 512 elements is much too small...
+      (r/fold n merge-counts count-words words)))
+
+  #_(defn word-frequency-fold [words]
+      (r/fold merge-counts count-words words))
 
   ; get some massive data...
   (def huge-str (slurp (io/resource "moby-dick.txt")))
@@ -128,7 +133,6 @@
                  (clojure.string/split $ #"[—|-|;|\?|\.|,|)|(|\s+]")
                  (remove #(= "" %) $)
                  (vec $)))
-
 
   ;; No real performance differences...
   (time
