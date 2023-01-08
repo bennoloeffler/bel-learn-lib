@@ -17,45 +17,6 @@
   (:use tupelo.core))
 
 
-; intellij-short-cuts
-
-; mac:   win:
-; shft ⇧  =  shft
-; ctrl ⌃  =  ctrl
-; cmnd ⌘  =  alt
-; all: s c a = shift ctrl alt = ⇧ ⌃ ⌘
-
-; OVERVIEW
-; s c a  T Testing actions
-; s c a  S Structural editing action
-; s c a  R Repl actions
-; s c a  M Move actions
-
-; MOVE in files and actions
-; s c    A all actions
-; c      TAB switcher
-;     a  O Open ALL
-
-; SESSION
-;   c    R Run Repl
-;   c    D Debug Repl
-;   c a  U Update Project
-;     a  U Pull
-;     a  K Commit
-
-; ONE FILE
-; s c    L Load File to Repl
-; s c    R switch Repl to namespace
-
-
-; s   a  S Sync all files
-; s   a  G go system (in user)
-; s   a  R Reset system (in user)
-
-;   c  a R Refactor
-
-
-
 
 
 ; https://github.com/stuartsierra/component.repl

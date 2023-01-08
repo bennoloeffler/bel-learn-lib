@@ -58,7 +58,8 @@
                  [missionary "b.26"]
                  [com.hyperfiddle/rcf "20220405"]
                  [cprop "0.1.19"]
-                 [org.clojure/tools.logging "1.2.4"]]
+                 [org.clojure/tools.logging "1.2.4"]
+                 [com.clojure-goes-fast/clj-async-profiler "1.0.3"]]
 
 
   ;:main ^:skip-aot bel-learn-lib.core
@@ -75,6 +76,8 @@
              :reveal   {:dependencies [[nrepl, "0.9.0"] [vlaaad/reveal "1.3.212"]]
                         :repl-options {:nrepl-middleware [vlaaad.reveal.nrepl/middleware]}}
              :dev      {:source-paths ["dev"]
+                        ;; for profiling
+                        :jvm-opts ["-Djdk.attach.allowAttachSelf"]
                         :dependencies [[org.clojure/tools.namespace "1.2.0"]
                                        [org.clojure/java.classpath "1.0.0"]
                                        [nrepl, "0.9.0"]]}
