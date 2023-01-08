@@ -3,6 +3,7 @@
 
 
 ; READ THIS CAREFULLY: https://functional.works-hub.com/learn/a-mental-model-for-thinking-about-clojures-transducers-6baba
+; AND THIS: https://dev.solita.fi/2021/10/14/grokking-clojure-transducers.html
 ; AND THIS: https://andreyorst.gitlab.io/posts/2022-08-13-understanding-transducers/
 ; AND THIS: page 88, FILE: 050 Pragmatic.Clojure.Applied.From.Practice.to.Practitioner.pdf
 ; NOT THIS ;-) https://eli.thegreenplace.net/2017/reducers-transducers-and-coreasync-in-clojure/
