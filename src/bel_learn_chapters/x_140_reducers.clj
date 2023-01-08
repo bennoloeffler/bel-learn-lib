@@ -2,7 +2,7 @@
   [:require [clojure.core.reducers :as r]
             [clojure.java.io :as io]])
 
-
+;; READ THIS: https://hub.packtpub.com/parallelization-using-reducers/
 ;; https://clojure.org/reference/reducers
 ;; https://www.braveclojure.com/quests/reducers/know-your-reducers/
 ;; see dropbox, clojure books:

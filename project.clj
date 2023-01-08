@@ -71,6 +71,8 @@
   :bat-test {:parallel? true :report [:pretty {:type :junit :output-to "target/junit.xml"}]} ; :report :progress ; xunit-viewer -r . -w -p 5050 -s true
 
   :test-paths ["test"] ; cant get bat-test to run in "src"
+  :aliases {"kaocha" ["with-profile" "+kaocha" "run" "-m" "kaocha.runner" "--plugin" "notifier" "--watch"]
+            "coverage" ["with-profile" "+kaocha" "run" "-m" "kaocha.runner" "--plugin" "cloverage"]}
   :profiles {:uberjar  {:aot      :all
                         :jvm-opts ["-Dclojure.compiler.direct-linking=true"]}
              :reveal   {:dependencies [[nrepl, "0.9.0"] [vlaaad/reveal "1.3.212"]]
@@ -80,7 +82,8 @@
                         :jvm-opts ["-Djdk.attach.allowAttachSelf"]
                         :dependencies [[org.clojure/tools.namespace "1.2.0"]
                                        [org.clojure/java.classpath "1.0.0"]
-                                       [nrepl, "0.9.0"]]}
+                                       [nrepl, "0.9.0"]
+                                       [lambdaisland/kaocha "1.67.1055"]]}
                                        ;[vlaaad/reveal "1.3.214"]]
                         ;[pjstadig/humane-test-output "0.11.0"]]
 
@@ -105,7 +108,9 @@
                                        [metosin/bat-test "0.4.4"]]
                         ;[venantius/ultra "0.6.0"]] ; crashes with linux/idea2021.1]}})
                         :injections   [(require 'pjstadig.humane-test-output)
-                                       (pjstadig.humane-test-output/activate!)]}})
+                                       (pjstadig.humane-test-output/activate!)]}
+             :kaocha {:dependencies [[lambdaisland/kaocha "1.67.1055"]
+                                     [lambdaisland/kaocha-cloverage "1.0.75"]]}})
 
 
 

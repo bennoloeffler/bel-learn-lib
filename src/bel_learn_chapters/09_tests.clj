@@ -8,9 +8,15 @@
 ; http://www.futurile.net/2020/07/14/clojure-testing-with-clojure-test-and-expectations/
 ; https://github.com/clojure-expectations/clojure-test
 
+; https://www.emcken.dk/programming/2019/02/06/clojure-testing-recent-findings/
 
-; RICH Tests
-;https://github.com/hyperfiddle/rcf
+; FRIST,
+; see KAOCHA testing
+; lein kaocha
+; lein coverage
+; running in repl: https://cljdoc.org/d/lambdaisland/kaocha/1.71.1119/doc/5-running-kaocha-from-the-repl
+; (require '[kaocha.repl :as k])
+; (k/run-all)
 
 ; REPORTING
 ; lein cloverage
