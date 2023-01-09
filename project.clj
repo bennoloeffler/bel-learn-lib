@@ -50,7 +50,6 @@
                  [org.clojure/tools.namespace "1.2.0"] ;reload
                  [philoskim/debux "0.8.2"] ;dbg debugger
                  [hashp "0.2.1"] ;debugging #p
-                 [tupelo "22.03.09"]
                  [org.clojure/data.json "2.4.0"]
                  [clj-http "3.12.3"]
                  [mount "0.1.16"]
@@ -59,7 +58,9 @@
                  [com.hyperfiddle/rcf "20220405"]
                  [cprop "0.1.19"]
                  [org.clojure/tools.logging "1.2.4"]
-                 [com.clojure-goes-fast/clj-async-profiler "1.0.3"]]
+                 [com.clojure-goes-fast/clj-async-profiler "1.0.3"]
+                 [dev.weavejester/medley "1.5.0"]
+                 [tupelo "22.03.09"]]
 
 
   ;:main ^:skip-aot bel-learn-lib.core
