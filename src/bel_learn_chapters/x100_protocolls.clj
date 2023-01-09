@@ -81,13 +81,14 @@
 (map->Point {:x 3 :y 7})
 (->Point 5 6)
 (Point. 45 67)
+(new Point 1 2)
 
 ; extend an existing protocol
 (extend-type Point Psychodynamics
-  (thoughts [x] (str "I'm a Point with thoughts..." (:x x) (:y x)))
+  (thoughts [this] (str "I'm a Point with thoughts..." (:x this) (:y this)))
   (feelings-about
-    ([x] (str "points dont feel. they just are " (:x x) ":" (:y x)))
-    ([x y] (str "no feelings about -> " y))))
+    ([this] (str "points dont feel. they just are " (:x this) ":" (:y this)))
+    ([this other] (str "no feelings about other -> " other))))
 
 (thoughts (Point. 2 3))
 (feelings-about (Point. 2 3) :other)
@@ -171,31 +172,22 @@
   ; makes append applicable to String
   (append "my-str" :something)
 
-  ; try to get toString into extended protocol
-
-  (defprotocol ToStringable
-    (toString [this]))
 
   (extend-protocol ProductInfo
     HomeProduct
     (title [this] (str "This Homeprodukt is a " (:product-name this)))
     (description [this description] (str "The homeproduct " (:product-name this) " is " description)))
 
-  #_(extend-protocol ToStringable
-      Object
-      ; does not work...
-      (toString [this] (str "TO-STRING: " (title this))))
-
   (def toaster (->HomeProduct "Toaster" 45.99))
   (title toaster)
   (description toaster "a blinking, warm product")
-  (str toaster) ; does not work...
 
-  ;; strange... this does not work
   (defmethod print-method HomeProduct [hp, w] ; Overload the printer
     (print-method (str "PR-STRING: " (title hp)) w))
 
   (type toaster)
   (println toaster)
-  (str toaster) ; does not work...
+  (str toaster) ; don't know how to overload toString
+  ; regarding toString, read this:
+  ; https://stackoverflow.com/questions/5306015/equivalent-of-javas-tostring-for-clojure-functions
   nil)

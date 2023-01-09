@@ -2,21 +2,16 @@
 
 ;;
 ;; If you know java or groovy, then this is for you...
-;;
-
 ;; see: http://kimh.github.io/clojure-by-example for first impression
-
 ;;
 ;; TO GET UP AND RUNNING
 ;;
-
 ;; *** INTELLI-J & Cursive ***
 ;; install cursive plugin
 ;; get license
 ;; open/import this project folder...
 ;; then set JDK
 ;; project is described/imported from project.clj
-
 ;;
 ;; Start REPL - right-click "project.clj". Start REPL from menu
 ;;
@@ -28,24 +23,41 @@
 ;; Load this file to REPL SHIFT-CTRL-L (this means it will be compiled also)
 ;; Switch namespace to this file by SHIFT-CTRL-R
 ;; If you modified many files, sync all in REPL by SHIFT-CTRL-S.
-;; Send current form to REPL COMMAND-Enter.
+;; Send current form to REPL: COMMAND-Enter.
 ;; ALL shortcuts from BEL in kbd-shortcuts.txt
 ;; ALL shortcuts for inspiration: https://cheatography.com/pupeno/cheat-sheets/cursive-on-windows-mac-style/
 
 (comment
-  (require 'clojure.repl)
+  () ; an empty list
+  (+ 1 2) ; a list with a function and two parameters
+  ; Command-Enter behind the ) or in the list to execute
+  (use 'clojure.repl) ; load a namespace with functions
+  (doc +) ; use the doc function to read the doc of +
+  (doc doc)
+  (doc apropos)
+  (doc find-doc)
   (apropos 'search)
-  (find-doc "map")
+  (type #"[a.*|regex]") ; show quick help .^.. Q
+  (apropos #"find.*dec")
+  (find-doc #"red.*kv")
+  (- 3 4) ; find parameter info ...⌘ P
+  (+ 1 2 (- 3 4)) ;; try swap lines
   (println "hello, clojure" (+ (/ 4 2) (* 2 3)))
-  (+ 1 2)
-  (- 3 4)
-  (defn a-and-b [a b] (+ a b))
+  (defn a-and-b ;; define function name "a-and-b"
+    "add two numbers" ;; doc string
+    [a b] ;; parameters
+    (+ a b)) ;; body
+  (a-and-b 2 3)
+  (doc a-and-b)
+  (+ 1 2) ; move to declaration of + and back
+  ; ...⌘ B and ..⌥⌘ ← →
 
-  (* (+ 2 3) 4)
   ;; you are in a namespace - there is a global variable *ns*
   *ns*
   ;; evaluate it... every binding will go into the current namespace
-  ;; starting a repl, the namespace us 'user'
+  ;; starting a repl, the default namespace us 'user' (when not defined otherwise)
+
+  (prin 1) ; complete prin .^.. SPACE, ..⌥. SPACE, .^⌥. SPACE
 
   ;;
   ;; the concept of a list
@@ -54,13 +66,16 @@
   ;; lists are in paranthesis.
   ;; the first expression is interpreted as function (from the clojure reader in REPL)
   ;; the rest is interpreted as arguments to that function
-  (+ 1 2 3 4 5)
+  (+ 1 2 3 4 5) ; try emacs tab and shift-tab
 
   ;; but with ' (clojurists call it 'quoted') the list is not evaluated, but taken as data
-  '(+ 1 2 3 4 5)
-  '("word" true 5 3.14)
-  ;(println (+ 1 2)) ; prints 3
-  ;(println '(+ 1 2)) ; prints (+ 1 2)
+  '(+ 1 2 3 4 5) ; duplicate line ...⌘ D, then delete ...⌘ DEL
+  '("word" true,,,, 5 3.14) ; make some spaces here ,,,
+  ;  and format code ..⌥⌘ L
+
+  ; insert new line from ,,, <- here .^⌥. RET
+
+  ; insert above line from ,,, <- here .^.⌘ RET
 
   ;;
   ;; Equality
@@ -175,10 +190,7 @@
   ;; even a (println "something") is an expression.
   ;; it returns nothing = nil
 
-  (comment
-    (dfkdfj)
-    (conj nil)
-    (println "print something but return nothing"))
+  (println "print something but return nothing")
 
   ;;
   ;; first smell of a function
