@@ -1,5 +1,7 @@
 (ns bel-learn-chapters.60-datahike-ex-data
-  (:require [datahike.api :as d]))
+  (:require [datahike.api :as d]
+            [clojure.inspector :as insp])
+  (:import  (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf)))
 
 ; https://nextjournal.com/try/learn-xtdb-datalog-today/learn-xtdb-datalog-today
 
@@ -296,9 +298,20 @@
 
   (set! *print-length* 100)
 
-  (def cfg {:store              {:backend :mem :id "schema-intro"}
+  ;; define configuration, either
+  ;; MEM or
+  (def cfg {:store {:backend :mem
+                    :id "bels-db"}
             :schema-flexibility :read
-            :initial-tx         initial-transaction-data})
+            :initial-tx initial-transaction-data})
+  ;; FILE
+  (def cfg {:name               "bels-db"
+            :store              {:backend :file
+                                 :path "/tmp/example"}
+            :schema-flexibility :read
+            :initial-tx initial-transaction-data}) ; in order to get relations right
+
+
 
   ;; create the in-memory database
   (d/create-database cfg)
@@ -588,13 +601,18 @@
   (d/pull @conn [:movie/title :movie/year
                  {:movie/director [:person/name]}]
           movie-entity)
-  (d/pull @conn [:movie/title :movie/year
-                 {:movie/cast [:person/name]}
-                 {:movie/director [:person/stupid-wrong-attrib
-                                   :person/name
-                                   :person/born
-                                   :person/death]}]
-          movie-entity)
+
+  (defn show-tree [q-result]
+    (FlatDarkLaf/install)
+    (insp/inspect-tree q-result))
+
+  (show-tree (d/pull @conn [:movie/title :movie/year
+                            {:movie/cast [:person/name]}
+                            {:movie/director [:person/stupid-wrong-attrib
+                                              :person/name
+                                              :person/born
+                                              :person/death]}]
+                     movie-entity))
 
   (def person-entity (first (d/q '[:find [?e ...]
                                    :where [?e :person/name "Richard Crenna"]]

@@ -2,11 +2,12 @@
   (:require [datahike.api :as d]
             [clojure.inspector :as insp]
             [taoensso.timbre :as log])
-  (:import ;[javax.swing JFrame JLabel JButton]
-           ;[java.awt.event WindowListener]
-           (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf)))
+  (:import  (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf)))
 
 ;; datalog https://nextjournal.com/learn-xtdb-datalog-today/learn-xtdb-datalog-today
+;; https://www.learndatalogtoday.org/
+;; for inspiration:
+;; https://github.com/cloojure/tupelo-datomic/blob/master/test/tst/tupelo_datomic/bond.clj
 
 (comment
 
@@ -52,11 +53,15 @@
     (FlatDarkLaf/install)
     (insp/inspect-table (vec q-result)))
 
+  (defn show-tree [q-result]
+    (FlatDarkLaf/install)
+    (insp/inspect-tree q-result))
+
   ;show the whole database
-  (show (d/q '[:find ?e ?a ?v
-               :where
-               [?e ?a ?v]]
-             @conn))
+  (show-tree (sort-by first(into [] (d/q '[:find ?e ?a ?v
+                                           :where
+                                           [?e ?a ?v]]
+                                         @conn))))
 
 
   ;; add new entity data using a hash map

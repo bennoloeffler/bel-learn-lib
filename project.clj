@@ -60,7 +60,8 @@
                  [org.clojure/tools.logging "1.2.4"]
                  [com.clojure-goes-fast/clj-async-profiler "1.0.3"]
                  [dev.weavejester/medley "1.5.0"]
-                 [tupelo "22.03.09"]]
+                 [tupelo "22.03.09"]
+                 [com.rpl/specter "1.1.4"]]
 
 
   ;:main ^:skip-aot bel-learn-lib.core

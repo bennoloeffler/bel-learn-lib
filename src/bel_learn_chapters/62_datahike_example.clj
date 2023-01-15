@@ -40,8 +40,14 @@
                {:db/ident :language/clojure}
                {:db/ident :language/rust}])
 
-  ;; define configuration
+  ;; define configuration, either
+  ;; MEM or
   (def cfg {:store {:backend :mem :id "schema-intro"} :initial-tx schema})
+  ;; FILE
+  (def cfg {:name               "bels-db"
+            :store              {:backend :file :path "/tmp/example"}
+            :schema-flexibility :read
+            :initial-tx schema}) ; in order to get relations right
 
   ;; cleanup previous database
   (d/delete-database cfg)

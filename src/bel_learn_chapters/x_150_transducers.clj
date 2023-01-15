@@ -2,34 +2,37 @@
   (:require [clojure.core.async :as a]))
 
 
-; READ THIS CAREFULLY: https://functional.works-hub.com/learn/a-mental-model-for-thinking-about-clojures-transducers-6baba
-; AND THIS: https://dev.solita.fi/2021/10/14/grokking-clojure-transducers.html
+; READ THIS CAREFULLY: https://dev.solita.fi/2021/10/14/grokking-clojure-transducers.html
+; AND THIS: https://functional.works-hub.com/learn/a-mental-model-for-thinking-about-clojures-transducers-6baba
 ; AND THIS: https://andreyorst.gitlab.io/posts/2022-08-13-understanding-transducers/
 ; AND THIS: page 88, FILE: 050 Pragmatic.Clojure.Applied.From.Practice.to.Practitioner.pdf
-; NOT THIS ;-) https://eli.thegreenplace.net/2017/reducers-transducers-and-coreasync-in-clojure/
+; AND THIS: https://eli.thegreenplace.net/2017/reducers-transducers-and-coreasync-in-clojure/
 
 (comment ; what is "abstraction" in a functional way?
   ; we have a function...
-  ; that reduces two collections each
+  ; that reduces two collections each by adding
   ; and multiplies those results.
   (defn add-multiply [coll1 coll2]
     (let [val1 (reduce + coll1)
           val2 (reduce + coll2)]
       (* val1 val2)))
 
-  ; we notice, that we have several functions:
+  ; another function may be needed:
   (defn add-add [coll1 coll2]
     (let [val1 (reduce + coll1)
           val2 (reduce + coll2)]
       (+ val1 val2)))
 
-  ; basically, we have an EXPLOSION of functions
-  ; that do permutations of
-  ; add, mult, divide, minus, for the first step:
+  ; maybe, we have an EXPLOSION of functions
+  ; that do permutations of e.g.
+  ; + * -, for the first step:
   ; 1. reducing the two collections
-  ; then we have many functions with arity-2 to
-  ; 2. combine those two values to one, eg: +
+  ; then we have many functions to
+  ; 2. combine those two values to one, eg: + - * /
 
+  ; so we may create a function that
+  ; receives the reduction function
+  ; and the combination function.
   (defn reduce-and-combine [coll1 coll2]
     (fn [reduce-f, combine-f]
       (let [val1 (reduce reduce-f coll1)
@@ -45,10 +48,16 @@
   (f * -)
   (f - +)
 
-  ;; we abstracted away the inner dependency from
+  ;; What did we do?
+  ;; We created a function that closes over
+  ;; coll1 and coll2 and receives reduce-f and
+  ;; combine-f as parameter.
+  ;; We abstracted away the inner dependency from
   ;; the reducing-function and the combining-function
 
-  ;; transducers abstract away the collection access
+  ;; Transducers do the opposite:
+  ;; They abstract away the access to the unterlying
+  ;; data source
 
   nil)
 
