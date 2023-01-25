@@ -7,6 +7,10 @@
 ; clojurescript preserving state between reloads
 ; https://gist.github.com/roman01la/b939e4f2341fc2f931e34a941aba4e15
 
+; VIEW DATA
+; https://github.com/eerohele/tab
+; https://github.com/tobyhede/lein-git-deps
+
 *ns* ; show current
 (in-ns 'user) ; switch to
 (in-ns 'bel-learn-chapters.07-repl) ; switch to (UNAVAILABLE?)
