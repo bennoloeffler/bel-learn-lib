@@ -10,4 +10,9 @@
 
 ;; https://clojureverse.org/t/an-opinionated-list-of-excellent-clojure-learning-materials/9585
 
+;; https://github.com/imalooney/t3tr0s
+
+;; https://github.com/dotemacs/clojure-webapp
+
+;; https://github.com/gadfly361/reagent-tic-tac-toe
 

@@ -1,0 +1,129 @@
+/* bels learning css */
+
+body { /* style for tag */
+  background-color: orange;
+}
+
+
+.button {
+ margin-right: 10px;
+ margin-top: 10px;
+}
+
+/*** flex *********************************/
+/*
+https://jonitrythall.com/content/flexboxsheet.pdf
+https://yoksel.github.io/flex-cheatsheet/
+*/
+
+.flex-cont-1 { /* style for class */
+ display: flex; /* inline-flex, grid, ...  */
+ flex-direction: row; /* row row-reverse column column-reverse */
+ flex-wrap: wrap; /* nowrap wrap wrap-reverse */
+ /* flex-flow: row nowrap; column-reverse; column wrap; row-reverse wrap-reverse; */
+ justify-content: center; /* flex-start flex-end center space-between space-around space-evenly*/
+ /*align-items: stretch;*/
+
+ list-style-type: none;
+ background-color: white;
+}
+
+.flex-elem-grow {
+ /*flex-grow: 2;*/
+ /*flex-basis: 30%;*/
+ /*flex-shrink: 0*/
+ flex: 2 0 35%; /* flex-grow flex-shrink flex-basis */
+
+ margin: 10px;
+ border: 3px solid gray;
+ padding: 30px;
+ background-color: white;
+}
+
+.flex-elem-no-grow {
+ /*flex-grow: 1; */ /* ratio of growing */
+ order: -1; /* just the ordering number - small to bigger */
+
+ margin: 10px;
+ border: 3px solid gray;
+ padding: 50px;
+ background-color: white;
+}
+
+
+/*** split js *********************************/
+
+/* https://github.com/nathancahill/split/tree/master/packages/splitjs */
+.split-container {
+    display: flex;
+    /* border: 5px solid #eee; */
+}
+
+#one, #two {
+ background-color: #fff;
+ padding: 10px;
+}
+
+.gutter {
+    background-color: orange; /* #eee;*/
+    background-repeat: no-repeat;
+    background-position: 50%;
+}
+
+.gutter.gutter-vertical {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAB4AAAAFAQMAAABo7865AAAABlBMVEVHcEzMzMzyAv2sAAAAAXRSTlMAQObYZgAAABBJREFUeF5jOAMEEAIEEFwAn3kMwcB6I2AAAAAASUVORK5CYII=');
+}
+.gutter.gutter-horizontal {
+    background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAUAAAAeCAYAAADkftS9AAAAIklEQVQoU2M4c+bMfxAGAgYYmwGrIIiDjrELjpo5aiZeMwF+yNnOs5KSvgAAAABJRU5ErkJggg==');
+    cursor: col-resize;
+}
+
+/*** slider *********************************/
+
+.slidecontainer {
+  width: 100%;
+}
+
+.slider {
+  -webkit-appearance: none;
+  width: 100%;
+  height: 15px;
+  border-radius: 5px;
+  background: #fff;
+  outline: none;
+  opacity: 0.4;
+  -webkit-transition: .2s;
+  transition: opacity .2s;
+}
+
+.slider:hover {
+  opacity: 1;
+}
+
+.slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #c68000;
+  cursor: pointer;
+}
+
+.slider::-moz-range-thumb {
+  width: 25px;
+  height: 25px;
+  border-radius: 50%;
+  background: #c68000;
+  cursor: pointer;
+}
+
+#canvasContainerID {
+    overflow: scroll;
+    height: 250px;
+    border: 1px solid white
+}
+
+#canvasID {
+  /* border: 1px solid white */
+}

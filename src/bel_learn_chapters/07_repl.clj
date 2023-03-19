@@ -85,3 +85,17 @@
   *1
   *2
   *3)
+
+(require '[borkdude.deflet :refer [deflet]])
+
+;; https://github.com/borkdude/deflet
+(deflet
+  ;; evaluation still works for individual forms in a REPL-connected editor:
+  (def x 10) ;;=> #'x
+  (def y (inc x)) ;;=> #'y
+  ;; but the whole expression is compiled into a let-expression which returns the last value:
+  y) ;;=> 11
+(comment
+  ;; x and y are gone! NO DEF. Substituted by let.
+  ;; but for a repl, you may use it like def.
+  (println "y" y))

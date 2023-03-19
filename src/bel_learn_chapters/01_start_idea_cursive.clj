@@ -14,18 +14,18 @@
 ;; project is described/imported from project.clj
 ;;
 ;; Start REPL - right-click "project.clj". Start REPL from menu
-;;
-
 
 ; intellij-short-cuts on mac, see
-; CTRL + OPTION + COMMAND + S (shortcut to kbd-shortcuts.txt)
+; CTRL + OPTION + COMMAND + S (shortcut to kbd-shortcuts.txt on MY MAC)
 
 ;; Load this file to REPL SHIFT-CTRL-L (this means it will be compiled also)
 ;; Switch namespace to this file by SHIFT-CTRL-R
 ;; If you modified many files, sync all in REPL by SHIFT-CTRL-S.
 ;; Send current form to REPL: COMMAND-Enter.
 ;; ALL shortcuts from BEL in kbd-shortcuts.txt
-;; ALL shortcuts for inspiration: https://cheatography.com/pupeno/cheat-sheets/cursive-on-windows-mac-style/
+;; ALL shortcuts for inspiration:
+;; https://cheatography.com/pupeno/cheat-sheets/cursive-on-windows-mac-style/
+;; https://blog.jetbrains.com/idea/2020/03/top-15-intellij-idea-shortcuts/
 
 (comment
   () ; an empty list

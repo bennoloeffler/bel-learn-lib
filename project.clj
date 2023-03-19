@@ -61,14 +61,23 @@
                  [com.clojure-goes-fast/clj-async-profiler "1.0.3"]
                  [dev.weavejester/medley "1.5.0"]
                  [tupelo "22.03.09"]
-                 [com.rpl/specter "1.1.4"]]
+                 [com.rpl/specter "1.1.4"]
+                 [rich-comment-tests "73b0863"]
+                 [io.github.borkdude/deflet "0.1.0"]]
 
 
   ;:main ^:skip-aot bel-learn-lib.core
   :main ^:skip-aot user
   :target-path "target/%s"
   :plugins [[lein-ring "0.12.6"]
-            [lein-cloverage "1.2.2"]]
+            [lein-cloverage "1.2.2"]
+            ;; GIT dependencies: https://github.com/reifyhealth/lein-git-down
+            [reifyhealth/lein-git-down "0.4.1"]]
+
+  :repositories [["public-github" {:url "git://github.com"}]]
+  :git-down {rich-comment-tests {:coordinates matthewdowney/rich-comment-tests}}
+  :middleware [lein-git-down.plugin/inject-properties]
+
   :ring {:handler bel-learn-chapters.50-http/handler}
   :bat-test {:parallel? true :report [:pretty {:type :junit :output-to "target/junit.xml"}]} ; :report :progress ; xunit-viewer -r . -w -p 5050 -s true
 
