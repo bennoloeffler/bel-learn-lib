@@ -2,7 +2,8 @@
   (:require [java-time :as jt])
   (:import [java.time.temporal ChronoField WeekFields]
            [java.time LocalDate]
-           [java.util Locale]))
+           [java.util Locale]
+           [java.util Date]))
 
 ;; a linear week model since 2010-01-04 until 2039-12-31 (including).
 
@@ -14,11 +15,14 @@
   "Calender week of the local date."
   [d]
   (.get d temporal-field-calender-week))
+(comment (calender-week (LocalDate/now)))
+         ;NO! (calender-week (Date.)))
 
 (defn- date-infos-as-vec [d]
   (let [y (.get d ChronoField/YEAR)
         w (calender-week d)]
     [y w]))
+(comment (date-infos-as-vec (LocalDate/now)))
 
 (defn- calc-abs-weeks
   "Starting from a sorted list of consecutive days, each day like this: [year week-of-year date],
@@ -49,6 +53,7 @@
           jt/plus
           (jt/local-date 2010 1 4) ;; here, calendar week 1 starts.
           (jt/days 1))))
+(comment (take 20 (list-of-all-days)))
 
 (defn- init-absolut-weeks
   "Creates map with

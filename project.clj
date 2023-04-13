@@ -63,7 +63,8 @@
                  [tupelo "22.03.09"]
                  [com.rpl/specter "1.1.4"]
                  [rich-comment-tests "73b0863"]
-                 [io.github.borkdude/deflet "0.1.0"]]
+                 [io.github.borkdude/deflet "0.1.0"]
+                 [djblue/portal "0.37.1"]]
 
 
   ;:main ^:skip-aot bel-learn-lib.core

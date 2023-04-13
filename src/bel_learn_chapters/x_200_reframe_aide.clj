@@ -24,8 +24,19 @@
 
 ;; https://re-com.day8.com.au/#/input-text
 
-;; key presses
+;; KEYBOARD key presses
 ;; https://tech.toryanderson.com/2020/10/22/capturing-key-presses-in-clojurescript-with-closure/#beware-multiple-listeners
+;; https://github.com/gadfly361/re-pressed
 
-
+;; fast startup in https://replit.com/
+;; https://replit.com/@bennoloeffler/babashka-scittle-guestbook
 ;; https://github.com/kloimhardt/babashka-scittle-guestbook
+
+;; ROUTING:
+;; https://github.com/danownsthisspace/re-frame-routing-example
+;; https://www.youtube.com/watch?v=wFmsIZMZLNk
+
+;; COMPONENTS try with bulma to make them responsive
+; https://re-com.day8.com.au/#/introduction
+
+

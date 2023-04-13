@@ -4,14 +4,14 @@
                                  TimeUnit)
            (clojure.lang PersistentQueue)))
 
-
 ;; mini-re-frame https://dawranliou.com/tags/clojure/
-
+;; https://gist.github.com/staltz/868e7e9bc2a7b8c1f754
 ;; https://vdoc.pub/documents/clojure-reactive-programming-3bpf8l6ge0pg
 ;; Part 3
 ;; chapter: Building a stock market monitoring application
 ;; slides to book: https://www.slideshare.net/borgesleonardo/functional-reactive-programming-compositional-event-systems
 ;; threads
+;; CODE for Book: https://github.com/PacktPublishing/Hands-On-Reactive-Programming-with-Clojure-Second-Edition
 
 (def pool (atom nil))
 

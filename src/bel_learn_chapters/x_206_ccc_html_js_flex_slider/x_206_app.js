@@ -29,10 +29,11 @@ function replaceWithCanvas(){
  // just use id of element: canvasID
  ctx = canvasID.getContext("2d");
  randomSquare();
- // space is created
- commentCanvas1.hidden = false;
- commentCanvas2.hidden = true;
+ // space is created for hidden divs that are not hidden now
+ commentCanvas1.hidden = true;
+ commentCanvas2.hidden = false;
  //addScrollingToCanvas();
+ createCanvasButton.innerHTML ="Re-Create Canvas from app.js"
 }
 
 function randomSquare() {
@@ -54,42 +55,37 @@ function showVal(){
 
 function addScrollingToCanvas () {
 
-var canvas = document.getElementById("canvasID");
-var context = canvas.getContext('2d');
-var dragging = false;
-var lastX;
-var marginLeft = 0;
+    var canvas = document.getElementById("canvasID");
+    //var context = canvas.getContext('2d');
+    var container = document.getElementById("canvasContainerID")
+    var dragging = false;
+    var lastX;
+    var marginLeft = 0;
 
-for (var i = 0; i < 1000; i++) {
-    context.beginPath();
-    context.arc(Math.random() * 1500, Math.random() * 350, 20.0, 0, 2 * Math.PI, false);
-    context.stroke();
-}
-    alert ("mouse down");
 
-canvas.addEventListener('mousedown', function(e) {
-    var evt = e || event;
-    dragging = true;
-    lastX = evt.clientX;
-    e.preventDefault();
-}, false);
-
-canvas.addEventListener('mousemove', function(e) {
-    var evt = e || event;
-    if (dragging) {
-        var delta = evt.clientX - lastX;
+    canvas.addEventListener('mousedown', function(e) {
+        var evt = e || event;
+        dragging = true;
         lastX = evt.clientX;
-        marginLeft += delta;
-        canvas.style.marginLeft = marginLeft + "px";
-    }
-    e.preventDefault();
-}, false);
+        e.preventDefault();
+    }, false);
 
-canvas.addEventListener('mouseup', function() {
-    dragging = false;
-}, false);
+    canvas.addEventListener('mousemove', function(e) {
+        var evt = e || event;
+        if (dragging) {
+            var delta = -(evt.clientX - lastX);
+            lastX = evt.clientX;
+            marginLeft += delta;
+            if(marginLeft < 0) {
+              marginLeft = 0;
+            }
+            console.log (marginLeft);
+            container.scrollLeft = marginLeft;
+        }
+        e.preventDefault();
+    }, false);
+
+    canvas.addEventListener('mouseup', function() {
+        dragging = false;
+    }, false);
 }
-
-
-// just for testing
-//replaceWithCanvas();

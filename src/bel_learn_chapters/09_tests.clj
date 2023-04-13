@@ -118,8 +118,9 @@
 
 ;; For quick-testing
 (assert (= "Hello, World!" (greeting)))
-(assert (= "Hello, Power-Assert!" (greeting "Power-Assert"))) ;; power-assert!
+(ea/assert (= "Hello, Power-Assert!" (greeting "Power-Assert"))) ;; power-assert!
 (assert (= "Good morning, Clojure!" (greeting "Good morning" "Clojure")))
+
 
 ;(defexpect string-user-name-test
 ;  (expect "John Smith" (str "John" "Williams")))
@@ -135,3 +136,16 @@
 
 ; test-refresh https://github.com/jakemcc/lein-test-refresh
 ; lein test-refresh
+
+(comment
+
+  (use '[clojure.test :as t])
+
+  (defn square
+    {:test (fn []
+             (t/is
+               (= (square 2) 4)))}
+    [n]
+    (* n n))
+
+  (t/run-tests))

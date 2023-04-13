@@ -65,6 +65,7 @@
 
 (clerk/plotly {:data [{:z [[1 2 3] [3 2 1]] :type "surface"}]})
 
+;; ---
 ;; html
 ;; ---
 (clerk/html "<div><br/><br/>ach du <strong>dickes </strong> Ei...<br/><br/><div> <h4>bels heading</h4><p>lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem lorem.</p>")
@@ -73,17 +74,17 @@
   (clojure.java.io/file "src"))
 (into #{} (map str) (file-seq src))
 
-;; cache - i don't get the idea...
 ;; ---
-
-
+;; cache - i don't get the idea...
 ;; don't update - BUT IT's UPDATED!
+;; here:
 (shuffle (range 5))
 
+;; and here:
 ;; update after **every** change in file
 ^:nextjournal.clerk/no-cache
 (shuffle (range 5))
-
+;; xy
 ;; unicode and emojis
 ;; ---
 {:hello "👋 world" :tacos (map (comp #(map (constantly '🌮) %) range) (range 1 100))}
@@ -99,7 +100,7 @@
 ;; tick list
 ;;
 ;; - [x] Write the press release
-;; - [ ] Update the website
+;; - [x] Update the website
 ;; - [ ] Contact the media
 ;;
 ;; or show something as code in md

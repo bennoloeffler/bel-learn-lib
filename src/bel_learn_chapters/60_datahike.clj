@@ -4,7 +4,9 @@
             [taoensso.timbre :as log])
   (:import  (com.formdev.flatlaf FlatLightLaf FlatLaf FlatDarkLaf)))
 
+
 ;; datalog https://nextjournal.com/learn-xtdb-datalog-today/learn-xtdb-datalog-today
+;; https://cljdoc.org/d/datascript/datascript/1.3.15/api/datascript.core#conn-from-datoms
 ;; https://www.learndatalogtoday.org/
 ;; for inspiration:
 ;; https://github.com/cloojure/tupelo-datomic/blob/master/test/tst/tupelo_datomic/bond.clj

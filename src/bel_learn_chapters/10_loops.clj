@@ -1,11 +1,16 @@
 (ns bel-learn-chapters.10-loops)
 
-(def my-items ["shirt" "coat" "hat"])
 
 (comment
+
+  (def my-items ["shirt" "coat" "hat"])
+
+  ; create list
+  (for [i my-items]
+    (keyword i))
 
   (doseq [i my-items]
     (println i))
 
-  (dotimes [i 10
-            (println "counting:" i)]))
+  (dotimes [i 10]
+           (println "counting:" i)))
