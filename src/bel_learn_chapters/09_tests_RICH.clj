@@ -19,10 +19,11 @@
   [x] (* x x))
 
 (tests
+  (hyperfiddle.rcf/enable!)
   (square 6) := 36
   (tests
     81 := (square 9)
-    82) :<> (square 9))
+    82 :<> (square 9)))
 
 (tests
    true := (number? 4))
@@ -34,7 +35,7 @@
   (range 3) ;=> (0 1 2)
   ; matcho pattern with =>>
   (+ 2 3)  ;=>> int?
-  (+ 2 3)  ;=>> int?
+  (+ 2 3)  ;=>> string?
   nil)
 
 (comment

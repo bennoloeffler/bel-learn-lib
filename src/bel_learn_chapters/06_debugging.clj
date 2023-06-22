@@ -72,6 +72,22 @@
   (dotrace [calc do-div] (calc 4 7))
   (trace-forms (+ 1 3) (* 5 6) (/ 1 1)))                    ;; To identify which form is failing
 
+(defn square [n]
+  (* n n))
+
+(defn exp [x n]
+  (reduce * (repeat n x)))
+
+(defn combine [n]
+  (* 5 (exp n (square n))))
+
+(use 'clojure.tools.trace)
+
+(trace-ns *ns*)
+(trace (combine 5))
+
+
+
 (comment (calc 10 1))                                       ; set an exception breakpoint...
 
 (comment                                                    ; printing something in between
@@ -242,7 +258,7 @@
 
 
 ; https://github.com/AbhinavOmprakash/snitch
-
+(repl)
 (require '[snitch.core :refer [defn* defmethod* *fn *let]])
 
 

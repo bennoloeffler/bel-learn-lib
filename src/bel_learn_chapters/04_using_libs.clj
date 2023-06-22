@@ -25,3 +25,13 @@
  (->> (reflect InputStream) :members (sort-by :name) (pt [:name :flags :parameter-types :return-type]))
  (str/join "-" [1 3 4 "sowas" "aber" 1/4])
  Math/PI)
+
+(comment
+  ; https://github.com/borkdude/deps.add-lib
+  ; PROBLEM...
+  ; INCLUDE THAT in source...
+  ;https://github.com/borkdude/deps.add-lib/blob/main/src/borkdude/deps/add_lib.clj
+  ;(require '[borkdude.deps.add-lib :refer [add-lib]])
+  ;(add-lib 'medley/medley)
+  ;(require 'medley.core))
+  nil)

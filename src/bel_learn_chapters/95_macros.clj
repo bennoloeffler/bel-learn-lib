@@ -11,6 +11,10 @@
 ;; https://abhinavomprakash.com/posts/macrobrew/
 ;; joy of clojure, chapter 8
 
+;; macro in cljs AND clj
+;; https://github.com/cgrand/macrovich
+;; https://clojureverse.org/t/how-to-define-and-use-a-macro-in-both-clj-and-cljs/2896
+;; https://clojureverse.org/t/need-help-with-writing-macros-for-clojurescript/6671/6
 ;;
 ;; Keybinding: CTRL-SHIFT-# expand macro
 ;;

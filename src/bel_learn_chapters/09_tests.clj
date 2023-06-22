@@ -4,7 +4,7 @@
             [mate-clj.core :refer :all]
             [erdos.assert :as ea] ; overwrite assert
             [expectations.clojure.test :refer [defexpect expect expecting more more-> more-of]]))
-            ;[tupelo.test :refer :all]))
+;[tupelo.test :refer :all]))
 ; http://www.futurile.net/2020/07/14/clojure-testing-with-clojure-test-and-expectations/
 ; https://github.com/clojure-expectations/clojure-test
 
@@ -87,7 +87,7 @@
                  (div-test 5 0))))
   (testing "type"
     (is (thrown? ArithmeticException
-                          (div-test 5 0))))
+                 (div-test 5 0))))
   (testing "msg"
     (is (thrown-with-msg? ArithmeticException
                           #"Divide by zero"
@@ -141,11 +141,19 @@
 
   (use '[clojure.test :as t])
 
+  (declare square)
+  (defn square-test []
+    (t/testing "ok"
+               (t/is (= (square 2) 4)))
+    (t/testing "failing tests"
+               (t/is (not= (square 2) 5)))
+    (t/testing "throwing tests"
+               (t/is (thrown? Throwable (square 2.0)))))
+
   (defn square
-    {:test (fn []
-             (t/is
-               (= (square 2) 4)))}
+    {:test (fn [] (square-test))}
     [n]
+    {:pre [(int? n)]}
     (* n n))
 
   (t/run-tests))
