@@ -2,6 +2,7 @@
 
 ; self made re-frame
 ; https://github.com/metametadata/aide
+; https://dawranliou.com/blog/event-driven-clojurescript-front-end-with-core-async/
 
 ; state in component
 ; https://github.com/day8/re-frame/issues/538

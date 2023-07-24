@@ -5,6 +5,7 @@
            (clojure.lang PersistentQueue)))
 
 ;; mini-re-frame https://dawranliou.com/tags/clojure/
+;; https://dawranliou.com/blog/event-driven-clojurescript-front-end-with-core-async/
 ;; https://gist.github.com/staltz/868e7e9bc2a7b8c1f754
 ;; https://vdoc.pub/documents/clojure-reactive-programming-3bpf8l6ge0pg
 ;; Part 3
