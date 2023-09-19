@@ -1,5 +1,6 @@
 (ns bel-learn-chapters.x-170-missionary-rx
   (:require [missionary.core :as m]
+            [bel-learn-chapters.x-290-profiling :as prof]
             [clojure.string :as str])
   (:import [missionary Cancelled]))
 
@@ -12,7 +13,252 @@
   ;; https://nextjournal.com/dustingetz/missionary-flow-tutorial-%E2%80%93peter-nagy
 
 
-  ; this is a reactive computation, the println reacts to input changes
+(defn run-10-ms
+  "Runs CPU-intensive about 200 ms after warming up.
+  Returns a huge number."
+  [times] (reduce + (repeatedly (* 30 times) #(->> (range (+ 297 (rand-int 5)))
+                                                   shuffle
+                                                   vec
+                                                   (mapv (fn [n] (reduce + (range (* n)))))
+                                                   (reduce +)))))
+
+
+(defn bigint?
+  "Returns true if n is a BigInt"
+  [n] (instance? clojure.lang.BigInt n))
+
+(defn pow
+  "(pow 2 3) = (* 2 2 2),
+  even with very big numbers.
+  Works with ints."
+  [n x]
+  (assert (or (int? n) (bigint? n)))
+  (assert (or (int? x) (bigint? x)))
+  (loop [nn 1N xx 0N]
+    ;(println n x nn xx)
+    (if (= x xx)
+      nn
+      (recur (* nn n) (inc xx)))))
+
+(comment
+  (pow 8 2)
+  (pow 8 0)
+  (pow 8 1)
+  (prof/time+ (pow 97 89)))
+
+
+(defn run-10-ms-no-mem
+  "Runs CPU-intensive about 200 ms after warming up.
+  Returns a huge number."
+  [times]
+  (let [pow (fn [n x] (loop [nn 1N xx 0N]
+                        (if (= x xx)
+                          nn
+                          (recur (* nn n) (inc xx)))))]
+    (dotimes [n (* 500 times)]
+      (pow 97 89)))
+  nil)
+
+
+(prof/time+ (run-10-ms-no-mem 1))
+
+(comment
+  (prof/time+ (run-10-ms-no-mem 1))
+  (prof/time+ (run-10-ms 1)))
+
+
+(comment
+
+
+  ;; ---------- TASK -----------
+  ;; something that may be executed several times
+
+
+  ; tasks
+  (m/sleep 800) ; a sleep task
+  (m/timeout (m/sleep 1000) 800) ; a timeout task
+
+  ; sequential process
+  (m/sp (println "one")
+        :two)
+
+  ; execute success
+  ((m/sp (println "one")
+         :two)
+   #(println "success: " %)
+   #(println "error" %))
+
+  ; error
+  ((m/sp (println "one")
+         (throw (ex-info "failed" {:data "data"})))
+   #(println "success: " %)
+   #(println "error" %))
+
+  ((m/sp "Hello") #(println "success: " %)
+                  #(println "error" %))
+
+  ;; cancel
+  (def a-task (m/sleep 3000 :done))
+  (def cancel (a-task #(println :ok %) (fn [_] (println :KO))))
+  (cancel)
+
+
+
+  ((m/sp (str (m/? (m/sleep 900 "Hi "))
+              (m/? (m/sleep 100 "there!"))))
+   #(println "success: " %)
+   #(println "error" %))
+
+  ; compose and wait for result by m/?
+  (def example-task (m/sp (println "one")
+                          (str (m/? (m/sleep 800 "Benno last and "))
+                               (m/? (m/sleep 200 "Sabine first")))))
+
+  (example-task #(println "success: " %)
+                #(println "error" %))
+
+  ;; clj only - OS-tasks needed!
+  ;; start without continuation functions
+  (m/? (m/sp :hello))
+  (m/? example-task)
+  (m/? (m/sp (println "Let's take a nap...")
+             (str (m/? (m/sleep 900 "Hi "))
+                  (m/? (m/sleep 100 "there!")))))
+
+  (m/? (m/via m/blk (Thread/sleep 5000) :done))
+  (m/? (m/via m/cpu (map #(reduce + (range %))
+                         (shuffle (range 10000)))))
+
+  ; read values sequentially
+  (time (let [v1 (m/? (m/sp "hi"))
+              v2 (m/? (m/sp (str (m/? (m/sleep 500 "Hi "))
+                                 (m/? (m/sleep 500 "there!")))))]
+          (printf "Read %s from %s\n" v1 v2)))
+
+  ; read async - in parallel
+  (time (let [[v1 v2] (m/? (m/join vector
+                                   (m/sp (m/? (m/sleep 500 "Hi ")))
+                                   (m/sp (m/? (m/sleep 500 "there!")))))]
+          (printf "Read %s from %s%n" v1 v2)))
+
+
+  ;; ---------- FLOW -----------
+
+
+  ;; https://nextjournal.com/dustingetz/missionary-flow-tutorial-%E2%80%93peter-nagy
+  (defn hello
+    "This flow delivers on value on deref.
+     n = function without arguments, the notifier to the consumer
+     t = function without arguments, the terminator to the consumer
+     @ = transfer
+     (call) = cancel"
+    [n t]
+    (n)
+    (reify
+      clojure.lang.IDeref
+      (deref [_] (t) "Hello world!")
+      clojure.lang.IFn
+      (invoke [_] (println "canceled"))))
+
+  (assert
+    ( = (m/? (m/reduce conj hello))
+        ["Hello world!"]))
+
+  (defn myreduce [rf flow]
+    (let [notified? (atom false)
+          terminate? (atom false)
+          process (flow #(reset! notified? true) #(reset! terminate? true))]
+      (loop [ret (rf)]
+        (if @terminate?
+          ret
+          (if @notified?
+            (do (reset! notified? false)
+                (recur (rf ret @process)))
+            (throw (ex-info "bad" {})))))))
+
+  (assert
+    ( = (myreduce conj hello)
+        ["Hello world!"]))
+
+
+  ;flow: produce values
+  (m/seed [1 2 3])
+  (def zip-flow (m/zip vector (m/seed (range 3)) (m/seed [:a :b :c])))
+  (m/eduction (map inc) (m/seed [1 2 3]))
+
+  (m/ap (println (m/?> (m/seed [1 2]))))
+
+  ; use flows
+
+  (let [a-flow (m/seed (range 4))
+        a-task (m/reduce conj a-flow)]
+    (m/? a-task))
+
+  (let [a-flow (m/ap (println (m/?> (m/seed [1 2]))))
+        a-task (m/reduce conj a-flow)]
+    (m/? a-task))
+
+  ; flow with side effects, no return value
+  (m/? (m/reduce
+         (constantly nil); just to avoid returning a collection
+         (m/ap (println (m/?> (m/seed [1 2]))))))
+
+
+  ;; ---------- FLOW and TASK -----------
+
+
+  ;; 8 * 200 ms sequential would result in about 1,6 sec
+  ;; 8 threads in parallel (realistic 6 and some loss...) should be about 1,6 / 8 = 0,2 sec
+  ;; needs 0,19 after warming up
+  (prof/time+ (let [;; create a flow of values generated by asynchronous tasks
+                    inputs (repeat 8 (m/via m/cpu (run-10-ms 20))) ;; a task has no identity, it can be reused
+                    values (m/ap
+                             (let [flow (m/seed inputs)     ;; create a flow of tasks to execute
+                                   task (m/?> ##Inf flow)]  ;; from here, fork on every task in **parallel**
+                               (m/? task)))                 ;; get a forked task value when available
+
+                    ;; drain the flow of values and count them
+                    [n sum] (m/? ;; tasks are executed, and flow is consume here!
+                                (m/reduce (fn [[count sum] v]
+                                              ;(println count sum)
+                                              ;(assert (= "hi" v))
+                                              [(inc count) (+ sum v)])
+                                          [0 0] values))]
+                (println "sum: "sum)))
+
+
+  ;; 8 * 200 ms = 1,6 sec but takes only 0,8 after warming up
+  (prof/time+ (let [values (repeatedly 8 #(run-10-ms 20))]
+                (println "sum:" (reduce + values))
+                #_:end))
+
+  ; ---------- WATCH a continuous flow
+
+  (def !input (atom 5))
+  (def input-flow (m/watch !input))
+  (def input-signal (m/signal input-flow))
+  (def input-signal*2 (m/latest (fn [input] {:result (* 2 input) :input input})
+                                input-signal) #_(m/latest + input-signal input-signal))
+  (def input-task (m/reduce (fn [acc v]
+                              (println "task got value: " v ", acc: " acc)
+                              (+ acc (:result v)))
+                            0
+                            input-signal*2))
+  ;; here, we start the party!
+  (def cancel (input-task #(println "task finished with value: " %) ;; this never happens, because the flow does not terminate
+                          (fn [x] (println :ERROR x))))
+  ;; the task reacts
+  (swap! !input inc)
+
+  (cancel)
+
+
+  :end)
+
+;;
+;;--------------------  OLD  ------------------------------------------------------
+;;
+        ; this is a reactive computation, the println reacts to input changes
 (defn missionary-example-01 []
       (let [input    (atom 2)
             main     (m/reactor

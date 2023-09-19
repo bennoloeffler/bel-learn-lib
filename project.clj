@@ -54,7 +54,7 @@
                  [clj-http "3.12.3"]
                  [mount "0.1.16"]
                  [io.reactivex/rxclojure "1.0.0"]
-                 [missionary "b.26"]
+                 [missionary "b.31"]
                  [com.hyperfiddle/rcf "20220405"]
                  [cprop "0.1.19"]
                  [org.clojure/tools.logging "1.2.4"]
@@ -64,7 +64,11 @@
                  [com.rpl/specter "1.1.4"]
                  [rich-comment-tests "73b0863"]
                  [io.github.borkdude/deflet "0.1.0"]
-                 [djblue/portal "0.37.1"]]
+                 [djblue/portal "0.37.1"]
+                 [funcool/cuerdas "2022.06.16-403"]
+                 [metosin/malli "0.11.0"]
+                 [criterium "0.4.6"]
+                 [tick "0.7.2"]]
 
 
   ;:main ^:skip-aot bel-learn-lib.core

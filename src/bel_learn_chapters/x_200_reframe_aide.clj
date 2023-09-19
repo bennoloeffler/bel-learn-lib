@@ -20,7 +20,7 @@
 ;; running code in webpage
 ;; https://blog.klipse.tech/clojure/2019/02/17/reframe-tutorial.html
 
-;; reactive server from postgresql to re-frame
+;; REACTIVE SERVER from postgresql to re-frame
 ;; https://yogthos.net/posts/2016-11-05-LuminusPostgresNotifications.html
 
 ;; https://re-com.day8.com.au/#/input-text

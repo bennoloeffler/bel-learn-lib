@@ -1,6 +1,10 @@
 (ns bel-learn-chapters.x100-protocolls
   (:import (java.lang String)))
 
+
+; Choose map, protocol, proxy, ...
+; https://cemerick.com/blog/2011/07/05/flowchart-for-choosing-the-right-clojure-type-definition-form.html
+
 ; https://www.braveclojure.com/multimethods-records-protocols/
 ; see Book pdf Pragmatic.Clojure.Applied.From.Practice.to.Practitioner
 

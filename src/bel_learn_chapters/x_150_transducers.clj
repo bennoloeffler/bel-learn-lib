@@ -8,6 +8,9 @@
 ; AND THIS: page 88, FILE: 050 Pragmatic.Clojure.Applied.From.Practice.to.Practitioner.pdf
 ; AND THIS: https://eli.thegreenplace.net/2017/reducers-transducers-and-coreasync-in-clojure/
 
+; MACRO for creating transducers (parallel) from threading
+; https://github.com/johnmn3/injest
+
 (comment ; what is "abstraction" in a functional way?
   ; we have a function...
   ; that reduces two collections each by adding

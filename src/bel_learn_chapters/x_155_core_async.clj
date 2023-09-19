@@ -17,7 +17,11 @@
 (defn pr [& args]
   (tap> (str (clojure.string/join args))))
 
-; ERROR HANDLING, See Book Clojure Reactive Programming, chapter Error Handling
+; ERROR HANDLING,
+;
+; https://blog.jakubholy.net/2019/core-async-error-handling/
+;
+; See Book Clojure Reactive Programming, chapter Error Handling
 ; When an error occurs and needs to be propagated through a channel:
 ; 1. just return the exception itself.
 ; 2. read it by <? instead of <!

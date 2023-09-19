@@ -1,4 +1,11 @@
-(ns bel-learn-chapters.x-206-ccc-html-js-flex-slider.x-510-time-cljc-transit)
+(ns bel-learn-chapters.x-510-time-cljc-transit)
+
+; basis for tick:
+; https://github.com/henryw374/cljc.java-time
+; using chrono-units: https://widdindustries.com/blog/clojurescript-datetime-lib-comparison.html
+
+; tick
+; https://juxt.github.io/tick/#_introduction
 
 ; transit
 ; https://github.com/cognitect/transit-cljs/wiki/Getting-Started

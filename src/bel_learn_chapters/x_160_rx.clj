@@ -4,6 +4,7 @@
                                  TimeUnit)
            (clojure.lang PersistentQueue)))
 
+;; beicon cljs wrapper to js-rx: http://funcool.github.io/beicon/latest/user-guide.html
 ;; mini-re-frame https://dawranliou.com/tags/clojure/
 ;; https://dawranliou.com/blog/event-driven-clojurescript-front-end-with-core-async/
 ;; https://gist.github.com/staltz/868e7e9bc2a7b8c1f754

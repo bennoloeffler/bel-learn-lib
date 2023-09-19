@@ -17,3 +17,7 @@
 ;; https://github.com/gadfly361/reagent-tic-tac-toe
 
 ;; https://github.com/jamiely/simple-clojure-game
+
+;; https://tech.toryanderson.com/2020/05/16/easy-tooltips-in-clojure-reagent/
+
+;; https://vvvvalvalval.github.io/posts/some-re-frame-patterns-for-composability.html

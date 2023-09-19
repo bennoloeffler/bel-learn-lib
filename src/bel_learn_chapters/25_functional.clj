@@ -206,64 +206,65 @@
   [n]
   (* n n))
 
-(use '[clojure.test :as t])
-(t/run-tests)
+(comment
+  (use '[clojure.test :as t])
+  (t/run-tests))
 
 
 ;;-----------------------------------------
 ;; sorting
 ;;-----------------------------------------
+(comment
+  (sort [1 5 7 0 -42 13])
+  (sort compare [1 5 7 0 -42 13])
+  (sort (comp - compare) [1 5 7 0 -42 13])
+  (sort ["z" "x" "a" "aa"])
+  (sort (comp - compare) ["z" "x" "a" "aa"])
 
-(sort [1 5 7 0 -42 13])
-(sort compare [1 5 7 0 -42 13])
-(sort (comp - compare) [1 5 7 0 -42 13])
-(sort ["z" "x" "a" "aa"])
-(sort (comp - compare) ["z" "x" "a" "aa"])
+  ; FAIL
+  (sort [:y "2" 33 :x])
+  ; but with own comparator - works again
+  (sort #(compare (str %1) (str %2)) [1 "-2" 33 :x])
 
-; FAIL
-(sort [:y "2" 33 :x])
-; but with own comparator - works again
-(sort #(compare (str %1) (str %2)) [1 "-2" 33 :x])
+  ;; this sorts by the first element.
+  (sort [[:a 7], [:c 13], [:b 21]])
 
-;; this sorts by the first element.
-(sort [[:a 7], [:c 13], [:b 21]])
-
-; but this naive attempt to sort by the second fails
-(sort second [[:a 7], [:c 13], [:b 21]])
-;; but this works
-(sort-by second [[:a 7], [:c 13], [:b 21]])
-(sort-by second (comp - compare) [[:a 7], [:c 13], [:b 21]])
+  ; but this naive attempt to sort by the second fails
+  (sort second [[:a 7], [:c 13], [:b 21]])
+  ;; but this works
+  (sort-by second [[:a 7], [:c 13], [:b 21]])
+  (sort-by second (comp - compare) [[:a 7], [:c 13], [:b 21]])
 
 
-(sort-by str [1 "-2" 33 :x])
-(sort-by str (comp - compare) [1 "-2" 33 :x])
+  (sort-by str [1 "-2" 33 :x])
+  (sort-by str (comp - compare) [1 "-2" 33 :x])
 
-;; 22 3 34 444 5
-(sort-by #(str (second %))
-         [[1 3 4] [:x "5"] [33 "444"] [33 34 34] [33 22]])
+  ;; 22 3 34 444 5
+  (sort-by #(str (second %))
+           [[1 3 4] [:x "5"] [33 "444"] [33 34 34] [33 22]])
 
-;; 3 5 22 34 444
-(sort-by #(Long/parseLong (str (second %)))
-         [[1 3 4] [:x "5"] [33 "444"] [33 34 34] [33 22]])
+  ;; 3 5 22 34 444
+  (sort-by #(Long/parseLong (str (second %)))
+           [[1 3 4] [:x "5"] [33 "444"] [33 34 34] [33 22]])
 
-;; 444 34 22 5 3
-(sort-by #(Long/parseLong (str (second %)))
-         (comp - compare)
-         [[1 3 4] [:x "5"] [33 "444"] [33 34 34] [33 22]])
+  ;; 444 34 22 5 3
+  (sort-by #(Long/parseLong (str (second %)))
+           (comp - compare)
+           [[1 3 4] [:x "5"] [33 "444"] [33 34 34] [33 22]])
 
-;; since keywords are functions, this works
-(sort-by :age [{:age 99 :name "grandpa"}, {:age 13 :name "son"}, {:age 2 :name "baby"} {:age 32 :name "mother"}])
+  ;; since keywords are functions, this works
+  (sort-by :age [{:age 99 :name "grandpa"}, {:age 13 :name "son"}, {:age 2 :name "baby"} {:age 32 :name "mother"}])
 
-(def plays [{:band "Burial",     :plays 979,  :loved 9}
-            {:band "Z",     :plays 12979,  :loved 1}
-            {:band "A",     :plays 12979,  :loved 1}
-            {:band "Eno",        :plays 2333, :loved 15}
-            {:band "Slayer",     :plays 12979,  :loved 1}
-            {:band "Bill Evans", :plays 979,  :loved 9}
-            {:band "Magma",      :plays 2665, :loved 31}
-            {:band "Compare",    :plays 979,  :loved 10}])
-(def sort-by-loved-ratio (partial sort-by #(/ (:plays %) (:loved %))))
-(sort-by-loved-ratio plays)
+  (def plays [{:band "Burial",     :plays 979,  :loved 9}
+              {:band "Z",     :plays 12979,  :loved 1}
+              {:band "A",     :plays 12979,  :loved 1}
+              {:band "Eno",        :plays 2333, :loved 15}
+              {:band "Slayer",     :plays 12979,  :loved 1}
+              {:band "Bill Evans", :plays 979,  :loved 9}
+              {:band "Magma",      :plays 2665, :loved 31}
+              {:band "Compare",    :plays 979,  :loved 10}])
+  (def sort-by-loved-ratio (partial sort-by #(/ (:plays %) (:loved %))))
+  (sort-by-loved-ratio plays))
 
 ;; imagine we would like to: (sort-by (columns [:plays :loved :band]) plays)
 (comment

@@ -11,6 +11,8 @@
   [:import (java.io InputStream File)
            (java.util ArrayList)])
 
+; https://github.com/borkdude/deps.add-lib
+
 (require '[clojure.string :refer [upper-case]])
 (import '(java.io File InputStream)) ; several
 (import java.util.Date) ; one

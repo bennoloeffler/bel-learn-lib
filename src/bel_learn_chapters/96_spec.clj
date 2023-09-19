@@ -1,11 +1,22 @@
 (ns bel-learn-chapters.96-spec
   (:require [clojure.spec.alpha :as s]))
 
-; https://github.com/primeteach/specomatic-db
-
-; https://dawranliou.com/blog/domain-exploring-with-spec/
+; spec examples
 ; https://gist.github.com/maacl/b0795e5f3d4ab72ca8add1e2d091e0e4
 ; https://github.com/didibus/clj-ddd-example
+
+; exploring domain with generators and fn tests
+; https://dawranliou.com/blog/domain-exploring-with-spec/
+
+; simple spec in functions
+; https://github.com/fulcrologic/guardrails
+
+; create SQL db from spec
+; https://github.com/primeteach/specomatic-db
+
+; create datomic schema from spec
+; https://github.com/Provisdom/spectomic
+
 
 (defrecord V [^double x ^double y])
 

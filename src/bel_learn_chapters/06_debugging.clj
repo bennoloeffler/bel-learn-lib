@@ -14,6 +14,11 @@
 ; https://github.com/jpmonettas/flow-storm-debugger
 ; https://github.com/eerohele/tab
 
+; PLAYBACK
+; https://github.com/gnl/playback
+; [com.github.gnl/playback "0.3.10"]
+; ADD cljs
+
 (set! *print-length* 20)
 
 ;;---------------------------------------

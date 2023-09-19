@@ -1,4 +1,12 @@
-(ns bel-learn-chapters.03-beginners-stuff)
+(ns bel-learn-chapters.03-beginners-stuff
+  (:require
+    ; STRING functions
+    ;https://funcool.github.io/cuerdas/latest/user-guide.html
+    [cuerdas.core :as str]))
+
+(comment
+  (str/kebab "abcDefXYZ")
+  (str/surround "Benno" "X"))
 
 ;; https://tryclojure.org/
 
