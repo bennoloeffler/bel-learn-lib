@@ -39,6 +39,9 @@
 ; https://github.com/dvingo/malli-code-gen/blob/main/thoughts.md
 
 (comment
+
+  ; MALLI examples
+
   (use 'debux.core)
 
 
